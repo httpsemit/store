@@ -1,0 +1,147 @@
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+
+const resources = {
+  english: {
+    translation: {
+      dashboard: 'Dashboard',
+      inventory: 'Inventory',
+      customers: 'Customers',
+      reports: 'Reports',
+      settings: 'Settings',
+      pos: 'POS',
+      gross_revenue: 'Gross Revenue',
+      net_profit: 'Net Profit',
+      transactions: 'Transactions',
+      credit_sales: 'Credit Sales',
+      quick_refill: 'Quick Refill',
+      generate_bill: 'Generate Bill',
+      analytics: 'Analytics',
+      critical_alerts: 'Critical Alerts',
+      save_expense: 'Save Expense',
+      history: 'History',
+      payment_method: 'Payment Method',
+      subtotal: 'Subtotal',
+      total: 'Total',
+      discount: 'Discount',
+      customer_name: 'Customer Name',
+      sign_out: 'Sign Out',
+      store_pulse: 'Store Pulse',
+      live_updates: 'Live Performance Updates',
+      stock_radar: 'Stock Radar',
+      daily_expenses: 'Daily Expenses',
+      live_feed: 'Live Feed',
+      full_report: 'Full Report',
+      record_repayment: 'Record Repayment',
+      amount: 'Amount',
+      date: 'Date',
+      save: 'Save',
+      cancel: 'Cancel',
+      language_settings: 'Language Settings',
+      appearance: 'Appearance',
+      light: 'Light',
+      dark: 'Dark',
+      security_hub: 'Security Hub',
+      change_password: 'Change Password'
+    }
+  },
+  hindi: {
+    translation: {
+      dashboard: 'डैशबोर्ड',
+      inventory: 'इन्वेंट्री',
+      customers: 'ग्राहक',
+      reports: 'रिपोर्ट्स',
+      settings: 'सेटिंग्स',
+      pos: 'पीओएस',
+      gross_revenue: 'कुल बिक्री',
+      net_profit: 'शुद्ध लाभ',
+      transactions: 'लेनदेन',
+      credit_sales: 'उधार बिक्री',
+      quick_refill: 'जल्दी भरें',
+      generate_bill: 'बिल बनाएं',
+      analytics: 'एनालिटिक्स',
+      critical_alerts: 'महत्वपूर्ण अलर्ट',
+      save_expense: 'खर्च सहेजें',
+      history: 'इतिहास',
+      payment_method: 'भुगतान का तरीका',
+      subtotal: 'कुल राशि',
+      total: 'कुल',
+      discount: 'छूट',
+      customer_name: 'ग्राहक का नाम',
+      sign_out: 'लॉग आउट',
+      store_pulse: 'स्टोर पल्स',
+      live_updates: 'लाइव अपडेट',
+      stock_radar: 'स्टॉक रडार',
+      daily_expenses: 'दैनिक खर्च',
+      live_feed: 'लाइव फीड',
+      full_report: 'पूरी रिपोर्ट',
+      record_repayment: 'पुनर्भुगतान दर्ज करें',
+      amount: 'राशि',
+      date: 'तारीख',
+      save: 'सहेजें',
+      cancel: 'रद्द करें',
+      language_settings: 'भाषा सेटिंग',
+      appearance: 'रूप रंग',
+      light: 'लाइट',
+      dark: 'डार्क',
+      security_hub: 'सुरक्षा केंद्र',
+      change_password: 'पासवर्ड बदलें'
+    }
+  },
+  hinglish: {
+    translation: {
+      dashboard: 'Dashboard',
+      inventory: 'Inventory',
+      customers: 'Grahak',
+      reports: 'Reports',
+      settings: 'Settings',
+      pos: 'Sauda',
+      gross_revenue: 'Total Kamayi',
+      net_profit: 'Net Fayda',
+      transactions: 'Transactions',
+      credit_sales: 'Udhaar Sales',
+      quick_refill: 'Quick Refill',
+      generate_bill: 'Bill Banao',
+      analytics: 'Analytics',
+      critical_alerts: 'Jaruri Alerts',
+      save_expense: 'Kharcha Save Karo',
+      history: 'History',
+      payment_method: 'Payment Method',
+      subtotal: 'Subtotal',
+      total: 'Total',
+      discount: 'Discount',
+      customer_name: 'Grahak ka Name',
+      sign_out: 'Sign Out',
+      store_pulse: 'Store Pulse',
+      live_updates: 'Live Updates',
+      stock_radar: 'Stock Radar',
+      daily_expenses: 'Daily Kharcha',
+      live_feed: 'Live Feed',
+      full_report: 'Full Report',
+      record_repayment: 'Repayment Record Karo',
+      amount: 'Amount',
+      date: 'Date',
+      save: 'Save Karo',
+      cancel: 'Cancel',
+      language_settings: 'Language Settings',
+      appearance: 'Huliya',
+      light: 'Gora',
+      dark: 'Kala',
+      security_hub: 'Security Hub',
+      change_password: 'Password Change Karo'
+    }
+  }
+};
+
+i18n
+  .use(initReactI18next)
+  .init({
+    resources,
+    lng: 'english',
+    fallbackLng: 'english',
+    interpolation: {
+      escapeValue: false
+    }
+  });
+
+export default i18n;

@@ -1,0 +1,117 @@
+📦 Complete Inventory Management System Prompt
+Build a full-featured, production-ready Inventory Management System for an offline retail store in India. Use React 18 + TypeScript + Vite + Tailwind CSS + Zustand (with localStorage persistence via zustand/middleware/persist). All monetary values must use Indian Rupees (₹ / INR) with en-IN locale formatting. The app must be fully responsive across mobile, tablet, and desktop.
+
+🔐 1. Authentication System
+Show a Login Page before accessing anything
+Login page: store logo/name at top, username field, password field (with show/hide toggle), a styled Sign In button, a hint box showing default credentials
+Two built-in users stored in Zustand (persisted to localStorage):
+admin / amit@123 → role: Owner (full access)
+staff / staff@123 → role: Staff (limited access)
+After login, show the user's name + role in the sidebar footer with a Sign Out button
+On logout, clear auth state and return to login screen
+Session persists across page refresh
+🏠 2. Dashboard Page (/)
+Stats row (4 cards): Today's Total Revenue (₹), Today's Profit (₹), Number of Transactions, Total Items Sold
+Quick Actions (3 buttons): "Scan Stock" → /scanner, "New Sale" → /sales, "Reports" → /reports
+Low Stock Alert Panel: List all products where current stock ≤ category threshold. Show product name, category, current stock, threshold. Color code: red = critical (stock ≤ threshold/2 or = 0), orange = warning. "View all" link to inventory
+Today's Top Sellers: Show top 5 products sold today with rank number, product name, units sold, and revenue. "Full report" link
+Category Overview Grid: One card per category showing product count, low-stock count, and inventory value — colored by category color
+Low-stock count badge on sidebar Dashboard link
+📦 3. Inventory Management Page (/inventory)
+Search bar: filter by product name or barcode number
+Category filter dropdown: filter by category
+Stock filter dropdown: All / Low Stock / Out of Stock
+Results count: "Showing X of Y products"
+Add Product button → opens modal
+Product Table with columns: Product Name + Description, Barcode (monospace font), Category (colored badge), Selling Price (₹), Purchasing Price (₹), Stock (colored pill: green=ok, orange=low, red=out), Actions (Edit / Delete with confirmation)
+Row background tint: orange for low stock, red for out-of-stock
+Add/Edit Product Modal fields:
+Product Name (required)
+Barcode (required, monospace)
+Category (dropdown, required)
+Selling Price in ₹ (required)
+Purchasing Price in ₹ (required)
+Initial / Current Quantity (required)
+Unit (dropdown: pcs, pkt, kg, gm, litre, ml, btl, box, pair, dozen)
+Description (optional)
+📷 4. Barcode Scanner / Stock Intake Page (/scanner)
+Gradient header card explaining the purpose
+Mode Toggle: "Manual Entry" vs "Camera" button
+Manual Entry mode: auto-focused barcode input field (Enter key or + button to process). On valid scan: add to scanned list with success toast. On unknown barcode: show error toast
+Camera mode: open device camera (getUserMedia, facingMode: environment), show live video with a targeting frame overlay. Camera stop button
+Quick Lookup panel: list of first 8 products as clickable buttons (name + barcode) for fast manual scanning without typing
+Supplier Name optional input field (applies to all items in this session)
+Scanned Items list (right panel):
+Product icon, name, barcode
+Editable Quantity input
+Editable Purchasing Price input
+Line total = qty × purchasing price
+Remove (×) button per item
+"Clear all" link
+Summary footer: Total items count, Total cost value, "Confirm Stock Intake" green button
+On confirm: call addStockIntake() for each item → updates product quantity in store → shows success banner → clears list
+🛒 5. Sales / POS Page (/sales)
+Layout: left side = product grid, right side = cart (sticky)
+Barcode scan input (monospace, auto-processes on Enter): adds matching product to cart
+Search input: filter product grid by name
+Category filter dropdown
+Product Grid: card per product showing: colored initial circle, name, stock count, price in ₹. Clicking adds 1 to cart. Disabled + dimmed if out of stock. Shows cart quantity badge if already in cart. Selected products get a highlighted border
+Cart panel:
+Header: "Cart (N items)"
+Scrollable item list: product name, unit price, qty −/+ buttons, line total, remove button
+Subtotal row
+Discount field (₹ amount, editable)
+Total (bold, large, shown in ₹)
+Customer name input (optional)
+Payment method selector: Cash 💵, UPI 📱, Card 💳, Credit 📋 (toggle buttons)
+"Complete Sale — ₹X,XXX" green button (disabled if cart empty)
+On sale complete: call addSale() which auto-deducts stock, show green success banner, reset cart
+📊 6. Daily Sales Report Page (/reports)
+Date picker (max = today) + Print Report button
+Stats row (4 cards): Revenue (₹), Profit (₹) with margin %, Transactions (with avg bill), Items Sold
+Payment Method Summary: grid of cards for Cash / UPI / Card / Credit showing amount collected
+Top Selling Items Table columns: Rank (gold/silver/bronze for top 3), Product, Qty Sold + unit, Unit Price, Revenue, Profit. Top 3 rows have green background. Footer row with totals
+All Transactions Table columns: Bill # (padded 001, 002…), Time (formatted en-IN), Customer, Items (inline list), Payment, Amount
+Print layout: hides navigation, header, controls. Shows report header with store name, date, generated timestamp. All tables with borders for clean printing
+🏷️ 7. Categories Management Page (/categories)
+Add Category button (top right)
+Low Stock Alert Summary banner (orange): shows all currently low-stock products grouped — visible only when alerts exist. Each alert chip shows: product name, category, current stock (red = critical, orange = warning)
+Category Cards Grid (2–3 columns responsive):
+Colored top border bar
+Category icon + name + description
+Edit / Delete (with confirm) action buttons
+3 mini stat boxes: Products count, Low Stock count (orange if >0), Out of Stock count (red if >0)
+Low stock threshold display + total inventory value
+Add/Edit Category Modal fields:
+Name (required)
+Description
+Low Stock Threshold in units (required) — alert triggers below this
+Color picker (10 preset swatches: green, blue, amber, pink, purple, red, cyan, lime, orange, indigo)
+🗂️ Data Model (TypeScript types)
+Category: { id, name, description, lowStockThreshold, color }
+Product: { id, barcode, name, description, categoryId, price, costPrice, quantity, unit, createdAt, updatedAt }
+Sale: { id, items[], subtotal, discount, total, paymentMethod, customerName?, createdAt }
+SaleItem: { productId, productName, barcode, quantity, unitPrice, total }
+StockIntake: { id, productId, productName, barcode, quantity, costPrice, supplier?, createdAt }
+Alert: { id, productId, productName, categoryId, categoryName, currentStock, threshold, severity: 'critical'|'warning' }
+🧠 Zustand Store Methods
+addCategory, updateCategory, deleteCategory
+addProduct, updateProduct, deleteProduct, updateStock, getProductByBarcode
+addSale (auto-deducts stock from each sold product)
+addStockIntake (auto-adds stock to product)
+getLowStockAlerts() → returns Alert[] sorted by currentStock ascending
+getDailySales(date: string) → returns Sale[] for that date
+getTopSellingItems(date, limit?) → returns sorted items with product + quantitySold + revenue
+getTodayStats() → returns { totalSales, totalRevenue, totalProfit, totalItems }
+🎨 UI Design Requirements
+Color scheme: Indigo-900 sidebar, white content area, gray-50 background
+Sidebar: fixed on desktop, slide-in drawer on mobile with overlay
+Top bar: page title, low-stock pill badge, current date
+Typography: clean sans-serif, font-semibold headings, text-sm for table content
+Cards: white, rounded-xl, shadow-sm, border border-gray-100
+Modals: centered overlay, rounded-2xl, max-w-lg, scrollable on small screens
+Buttons: rounded-lg, indigo-600 primary, green-600 confirm/complete, red-500 danger
+Status pills: green/orange/red rounded-full for stock levels
+Print CSS: hide sidebar/header/controls, show borders on tables, clean layout
+📦 Pre-loaded Sample Data
+Include 12 real Indian FMCG products with actual barcodes, 6 categories (Grocery, Beverages, Snacks, Personal Care, Dairy, Stationery), and 3 sample sales from today so the dashboard and reports are populated immediately on first load.
