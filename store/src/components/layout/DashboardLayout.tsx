@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
@@ -11,7 +11,7 @@ const DashboardLayout = () => {
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <div className="lg:ml-64 flex flex-col min-h-screen">
-                <Header onMenuClick={() => setSidebarOpen(true)} />
+                <Header title="Dashboard" onMenuClick={() => setSidebarOpen(true)} />
 
                 <main className="flex-1 p-6 overflow-auto">
                     <Outlet />

@@ -1,4 +1,3 @@
-import type { Category, Product, Sale, StockIntake, User } from '../types';
 
 // Replace with your actual Deployed Google Apps Script URL
 const API_URL = 'https://script.googleusercontent.com/macros/echo?user_content_key=AY5xjrRkcopflVqOKaLxHZbwZSVMFRLFmUa4oXmzax8IJIUKxflpW3R7iqF7VmPlhcjMvRLPh5pWWXfilr5VJKub8fkUUaJ73W7BoadQbe_Lr9ZI9lb8ZGkWBKgnjJ2TgtZRdPvtQStwNkcSrlR0tQZbBf5pdz8pOezqfxgEN0qTF-AmZPzjI8rPS9z2C23HxnRGlG-lEiY008AyntTLKTTPibD_JBanjjp-bNiZ0GnovPQIv2Bjs21mybZ4pF3Wy6TF1-dWPb-KAKuaKj3DGOr4tmvTwlzG2qa-0_RnCHxI&lib=MyGIBbzasjjLfXhI7wooS0f-Vs82Fy_EI';

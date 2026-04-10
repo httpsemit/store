@@ -1,5 +1,4 @@
-import React from 'react';
-import { Bell, Menu, Search } from 'lucide-react';
+import { Bell, Menu } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { format } from 'date-fns';
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Search, Plus, Edit2, Trash2, Filter, Package, AlertCircle, Archive, Barcode } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import ProductModal from '../components/inventory/ProductModal';

@@ -1,4 +1,4 @@
-import type { Category, Product, User } from './types';
+import type { Category, Product } from './types';
 
 export const SAMPLE_CATEGORIES: Category[] = [
     { id: 'cat-1', name: 'Grocery', description: 'Daily essentials', lowStockThreshold: 10, color: '#4f46e5' },

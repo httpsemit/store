@@ -1,4 +1,5 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
+import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -24,16 +25,16 @@ const Dashboard = () => {
     const navigate = useNavigate();
     const { getTodayStats, getLowStockAlerts, sales, currentUser, addExpense, showToast } = useStore();
     const { t } = useTranslation();
-    const [currentTime, setCurrentTime] = React.useState(new Date());
+    const [currentTime, setCurrentTime] = useState(new Date());
 
-    const [expenseForm, setExpenseForm] = React.useState({
+    const [expenseForm, setExpenseForm] = useState({
         amount: '',
         category: 'Utility',
         description: ''
     });
-    const [isAddingExpense, setIsAddingExpense] = React.useState(false);
+    const [isAddingExpense, setIsAddingExpense] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const timer = setInterval(() => setCurrentTime(new Date()), 1000);
         return () => clearInterval(timer);
     }, []);
@@ -43,7 +44,7 @@ const Dashboard = () => {
     const recentSales = sales.slice(0, 5);
     const isOwner = currentUser?.role === 'Owner';
 
-    const handleAddExpense = async (e: React.FormEvent) => {
+    const handleAddExpense = async (e: FormEvent) => {
         e.preventDefault();
         if (!expenseForm.amount) return;
         
