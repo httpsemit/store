@@ -468,31 +468,33 @@ export const useStore = create<StoreState>()(
             // SALES
             // ========================================
             addSale: async (saleData) => {
-                const items = saleData.items.map(item => ({
-                    product_id: item.productId,
-                    product_name: item.productName,
-                    barcode: item.barcode,
-                    quantity: item.quantity,
-                    unit_price: item.unitPrice,
-                    total: item.total,
-                }));
+                try {
+                    const items = saleData.items.map(item => ({
+                        product_id: item.productId,
+                        product_name: item.productName,
+                        barcode: item.barcode,
+                        quantity: item.quantity,
+                        unit_price: item.unitPrice,
+                        total: item.total,
+                    }));
 
-                const { data, error } = await supabase.rpc('complete_sale', {
-                    p_items: items,
-                    p_subtotal: saleData.subtotal,
-                    p_discount: saleData.discount,
-                    p_total: saleData.total,
-                    p_payment_method: saleData.paymentMethod,
-                    p_customer_name: saleData.customerName || null,
-                    p_customer_id: saleData.customerId || null,
-                });
+                    const { data, error } = await supabase.rpc('complete_sale', {
+                        p_items: items,
+                        p_subtotal: saleData.subtotal,
+                        p_discount: saleData.discount,
+                        p_total: saleData.total,
+                        p_payment_method: saleData.paymentMethod,
+                        p_customer_name: saleData.customerName || null,
+                        p_customer_id: saleData.customerId || null,
+                    });
 
-                if (error) {
-                    get().showToast('error', error.message);
-                    return;
-                }
+                    if (error) {
+                        console.error('Supabase RPC error:', error);
+                        get().showToast('error', `Database error: ${error.message}`);
+                        return;
+                    }
 
-                // Re-fetch products and customers for updated stock/balances
+                    // Re-fetch products and customers for updated stock/balances
                 const [{ data: freshProducts }, { data: freshCustomers }] = await Promise.all([
                     supabase.from('products').select('*').order('name'),
                     supabase.from('customers').select('*').order('name')
@@ -540,6 +542,10 @@ export const useStore = create<StoreState>()(
                 }));
 
                 get().showToast('success', `Sale completed — ₹${saleData.total.toLocaleString('en-IN')}`);
+                } catch (error) {
+                    console.error('Sale completion error:', error);
+                    get().showToast('error', 'Failed to complete sale. Please check your connection and try again.');
+                }
             },
 
             // ========================================

@@ -13,7 +13,7 @@ const DashboardLayout = () => {
             <div className="lg:ml-64 flex flex-col min-h-screen">
                 <Header title="Dashboard" onMenuClick={() => setSidebarOpen(true)} />
 
-                <main className="flex-1 p-6 overflow-auto">
+                <main className="flex-1 p-4 lg:p-6 overflow-auto">
                     <Outlet />
                 </main>
             </div>

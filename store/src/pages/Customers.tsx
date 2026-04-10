@@ -80,66 +80,66 @@ const Customers = () => {
     };
 
     return (
-        <div className="space-y-8 animate-fade-in">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="space-y-6 sm:space-y-8 animate-fade-in">
+            <div className="flex flex-col justify-between items-start gap-4 sm:gap-6">
                 <div>
-                    <h1 className="text-4xl font-black text-gray-900 tracking-tighter uppercase mb-2">Customer Base</h1>
+                    <h1 className="text-2xl sm:text-4xl font-black text-gray-900 tracking-tighter uppercase mb-2">Customer Base</h1>
                     <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">Manage your relationships and credit lines</p>
                 </div>
                 <button
                     onClick={() => openModal()}
-                    className="group flex items-center gap-3 bg-indigo-600 text-white px-6 py-3.5 rounded-[20px] font-black shadow-2xl shadow-indigo-100 hover:bg-indigo-700 transition-all active:scale-[0.98] uppercase tracking-widest text-xs"
+                    className="w-full sm:w-auto group flex items-center justify-center gap-3 bg-indigo-600 text-white px-6 py-3 sm:py-3.5 rounded-[16px] sm:rounded-[20px] font-black shadow-2xl shadow-indigo-100 hover:bg-indigo-700 transition-all active:scale-[0.98] uppercase tracking-widest text-xs"
                 >
-                    <Plus size={18} className="group-hover:rotate-90 transition-transform" /> {t('add_customer')}
+                    <Plus size={16} className="sm:size-18 group-hover:rotate-90 transition-transform" /> {t('add_customer')}
                 </button>
             </div>
 
             <div className="relative group">
-                <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors" size={24} />
+                <Search className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors" size={18} />
                 <input
                     type="text"
                     placeholder="Search by name or phone number..."
-                    className="w-full bg-white border border-gray-100 rounded-[32px] pl-16 pr-8 py-6 text-lg font-bold shadow-sm focus:outline-none focus:ring-4 focus:ring-indigo-50/50 transition-all placeholder:text-gray-300"
+                    className="w-full bg-white border border-gray-100 rounded-[20px] sm:rounded-[32px] pl-10 sm:pl-16 pr-4 sm:pr-8 py-3 sm:py-6 text-base sm:text-lg font-bold shadow-sm focus:outline-none focus:ring-4 focus:ring-indigo-50/50 transition-all placeholder:text-gray-300"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {filteredCustomers.map(customer => (
-                    <div key={customer.id} className="bg-white border border-gray-100 rounded-[40px] p-8 shadow-sm hover:shadow-2xl transition-all group relative overflow-hidden">
+                    <div key={customer.id} className="bg-white border border-gray-100 rounded-[24px] sm:rounded-[40px] p-4 sm:p-8 shadow-sm hover:shadow-2xl transition-all group relative overflow-hidden">
                         {/* Decorative background element */}
                         <div className="absolute -top-10 -right-10 w-32 h-32 bg-indigo-50/50 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         
-                        <div className="flex items-start justify-between mb-8 relative">
-                            <div className="w-16 h-16 bg-indigo-600 rounded-[24px] flex items-center justify-center text-white shadow-xl shadow-indigo-100 font-black text-2xl group-hover:scale-110 transition-transform">
+                        <div className="flex items-start justify-between mb-4 sm:mb-8 relative">
+                            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-indigo-600 rounded-[16px] sm:rounded-[24px] flex items-center justify-center text-white shadow-xl shadow-indigo-100 font-black text-lg sm:text-2xl group-hover:scale-110 transition-transform">
                                 {customer.name.charAt(0).toUpperCase()}
                             </div>
                             <div className="flex gap-2">
                                 <button 
                                     onClick={() => openModal(customer)}
-                                    className="p-3 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-2xl transition-all"
+                                    className="p-2 sm:p-3 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl sm:rounded-2xl transition-all"
                                 >
-                                    <Edit2 size={18} />
+                                    <Edit2 size={14} className="sm:size-18" />
                                 </button>
                             </div>
                         </div>
 
-                        <div className="space-y-6 relative">
+                        <div className="space-y-4 sm:space-y-6 relative">
                             <div>
-                                <h3 className="text-xl font-black text-gray-900 tracking-tight leading-none mb-2">{customer.name}</h3>
+                                <h3 className="text-lg sm:text-xl font-black text-gray-900 tracking-tight leading-none mb-2">{customer.name}</h3>
                                 <div className="flex items-center gap-2 text-gray-400 font-bold text-xs uppercase tracking-widest">
-                                    <Phone size={12} /> {customer.phone || 'No phone'}
+                                    <Phone size={10} className="sm:size-12" /> {customer.phone || 'No phone'}
                                 </div>
                             </div>
 
-                            <div className="p-5 bg-gray-50 rounded-[24px] border border-gray-100">
+                            <div className="p-3 sm:p-5 bg-gray-50 rounded-[16px] sm:rounded-[24px] border border-gray-100">
                                 <div className="flex justify-between items-center mb-1">
                                     <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Credit Balance</span>
-                                    <CreditCard size={12} className="text-gray-300" />
+                                    <CreditCard size={10} className="sm:size-12 text-gray-300" />
                                 </div>
                                 <div className={clsx(
-                                    "text-xl font-black tracking-tighter",
+                                    "text-lg sm:text-xl font-black tracking-tighter",
                                     customer.creditBalance > 0 ? "text-red-500" : "text-emerald-500"
                                 )}>
                                     ₹{customer.creditBalance.toLocaleString('en-IN')}
@@ -149,15 +149,15 @@ const Customers = () => {
                              <div className="grid grid-cols-2 gap-2 pt-1">
                                 <button 
                                     onClick={() => openHistory(customer)}
-                                    className="flex items-center justify-center gap-2 py-3 bg-gray-900 text-white rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-black transition-all"
+                                    className="flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3 bg-gray-900 text-white rounded-lg sm:rounded-xl font-black text-[8px] sm:text-[9px] uppercase tracking-widest hover:bg-black transition-all"
                                 >
-                                    <History size={14} /> {t('history')}
+                                    <History size={12} className="sm:size-14" /> {t('history')}
                                 </button>
                                 <button 
                                     onClick={() => openRepayment(customer)}
-                                    className="flex items-center justify-center gap-2 py-3 bg-emerald-600 text-white rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-lg hover:shadow-emerald-200"
+                                    className="flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3 bg-emerald-600 text-white rounded-lg sm:rounded-xl font-black text-[8px] sm:text-[9px] uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-lg hover:shadow-emerald-200"
                                 >
-                                    <Banknote size={14} /> Pay
+                                    <Banknote size={12} className="sm:size-14" /> Pay
                                 </button>
                             </div>
                         </div>
@@ -168,25 +168,25 @@ const Customers = () => {
             {/* Repayment Modal */}
             {showRepaymentModal && selectedCustomer && (
                 <div className="fixed inset-0 z-[110] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm animate-fade-in">
-                    <div className="bg-white w-full max-w-sm rounded-[40px] shadow-2xl overflow-hidden p-8 animate-pop">
-                        <div className="flex items-center justify-between mb-8">
-                            <h3 className="text-xl font-black text-gray-900 tracking-tight uppercase">Record Repayment</h3>
-                            <button onClick={closeModal} className="p-2 text-gray-400 hover:bg-gray-100 rounded-xl transition-colors">
+                    <div className="bg-white w-full max-w-sm rounded-[24px] sm:rounded-[40px] shadow-2xl overflow-hidden p-6 sm:p-8 animate-pop">
+                        <div className="flex items-center justify-between mb-6 sm:mb-8">
+                            <h3 className="text-lg sm:text-xl font-black text-gray-900 tracking-tight uppercase">Record Repayment</h3>
+                            <button onClick={closeModal} className="p-2 text-gray-400 hover:bg-gray-100 rounded-lg sm:rounded-xl transition-colors">
                                 <X size={20} />
                             </button>
                         </div>
-                        <div className="mb-8 p-4 bg-red-50 rounded-2xl border border-red-100">
+                        <div className="mb-6 sm:mb-8 p-3 sm:p-4 bg-red-50 rounded-xl sm:rounded-2xl border border-red-100">
                             <p className="text-[10px] font-black text-red-400 uppercase tracking-widest mb-1">Current Due</p>
-                            <p className="text-2xl font-black text-red-600 tracking-tighter">₹{selectedCustomer.creditBalance.toLocaleString('en-IN')}</p>
+                            <p className="text-lg sm:text-2xl font-black text-red-600 tracking-tighter">₹{selectedCustomer.creditBalance.toLocaleString('en-IN')}</p>
                         </div>
-                        <form onSubmit={handleRepayment} className="space-y-6">
+                        <form onSubmit={handleRepayment} className="space-y-4 sm:space-y-6">
                             <div className="space-y-2">
                                 <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Paid Amount (₹)</label>
                                 <input
                                     autoFocus
                                     required
                                     type="number"
-                                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3.5 font-bold outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                                    className="w-full bg-gray-50 border border-gray-100 rounded-lg sm:rounded-2xl px-4 sm:px-5 py-3 sm:py-3.5 font-bold outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
                                     placeholder="Enter amount"
                                     value={repaymentAmount}
                                     onChange={(e) => setRepaymentAmount(e.target.value)}
@@ -216,7 +216,7 @@ const Customers = () => {
                             </div>
                             <button 
                                 type="submit"
-                                className="w-full py-4 bg-emerald-600 text-white rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-emerald-100 hover:bg-emerald-700 transition-all"
+                                className="w-full py-3 sm:py-4 bg-emerald-600 text-white rounded-xl sm:rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-emerald-100 hover:bg-emerald-700 transition-all"
                             >
                                 Confirm Repayment
                             </button>
@@ -228,25 +228,25 @@ const Customers = () => {
             {/* History Modal */}
             {showHistoryModal && selectedCustomer && (
                 <div className="fixed inset-0 z-[110] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm animate-fade-in">
-                    <div className="bg-white w-full max-w-2xl rounded-[48px] shadow-2xl overflow-hidden animate-pop max-h-[90vh] flex flex-col">
-                        <div className="p-8 border-b border-gray-100 flex items-center justify-between bg-white sticky top-0 z-10">
+                    <div className="bg-white w-full max-w-2xl rounded-[32px] sm:rounded-[48px] shadow-2xl overflow-hidden animate-pop max-h-[90vh] flex flex-col">
+                        <div className="p-4 sm:p-8 border-b border-gray-100 flex items-center justify-between bg-white sticky top-0 z-10">
                             <div>
-                                <h3 className="text-2xl font-black text-gray-900 tracking-tight uppercase">{selectedCustomer.name}</h3>
+                                <h3 className="text-lg sm:text-2xl font-black text-gray-900 tracking-tight uppercase">{selectedCustomer.name}</h3>
                                 <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Transaction History & Ledger</p>
                             </div>
                             <button onClick={closeModal} className="p-3 text-gray-400 hover:bg-gray-100 rounded-2xl transition-colors">
-                                <X size={24} />
+                                <X size={18} className="sm:size-24" />
                             </button>
                         </div>
-                        <div className="p-8 overflow-y-auto space-y-8">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="p-6 bg-red-50 rounded-[32px] border border-red-100">
+                        <div className="p-4 sm:p-8 overflow-y-auto space-y-6 sm:space-y-8">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="p-4 sm:p-6 bg-red-50 rounded-[20px] sm:rounded-[32px] border border-red-100">
                                     <p className="text-[10px] font-black text-red-400 uppercase tracking-widest mb-1">Total Credit Given</p>
-                                    <p className="text-2xl font-black text-red-600 tracking-tighter">₹{customerHistory.sales.filter(s => s.paymentMethod === 'Credit').reduce((acc, s) => acc + s.total, 0).toLocaleString('en-IN')}</p>
+                                    <p className="text-lg sm:text-2xl font-black text-red-600 tracking-tighter">₹{customerHistory.sales.filter(s => s.paymentMethod === 'Credit').reduce((acc, s) => acc + s.total, 0).toLocaleString('en-IN')}</p>
                                 </div>
-                                <div className="p-6 bg-emerald-50 rounded-[32px] border border-emerald-100">
+                                <div className="p-4 sm:p-6 bg-emerald-50 rounded-[20px] sm:rounded-[32px] border border-emerald-100">
                                     <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-1">Total Payments Received</p>
-                                    <p className="text-2xl font-black text-emerald-600 tracking-tighter">₹{customerHistory.payments.reduce((acc, p) => acc + p.amount, 0).toLocaleString('en-IN')}</p>
+                                    <p className="text-lg sm:text-2xl font-black text-emerald-600 tracking-tighter">₹{customerHistory.payments.reduce((acc, p) => acc + p.amount, 0).toLocaleString('en-IN')}</p>
                                 </div>
                             </div>
 
