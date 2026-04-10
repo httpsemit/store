@@ -152,7 +152,7 @@ const Scanner = () => {
                             onClick={() => setSearchQuery('')}
                             className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500"
                         >
-                            <X size={14} className="sm:size-18" />
+                            <X size={14} className="sm:size-4" />
                         </button>
                     )}
                 </div>
@@ -241,7 +241,7 @@ const Scanner = () => {
                             onClick={() => setScannedItems([])} 
                             className="p-2 sm:p-3 text-gray-400 hover:text-red-500 transition-colors bg-white rounded-lg sm:rounded-xl border border-transparent hover:border-red-50 shadow-sm"
                         >
-                            <Trash2 size={14} className="sm:size-18" />
+                            <Trash2 size={14} className="sm:size-5" />
                         </button>
                     </div>
 
@@ -254,7 +254,7 @@ const Scanner = () => {
                                         <p className="text-[8px] sm:text-xs font-black text-gray-400 uppercase tracking-widest leading-none">#{item.barcode.slice(-8)}</p>
                                     </div>
                                     <button onClick={() => removeItem(item.productId)} className="p-1 sm:p-1.5 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all">
-                                        <Trash2 size={12} className="sm:size-14" />
+                                        <Trash2 size={12} className="sm:size-4" />
                                     </button>
                                 </div>
                                 <div className="flex items-center gap-2 sm:gap-3">
@@ -286,7 +286,7 @@ const Scanner = () => {
                         {scannedItems.length === 0 && (
                             <div className="h-full flex flex-col items-center justify-center p-6 sm:p-10 text-center py-16 sm:py-20 opacity-40">
                                 <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-50 rounded-full flex items-center justify-center text-gray-300 mb-4 sm:mb-6 border border-dashed border-gray-200">
-                                    <Scan size={24} className="sm:size-32" />
+                                    <Scan size={24} className="sm:size-12" />
                                 </div>
                                 <h4 className="font-black text-gray-500 uppercase tracking-widest text-xs">Waiting for Input</h4>
                                 <p className="text-[9px] sm:text-[10px] text-gray-400 font-medium mt-2 max-w-[200px]">Your scans will appear here for verification.</p>

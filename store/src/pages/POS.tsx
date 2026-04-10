@@ -17,7 +17,8 @@ import {
     MessageCircle,
     User as UserIcon,
     ArrowLeft,
-    Loader2
+    Loader2,
+    Camera
 } from 'lucide-react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import { useStore } from '../store/useStore';
@@ -245,15 +246,30 @@ const POS = () => {
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
+                            <button 
+                                onClick={startCameraScanner}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-all sm:hidden"
+                                title="Open Camera Scanner"
+                            >
+                                <Camera size={18} />
+                            </button>
                         </div>
-                        <select 
-                            value={selectedCategory}
-                            onChange={(e) => setSelectedCategory(e.target.value)}
-                            className="px-3 sm:px-4 py-2.5 sm:py-3 bg-white border border-gray-200 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm transition-all text-sm font-medium"
-                        >
-                            <option value="All">All Items</option>
-                            {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
-                        </select>
+                        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+                            <button 
+                                onClick={startCameraScanner}
+                                className="flex items-center gap-2 px-4 py-2.5 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-100 transition-all font-black text-[10px] uppercase tracking-widest whitespace-nowrap"
+                            >
+                                <Camera size={16} /> Scan Barcode
+                            </button>
+                            <select 
+                                value={selectedCategory}
+                                onChange={(e) => setSelectedCategory(e.target.value)}
+                                className="px-3 sm:px-4 py-2.5 sm:py-3 bg-white border border-gray-200 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm transition-all text-sm font-medium flex-1 sm:flex-none"
+                            >
+                                <option value="All">All Items</option>
+                                {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
+                            </select>
+                        </div>
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 overflow-y-auto pb-4 sm:pb-6 pr-1 custom-scrollbar">
@@ -325,7 +341,7 @@ const POS = () => {
                     <div className="p-4 sm:p-6 border-b border-gray-50 flex items-center justify-between bg-indigo-50/20">
                         <div className="flex items-center gap-3">
                             <div className="p-1.5 sm:p-2 bg-indigo-600 rounded-lg sm:rounded-xl text-white">
-                                <ShoppingCart size={14} className="sm:size-18" />
+                                <ShoppingCart size={14} className="sm:size-5" />
                             </div>
                             <div>
                                 <h3 className="font-black text-gray-900 tracking-tight leading-none text-xs sm:text-sm uppercase">Order Cart</h3>
@@ -425,7 +441,7 @@ const POS = () => {
                                                 }}
                                             />
                                             <div className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
-                                                <UserIcon size={12} className="sm:size-14" />
+                                                <UserIcon size={12} className="sm:size-4" />
                                             </div>
 
                                             {showCustomerResults && customerSearch.length > 0 && (
@@ -455,7 +471,7 @@ const POS = () => {
                                             className="p-2.5 sm:p-3 bg-indigo-50 text-indigo-600 rounded-lg sm:rounded-xl hover:bg-indigo-100 transition-colors"
                                             title="Add New Customer"
                                         >
-                                            <UserPlus size={16} className="sm:size-18" />
+                                            <UserPlus size={16} className="sm:size-5" />
                                         </button>
                                     </div>
 
@@ -475,7 +491,7 @@ const POS = () => {
                                                         : "bg-white border-transparent text-gray-400 hover:bg-gray-100"
                                                 )}
                                             >
-                                                <method.icon size={12} className="sm:size-14" />
+                                                <method.icon size={12} className="sm:size-4" />
                                                 {method.id}
                                             </button>
                                         ))}

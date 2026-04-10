@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { Search, Plus, Edit2, Trash2, Filter, Package, AlertCircle, Archive, Barcode } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Search, Plus, Edit2, Trash2, Filter, Package, AlertCircle, Archive, Barcode, Camera, X } from 'lucide-react';
+import { Html5QrcodeScanner } from 'html5-qrcode';
 import { useStore } from '../store/useStore';
 import ProductModal from '../components/inventory/ProductModal';
 import type { Product } from '../types';
@@ -12,6 +13,41 @@ const Inventory = () => {
     const [stockFilter, setStockFilter] = useState('All');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+    const [isScanning, setIsScanning] = useState(false);
+    const scannerRef = useRef<Html5QrcodeScanner | null>(null);
+
+    useEffect(() => {
+        return () => {
+            if (scannerRef.current) {
+                scannerRef.current.clear().catch(e => console.error(e));
+            }
+        };
+    }, []);
+
+    const startScanner = () => {
+        setIsScanning(true);
+        setTimeout(() => {
+            const scanner = new Html5QrcodeScanner(
+                'inventory-scanner',
+                { fps: 15, qrbox: { width: 250, height: 150 } },
+                false
+            );
+            scanner.render((decodedText) => {
+                setSearchTerm(decodedText);
+                setIsScanning(false);
+                scanner.clear();
+            }, () => {});
+            scannerRef.current = scanner;
+        }, 100);
+    };
+
+    const stopScanner = () => {
+        if (scannerRef.current) {
+            scannerRef.current.clear().catch(e => console.error(e));
+            scannerRef.current = null;
+        }
+        setIsScanning(false);
+    };
 
     const isOwner = currentUser?.role === 'Owner';
 
@@ -60,7 +96,7 @@ const Inventory = () => {
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6">
                 <div className="flex items-center gap-4">
                     <div className="p-3 sm:p-4 bg-indigo-600 rounded-2xl sm:rounded-3xl text-white shadow-xl shadow-indigo-100">
-                        <Package size={20} className="sm:size-28" />
+                        <Package size={20} className="sm:size-7" />
                     </div>
                     <div>
                         <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight leading-none uppercase">Central Inventory</h2>
@@ -110,16 +146,39 @@ const Inventory = () => {
             </div>
 
             {/* Quick Search */}
-            <div className="relative group">
-                <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors" size={16} />
-                <input
-                    type="text"
-                    placeholder="Quick search by product name, brand or barcode number..."
-                    className="w-full pl-10 sm:pl-14 pr-4 sm:pr-6 py-3 sm:py-5 bg-white border border-gray-100 rounded-[20px] sm:rounded-[32px] focus:outline-none focus:ring-4 focus:ring-indigo-50/50 shadow-sm transition-all text-sm font-bold text-gray-700"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
+            <div className="flex flex-col sm:flex-row gap-4">
+                <div className="relative group flex-1">
+                    <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors" size={16} />
+                    <input
+                        type="text"
+                        placeholder="Quick search by product name, brand or barcode number..."
+                        className="w-full pl-10 sm:pl-14 pr-12 py-3 sm:py-5 bg-white border border-gray-100 rounded-[20px] sm:rounded-[32px] focus:outline-none focus:ring-4 focus:ring-indigo-50/50 shadow-sm transition-all text-sm font-bold text-gray-700"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                    <button 
+                        onClick={startScanner}
+                        className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 p-2 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-100 transition-all"
+                        title="Scan to Search"
+                    >
+                        <Camera size={18} />
+                    </button>
+                </div>
             </div>
+
+            {isScanning && (
+                <div className="fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center p-6 backdrop-blur-md">
+                    <div className="w-full max-w-md aspect-video bg-white rounded-[40px] overflow-hidden shadow-2xl relative border-8 border-indigo-600">
+                        <div id="inventory-scanner" className="w-full h-full"></div>
+                    </div>
+                    <button 
+                        onClick={stopScanner}
+                        className="mt-12 px-10 py-4 bg-white/10 hover:bg-white/20 text-white rounded-full font-black uppercase tracking-widest flex items-center gap-3 border border-white/20 transition-all"
+                    >
+                        <X size={20} /> Close Scanner
+                    </button>
+                </div>
+            )}
 
             {/* Table Section */}
             <div className="bg-white rounded-[20px] sm:rounded-[32px] border border-gray-100 shadow-sm overflow-hidden animate-fade-in mb-12">
@@ -160,7 +219,7 @@ const Inventory = () => {
                                                 <div className="flex flex-col min-w-0">
                                                     <span className="text-xs sm:text-sm font-black text-gray-900 group-hover:text-indigo-600 transition-colors uppercase tracking-tight line-clamp-2">{p.name}</span>
                                                     <span className="text-[9px] sm:text-[10px] font-black text-gray-300 mt-1 uppercase tracking-widest flex items-center gap-1">
-                                                        <Barcode size={8} className="sm:size-10" /> {p.barcode}
+                                                        <Barcode size={8} className="sm:size-3" /> {p.barcode}
                                                     </span>
                                                     <span 
                                                         className="inline-flex items-center px-2 py-1 rounded-lg text-[8px] sm:px-3 sm:py-1.5 sm:rounded-xl sm:text-[9px] font-black uppercase tracking-widest mt-2 sm:hidden"
@@ -213,13 +272,13 @@ const Inventory = () => {
                                                     onClick={() => handleEdit(p)}
                                                     className="p-2 sm:p-3 text-gray-400 hover:text-indigo-600 hover:bg-white rounded-lg sm:rounded-xl shadow-sm hover:shadow-md transition-all border border-transparent hover:border-indigo-100"
                                                 >
-                                                    <Edit2 size={14} className="sm:size-16" />
+                                                    <Edit2 size={14} className="sm:size-4" />
                                                 </button>
                                                 <button
                                                     onClick={() => handleDelete(p.id, p.name)}
                                                     className="p-2 sm:p-3 text-gray-400 hover:text-red-600 hover:bg-white rounded-lg sm:rounded-xl shadow-sm hover:shadow-md transition-all border border-transparent hover:border-red-100"
                                                 >
-                                                    <Trash2 size={14} className="sm:size-16" />
+                                                    <Trash2 size={14} className="sm:size-4" />
                                                 </button>
                                             </div>
                                         </td>
