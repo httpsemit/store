@@ -90,7 +90,7 @@ const Customers = () => {
                     onClick={() => openModal()}
                     className="w-full sm:w-auto group flex items-center justify-center gap-3 bg-indigo-600 text-white px-6 py-3 sm:py-3.5 rounded-[16px] sm:rounded-[20px] font-black shadow-2xl shadow-indigo-100 hover:bg-indigo-700 transition-all active:scale-[0.98] uppercase tracking-widest text-xs"
                 >
-                    <Plus size={16} className="sm:size-18 group-hover:rotate-90 transition-transform" /> {t('add_customer')}
+                    <Plus size={16} className="sm:size-5 group-hover:rotate-90 transition-transform" /> {t('add_customer')}
                 </button>
             </div>
 
@@ -120,7 +120,7 @@ const Customers = () => {
                                     onClick={() => openModal(customer)}
                                     className="p-2 sm:p-3 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl sm:rounded-2xl transition-all"
                                 >
-                                    <Edit2 size={14} className="sm:size-18" />
+                                    <Edit2 size={14} className="sm:size-5" />
                                 </button>
                             </div>
                         </div>
@@ -129,14 +129,14 @@ const Customers = () => {
                             <div>
                                 <h3 className="text-lg sm:text-xl font-black text-gray-900 tracking-tight leading-none mb-2">{customer.name}</h3>
                                 <div className="flex items-center gap-2 text-gray-400 font-bold text-xs uppercase tracking-widest">
-                                    <Phone size={10} className="sm:size-12" /> {customer.phone || 'No phone'}
+                                    <Phone size={10} className="sm:size-3" /> {customer.phone || 'No phone'}
                                 </div>
                             </div>
 
                             <div className="p-3 sm:p-5 bg-gray-50 rounded-[16px] sm:rounded-[24px] border border-gray-100">
                                 <div className="flex justify-between items-center mb-1">
                                     <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Credit Balance</span>
-                                    <CreditCard size={10} className="sm:size-12 text-gray-300" />
+                                    <CreditCard size={10} className="sm:size-3 text-gray-300" />
                                 </div>
                                 <div className={clsx(
                                     "text-lg sm:text-xl font-black tracking-tighter",
@@ -151,13 +151,13 @@ const Customers = () => {
                                     onClick={() => openHistory(customer)}
                                     className="flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3 bg-gray-900 text-white rounded-lg sm:rounded-xl font-black text-[8px] sm:text-[9px] uppercase tracking-widest hover:bg-black transition-all"
                                 >
-                                    <History size={12} className="sm:size-14" /> {t('history')}
+                                    <History size={12} className="sm:size-4" /> {t('history')}
                                 </button>
                                 <button 
                                     onClick={() => openRepayment(customer)}
                                     className="flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3 bg-emerald-600 text-white rounded-lg sm:rounded-xl font-black text-[8px] sm:text-[9px] uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-lg hover:shadow-emerald-200"
                                 >
-                                    <Banknote size={12} className="sm:size-14" /> Pay
+                                    <Banknote size={12} className="sm:size-4" /> Pay
                                 </button>
                             </div>
                         </div>
@@ -235,7 +235,7 @@ const Customers = () => {
                                 <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Transaction History & Ledger</p>
                             </div>
                             <button onClick={closeModal} className="p-3 text-gray-400 hover:bg-gray-100 rounded-2xl transition-colors">
-                                <X size={18} className="sm:size-24" />
+                                <X size={18} className="sm:size-6" />
                             </button>
                         </div>
                         <div className="p-4 sm:p-8 overflow-y-auto space-y-6 sm:space-y-8">

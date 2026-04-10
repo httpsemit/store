@@ -130,13 +130,13 @@ const Reports = () => {
                 </div>
                 <div className="flex items-center gap-3">
                     <button className="flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-white border border-gray-100 rounded-xl sm:rounded-2xl text-xs font-black text-gray-500 uppercase tracking-widest hover:bg-gray-50 hover:text-indigo-600 transition-all shadow-sm no-print">
-                        <Download size={14} className="sm:size-16" /> Export CSV
+                        <Download size={14} className="sm:size-4" /> Export CSV
                     </button>
                     <button 
                         onClick={() => window.print()}
                         className="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-indigo-600 text-white rounded-xl sm:rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-100 no-print"
                     >
-                        <Printer size={14} className="sm:size-16" /> Print Summary
+                        <Printer size={14} className="sm:size-4" /> Print Summary
                     </button>
                 </div>
             </div>
@@ -152,7 +152,7 @@ const Reports = () => {
                     <div key={i} className="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                         <div className="flex items-center justify-between mb-4">
                             <div className={`p-2 sm:p-2.5 rounded-lg sm:rounded-xl ${stat.bg} ${stat.color}`}>
-                                <stat.icon size={16} className="sm:size-20" />
+                                <stat.icon size={16} className="sm:size-5" />
                             </div>
                         </div>
                         <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{stat.title}</p>
@@ -167,7 +167,7 @@ const Reports = () => {
                     {/* Payment Summary */}
                     <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
                         <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-                             <CreditCard size={12} className="sm:size-14" />
+                             <CreditCard size={12} className="sm:size-4" />
                              Payment Summary
                         </h3>
                         <div className="space-y-4">
@@ -195,7 +195,7 @@ const Reports = () => {
                             <TrendingDown size={100} />
                         </div>
                         <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 sm:mb-6 flex items-center gap-2 relative">
-                             <TrendingDown size={12} className="sm:size-14 text-rose-500" />
+                             <TrendingDown size={12} className="sm:size-4 text-rose-500" />
                              Expense Breakdown
                         </h3>
                         <div className="space-y-3 sm:space-y-4 relative">
@@ -220,7 +220,7 @@ const Reports = () => {
                     {/* Top Sellers */}
                     <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
                         <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-                             <Trophy size={12} className="sm:size-14 text-amber-500" />
+                             <Trophy size={12} className="sm:size-4 text-amber-500" />
                              Top Selling Products
                         </h3>
                         {topSellers.length > 0 ? (

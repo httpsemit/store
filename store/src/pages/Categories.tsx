@@ -52,7 +52,7 @@ const CategoryModal: React.FC<ModalProps> = ({ isOpen, onClose, category }) => {
                         {category ? 'Edit Category' : 'New Category'}
                     </h3>
                     <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 rounded-lg sm:rounded-xl transition-colors">
-                        <X size={16} className="sm:size-20" />
+                        <X size={16} className="sm:size-5" />
                     </button>
                 </div>
 
@@ -113,7 +113,7 @@ const CategoryModal: React.FC<ModalProps> = ({ isOpen, onClose, category }) => {
                         type="submit"
                         className="w-full py-3 sm:py-4 bg-indigo-600 text-white rounded-xl sm:rounded-2xl font-black text-sm shadow-xl shadow-indigo-100 hover:bg-indigo-700 transition-all flex items-center justify-center gap-2"
                     >
-                        <Check size={16} className="sm:size-18" />
+                        <Check size={16} className="sm:size-4" />
                         {category ? 'Save Changes' : 'Create Category'}
                     </button>
                 </form>
@@ -151,7 +151,7 @@ const Categories = () => {
             {lowStockAlerts.length > 0 && (
                 <div className="bg-amber-600 rounded-2xl sm:rounded-3xl p-4 sm:p-6 text-white shadow-xl shadow-amber-100 flex items-center gap-3 sm:gap-4 animate-fade-in">
                     <div className="p-2 sm:p-3 bg-white/20 rounded-xl sm:rounded-2xl">
-                        <AlertCircle size={18} className="sm:size-24" />
+                        <AlertCircle size={18} className="sm:size-6" />
                     </div>
                     <div>
                         <h3 className="text-base sm:text-lg font-black tracking-tight leading-tight">Attention Needed</h3>
@@ -169,7 +169,7 @@ const Categories = () => {
                     onClick={handleAdd}
                     className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 sm:py-3.5 bg-indigo-600 text-white rounded-xl sm:rounded-2xl text-sm font-black shadow-xl shadow-indigo-100 hover:bg-indigo-700 transition-all active:scale-95"
                 >
-                    <Plus size={16} className="sm:size-20 mr-2" />
+                    <Plus size={16} className="sm:size-5 mr-2" />
                     New Category
                 </button>
             </div>
@@ -187,7 +187,7 @@ const Categories = () => {
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-3">
                                         <div className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-gray-50 text-gray-400 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors">
-                                            <Tags size={16} className="sm:size-20" />
+                                            <Tags size={16} className="sm:size-5" />
                                         </div>
                                         <div>
                                             <h4 className="text-sm sm:text-base font-black text-gray-900 leading-tight">{cat.name}</h4>
@@ -199,13 +199,13 @@ const Categories = () => {
                                             onClick={() => handleEdit(cat)}
                                             className="p-1.5 sm:p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
                                         >
-                                            <Edit2 size={14} className="sm:size-16" />
+                                            <Edit2 size={14} className="sm:size-4" />
                                         </button>
                                         <button
                                             onClick={() => handleDelete(cat.id, cat.name)}
                                             className="p-1.5 sm:p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
                                         >
-                                            <Trash2 size={14} className="sm:size-16" />
+                                            <Trash2 size={14} className="sm:size-4" />
                                         </button>
                                     </div>
                                 </div>
