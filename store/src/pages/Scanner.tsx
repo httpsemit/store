@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { clsx } from 'clsx';
-import { Html5QrcodeScanner } from 'html5-qrcode';
+import { Html5Qrcode } from 'html5-qrcode';
 import React from 'react';
 
 const Scanner = () => {
@@ -23,38 +23,40 @@ const Scanner = () => {
     const [isConfirming, setIsConfirming] = useState(false);
     
     // Scanner Ref
-    const scannerRef = useRef<Html5QrcodeScanner | null>(null);
+    const scannerRef = useRef<Html5Qrcode | null>(null);
 
     // Initialize/Destroy Scanner
     useEffect(() => {
         if (mode === 'camera') {
-            const scanner = new Html5QrcodeScanner(
-                'reader',
-                { fps: 15, qrbox: { width: 250, height: 150 } },
-                false
-            );
+            const html5Qrcode = new Html5Qrcode('reader');
+            scannerRef.current = html5Qrcode;
 
-            scanner.render(
+            html5Qrcode.start(
+                { facingMode: 'environment' },
+                { fps: 15, qrbox: { width: 250, height: 150 } },
                 (decodedText) => {
                     handleScan(decodedText);
-                    // Don't clear immediately, let user see or tap to stop
                 },
-                () => {
-                    // Silent on error
-                }
-            );
-
-            scannerRef.current = scanner;
+                () => { /* silent on scan error */ }
+            ).catch((err) => {
+                console.error('Camera start error:', err);
+                showToast('error', 'Could not access camera. Please allow camera permission.');
+                setMode('manual');
+            });
         } else {
             if (scannerRef.current) {
-                scannerRef.current.clear().catch(e => console.error(e));
+                scannerRef.current.stop()
+                    .then(() => scannerRef.current?.clear())
+                    .catch(e => console.error(e));
                 scannerRef.current = null;
             }
         }
 
         return () => {
             if (scannerRef.current) {
-                scannerRef.current.clear().catch(e => console.error(e));
+                scannerRef.current.stop()
+                    .then(() => scannerRef.current?.clear())
+                    .catch(e => console.error(e));
             }
         };
     }, [mode]);
@@ -128,7 +130,7 @@ const Scanner = () => {
     };
 
     return (
-        <div className="flex flex-col h-[calc(100vh-140px)] gap-4 sm:gap-6 pb-2">
+        <div className="flex flex-col h-[calc(100dvh-120px)] lg:h-[calc(100vh-140px)] gap-4 sm:gap-6 pb-2">
             {/* Page Header */}
             {/* Unified Toolbar Line */}
             <div className="flex flex-col gap-4 bg-white dark:bg-[#0a0a0a] p-4 rounded-[20px] sm:rounded-[32px] border border-gray-100 dark:border-white/10 dark:border-white/5 shadow-xl no-print">
@@ -231,7 +233,7 @@ const Scanner = () => {
                 </div>
 
                 {/* Right: Intake Staging Area */}
-                <div className="w-full lg:w-[360px] flex flex-col bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-[24px] sm:rounded-[40px] shadow-2xl overflow-hidden shrink-0 mt-0 lg:mt-2">
+                <div className="w-full lg:w-[360px] flex flex-col bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-[24px] sm:rounded-[40px] shadow-2xl overflow-hidden shrink-0 mt-0 lg:mt-2 max-h-[45vh] lg:max-h-full">
                     <div className="p-4 sm:p-6 border-b border-gray-50 dark:border-white/5 flex items-center justify-between bg-emerald-50/20">
                         <div>
                             <h3 className="font-black text-gray-900 dark:text-white tracking-tight leading-none uppercase text-xs">Intake Staging</h3>

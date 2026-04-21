@@ -19,7 +19,7 @@ import {
     Loader2,
     Camera
 } from 'lucide-react';
-import { Html5QrcodeScanner } from 'html5-qrcode';
+import { Html5Qrcode } from 'html5-qrcode';
 import { useStore } from '../store/useStore';
 import type { Product, SaleItem, Customer } from '../types';
 import { clsx } from 'clsx';
@@ -44,7 +44,7 @@ const POS = () => {
 
     // Barcode scanner focus
     const barcodeInputRef = useRef<HTMLInputElement>(null);
-    const scannerRef = useRef<Html5QrcodeScanner | null>(null);
+    const scannerRef = useRef<Html5Qrcode | null>(null);
 
     useEffect(() => {
         // Keep focus on barcode input for faster scanning
@@ -142,27 +142,35 @@ const POS = () => {
     const startCameraScanner = () => {
         setIsScanning(true);
         setTimeout(() => {
-            scannerRef.current = new Html5QrcodeScanner(
-                "pos-scanner",
+            const html5Qrcode = new Html5Qrcode('pos-scanner');
+            scannerRef.current = html5Qrcode;
+            html5Qrcode.start(
+                { facingMode: 'environment' },
                 { fps: 10, qrbox: { width: 250, height: 250 } },
-                false
-            );
-            scannerRef.current.render((decodedText) => {
-                const product = products.find(p => p.barcode === decodedText);
-                if (product) {
-                    addToCart(product);
-                    stopCameraScanner();
-                    showToast('success', `Scanned: ${product.name}`);
-                } else {
-                    showToast('error', `Product not found: ${decodedText}`);
-                }
-            }, () => { });
+                (decodedText) => {
+                    const product = products.find(p => p.barcode === decodedText);
+                    if (product) {
+                        addToCart(product);
+                        stopCameraScanner();
+                        showToast('success', `Scanned: ${product.name}`);
+                    } else {
+                        showToast('error', `Product not found: ${decodedText}`);
+                    }
+                },
+                () => { }
+            ).catch((err) => {
+                console.error('Camera start error:', err);
+                showToast('error', 'Could not access camera. Please allow camera permission.');
+                setIsScanning(false);
+            });
         }, 100);
     };
 
     const stopCameraScanner = () => {
         if (scannerRef.current) {
-            scannerRef.current.clear();
+            scannerRef.current.stop()
+                .then(() => scannerRef.current?.clear())
+                .catch(e => console.error(e));
             scannerRef.current = null;
         }
         setIsScanning(false);
@@ -229,7 +237,7 @@ const POS = () => {
     };
 
     return (
-        <div className="flex flex-col min-h-full lg:h-[calc(100vh-140px)] gap-4 sm:gap-6 pb-2">
+        <div className="flex flex-col h-[calc(100dvh-120px)] lg:h-[calc(100vh-140px)] gap-4 sm:gap-6 pb-2">
             {/* Hidden Input for Barcode Scanning */}
             <input
                 ref={barcodeInputRef}
@@ -368,7 +376,7 @@ const POS = () => {
                 </div>
 
                 {/* Right: Modern Checkout Panel */}
-                <div className="w-full lg:w-[380px] flex flex-col bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-[24px] sm:rounded-[32px] shadow-2xl overflow-hidden shrink-0 mt-0 lg:mt-2 lg:order-2 lg:max-h-full">
+                <div className="w-full lg:w-[380px] flex flex-col bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-[24px] sm:rounded-[32px] shadow-2xl overflow-hidden shrink-0 mt-0 lg:mt-2 lg:order-2 max-h-[45vh] lg:max-h-full">
                     <div className="p-4 sm:p-6 border-b border-gray-50 dark:border-white/5 flex items-center justify-between bg-indigo-50 dark:bg-indigo-950/30/20">
                         <div className="flex items-center gap-3">
                             <div className="p-1.5 sm:p-2 bg-indigo-600 rounded-lg sm:rounded-xl text-white">

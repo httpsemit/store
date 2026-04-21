@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Check, Package, Barcode, IndianRupee, Layers, Camera, AlertCircle } from 'lucide-react';
-import { Html5QrcodeScanner } from 'html5-qrcode';
+import { Html5Qrcode } from 'html5-qrcode';
 import { clsx } from 'clsx';
 import type { Product, Category } from '../../types';
 
@@ -29,34 +29,57 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
     const modalRef = useRef<HTMLDivElement>(null);
 
     const [isScanning, setIsScanning] = useState(false);
-    const scannerRef = useRef<Html5QrcodeScanner | null>(null);
+    const scannerRef = useRef<Html5Qrcode | null>(null);
+    const mountedRef = useRef(true);
+
+    // Track mounted state to prevent stale state updates
+    useEffect(() => {
+        mountedRef.current = true;
+        return () => {
+            mountedRef.current = false;
+        };
+    }, []);
 
     useEffect(() => {
-        if (isScanning) {
-            const scanner = new Html5QrcodeScanner(
-                'modal-reader',
-                { fps: 15, qrbox: { width: 250, height: 150 } },
-                false
-            );
-
-            scanner.render(
-                (decodedText) => {
-                    setFormData(prev => ({ ...prev, barcode: decodedText }));
-                    setIsScanning(false);
-                },
-                () => { }
-            );
-
-            scannerRef.current = scanner;
-        } else {
+        if (!isScanning) {
+            // Stop camera if running
             if (scannerRef.current) {
-                scannerRef.current.clear().catch(e => console.error(e));
+                const s = scannerRef.current;
                 scannerRef.current = null;
+                s.stop().then(() => s.clear()).catch(() => {});
             }
+            return;
         }
+
+        // isScanning === true: start camera
+        const html5Qrcode = new Html5Qrcode('modal-reader');
+        scannerRef.current = html5Qrcode;
+
+        html5Qrcode.start(
+            { facingMode: 'environment' },
+            { fps: 10, qrbox: { width: 250, height: 250 } },
+            (decodedText) => {
+                // Defer state updates to next tick to avoid React transition conflict
+                setTimeout(() => {
+                    if (mountedRef.current) {
+                        setFormData(prev => ({ ...prev, barcode: decodedText }));
+                        setIsScanning(false);
+                    }
+                }, 0);
+            },
+            () => { /* silent frame errors */ }
+        ).catch((err) => {
+            console.error('Camera start error:', err);
+            setTimeout(() => {
+                if (mountedRef.current) setIsScanning(false);
+            }, 0);
+        });
+
         return () => {
             if (scannerRef.current) {
-                scannerRef.current.clear().catch(e => console.error(e));
+                const s = scannerRef.current;
+                scannerRef.current = null;
+                s.stop().then(() => s.clear()).catch(() => {});
             }
         };
     }, [isScanning]);
