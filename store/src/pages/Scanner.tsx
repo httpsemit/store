@@ -55,9 +55,9 @@ const Scanner = () => {
 
         return () => {
             if (scannerRef.current) {
-                scannerRef.current.stop()
-                    .then(() => scannerRef.current?.clear())
-                    .catch(e => console.error(e));
+                const s = scannerRef.current;
+                scannerRef.current = null;
+                s.stop().then(() => s.clear()).catch(e => console.error(e));
             }
         };
     }, [mode]);
@@ -132,7 +132,6 @@ const Scanner = () => {
 
     return (
         <div className="flex flex-col h-[calc(100dvh-120px)] lg:h-[calc(100vh-140px)] gap-4 sm:gap-6 pb-2">
-            {/* Page Header */}
             {/* Unified Toolbar Line */}
             <div className="flex flex-col gap-4 bg-white dark:bg-[#0a0a0a] p-4 rounded-[20px] sm:rounded-[32px] border border-gray-100 dark:border-white/10 dark:border-white/5 shadow-xl no-print">
                 {/* Search / Manual Barcode Input */}
@@ -196,7 +195,6 @@ const Scanner = () => {
                                     </div>
                                 </div>
                             </div>
-
                             {/* Background Decoration */}
                             <div className="absolute -bottom-10 sm:-bottom-20 -right-10 sm:-right-20 w-32 h-32 sm:w-64 sm:h-64 bg-emerald-100/30 rounded-full blur-[40px] sm:blur-[80px] pointer-events-none group-hover:bg-emerald-200/40 transition-colors" />
                         </div>

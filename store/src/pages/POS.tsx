@@ -376,7 +376,7 @@ const POS = () => {
                 </div>
 
                 {/* Right: Modern Checkout Panel */}
-                <div className="w-full lg:w-[380px] flex flex-col bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-[24px] sm:rounded-[32px] shadow-2xl overflow-hidden shrink-0 mt-0 lg:mt-2 lg:order-2 max-h-[45vh] lg:max-h-full">
+                <div className="w-full lg:w-[380px] flex flex-col bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-[24px] sm:rounded-[32px] shadow-2xl overflow-hidden shrink-0 mt-0 lg:mt-2 lg:order-2 max-h-[60vh] lg:max-h-full">
                     <div className="p-4 sm:p-6 border-b border-gray-50 dark:border-white/5 flex items-center justify-between bg-indigo-50 dark:bg-indigo-950/30">
                         <div className="flex items-center gap-3">
                             <div className="p-1.5 sm:p-2 bg-indigo-600 rounded-lg sm:rounded-xl text-white">
@@ -393,32 +393,41 @@ const POS = () => {
                         </div>
                     </div>
 
-                    <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3 sm:space-y-4 custom-scrollbar">
+                    <div className="flex-1 overflow-y-auto p-3 sm:p-6 space-y-2 sm:space-y-4 custom-scrollbar">
                         {cart.map((item: SaleItem) => (
                             <div key={item.productId} className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 dark:bg-[#121212]/50 rounded-2xl sm:rounded-3xl border border-transparent hover:border-indigo-100 hover:bg-white dark:bg-[#0a0a0a] transition-all group">
                                 <div className="flex-1 min-w-0">
                                     <p className="font-black text-gray-900 dark:text-white text-xs sm:text-sm truncate">{item.productName}</p>
-                                    <div className="flex items-center gap-2 mt-1">
-                                        <span className="text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 rounded-md">
+                                    <div className="flex items-center gap-2 mt-1.5">
+                                        <span className="text-[10px] font-black px-2 py-1 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 rounded-md">
                                             ₹{item.unitPrice}
                                         </span>
-                                        <span className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase">
+                                        <span className="text-[10px] font-bold text-gray-400 uppercase">
                                             x {item.quantity}
                                         </span>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center bg-white dark:bg-[#0a0a0a] rounded-lg sm:rounded-xl border border-gray-100 dark:border-white/10 dark:border-white/5 shadow-sm p-1">
+                                <div className="flex items-center bg-white dark:bg-[#0a0a0a] rounded-lg sm:rounded-xl border border-gray-100 dark:border-white/10 dark:border-white/5 shadow-sm">
                                     <button
                                         onClick={() => updateCartQty(item.productId, -1)}
-                                        className="p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 dark:bg-indigo-950/30 rounded-lg transition-all"
+                                        className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 rounded-l-lg transition-all"
                                     >
                                         <Minus size={14} />
                                     </button>
-                                    <span className="w-6 sm:w-8 text-center text-xs sm:text-sm font-black text-gray-900 dark:text-white">{item.quantity}</span>
+                                    <input
+                                        type="number"
+                                        value={item.quantity}
+                                        onChange={(e) => {
+                                            const val = Number(e.target.value);
+                                            if (val > 0) updateCartQty(item.productId, val - item.quantity);
+                                        }}
+                                        onFocus={(e) => e.target.select()}
+                                        className="w-10 text-center text-sm font-black text-gray-900 dark:text-white bg-transparent outline-none py-2"
+                                    />
                                     <button
                                         onClick={() => updateCartQty(item.productId, 1)}
-                                        className="p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 dark:bg-indigo-950/30 rounded-lg transition-all"
+                                        className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 rounded-r-lg transition-all"
                                     >
                                         <Plus size={14} />
                                     </button>
