@@ -377,7 +377,7 @@ const POS = () => {
 
                 {/* Right: Modern Checkout Panel */}
                 <div className="w-full lg:w-[380px] flex flex-col bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-[24px] sm:rounded-[32px] shadow-2xl overflow-hidden shrink-0 mt-0 lg:mt-2 lg:order-2 max-h-[45vh] lg:max-h-full">
-                    <div className="p-4 sm:p-6 border-b border-gray-50 dark:border-white/5 flex items-center justify-between bg-indigo-50 dark:bg-indigo-950/30/20">
+                    <div className="p-4 sm:p-6 border-b border-gray-50 dark:border-white/5 flex items-center justify-between bg-indigo-50 dark:bg-indigo-950/30">
                         <div className="flex items-center gap-3">
                             <div className="p-1.5 sm:p-2 bg-indigo-600 rounded-lg sm:rounded-xl text-white">
                                 <ShoppingCart size={14} className="sm:size-5" />

@@ -21,7 +21,7 @@ const Scanner = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [scannedItems, setScannedItems] = useState<any[]>([]);
     const [isConfirming, setIsConfirming] = useState(false);
-    
+
     // Scanner Ref
     const scannerRef = useRef<Html5Qrcode | null>(null);
 
@@ -45,10 +45,11 @@ const Scanner = () => {
             });
         } else {
             if (scannerRef.current) {
-                scannerRef.current.stop()
-                    .then(() => scannerRef.current?.clear())
-                    .catch(e => console.error(e));
+                const scanner = scannerRef.current;
                 scannerRef.current = null;
+                scanner.stop()
+                    .then(() => scanner.clear())
+                    .catch(e => console.error(e));
             }
         }
 
@@ -89,9 +90,9 @@ const Scanner = () => {
     const suggestions = React.useMemo(() => {
         const sorted = [...products].sort((a, b) => a.quantity - b.quantity);
         if (!searchQuery) return sorted.slice(0, 16);
-        
-        return sorted.filter(p => 
-            p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+
+        return sorted.filter(p =>
+            p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             p.barcode.includes(searchQuery)
         ).slice(0, 16);
     }, [products, searchQuery]);
@@ -106,7 +107,7 @@ const Scanner = () => {
 
     const handleConfirm = async () => {
         if (scannedItems.length === 0) return;
-        
+
         setIsConfirming(true);
         try {
             for (const item of scannedItems) {
@@ -150,7 +151,7 @@ const Scanner = () => {
                         className="w-full pl-10 sm:pl-16 pr-4 sm:pr-6 py-3 sm:py-4 bg-gray-50 dark:bg-[#121212] border-2 border-transparent focus:border-emerald-500 focus:bg-white dark:bg-[#0a0a0a] rounded-[16px] sm:rounded-[24px] font-bold text-gray-900 dark:text-white shadow-inner outline-none transition-all"
                     />
                     {searchQuery && (
-                        <button 
+                        <button
                             onClick={() => setSearchQuery('')}
                             className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 dark:text-gray-400"
                         >
@@ -189,13 +190,13 @@ const Scanner = () => {
                             <div className="w-full flex-1 flex flex-col animate-fade-in relative z-10">
                                 <div id="reader" className="w-full h-full rounded-[20px] sm:rounded-[32px] overflow-hidden border-2 sm:border-4 border-emerald-100" />
                                 <div className="absolute top-4 sm:top-6 left-4 sm:left-6 right-4 sm:right-6 flex items-center justify-between pointer-events-none">
-                                     <div className="px-2 sm:px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-[8px] sm:text-[10px] font-black text-white uppercase tracking-widest flex items-center gap-2">
-                                          <div className="w-1 sm:w-1.5 h-1 sm:h-1.5 bg-red-500 rounded-full animate-pulse" />
-                                          Live Engine
-                                     </div>
+                                    <div className="px-2 sm:px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-[8px] sm:text-[10px] font-black text-white uppercase tracking-widest flex items-center gap-2">
+                                        <div className="w-1 sm:w-1.5 h-1 sm:h-1.5 bg-red-500 rounded-full animate-pulse" />
+                                        Live Engine
+                                    </div>
                                 </div>
                             </div>
-                            
+
                             {/* Background Decoration */}
                             <div className="absolute -bottom-10 sm:-bottom-20 -right-10 sm:-right-20 w-32 h-32 sm:w-64 sm:h-64 bg-emerald-100/30 rounded-full blur-[40px] sm:blur-[80px] pointer-events-none group-hover:bg-emerald-200/40 transition-colors" />
                         </div>
@@ -204,8 +205,8 @@ const Scanner = () => {
                     {/* Quick Suggestions */}
                     <div className="bg-white dark:bg-[#0a0a0a] rounded-[20px] sm:rounded-[32px] border border-gray-100 dark:border-white/10 dark:border-white/5 shadow-sm p-4 sm:p-6 flex-1 flex flex-col min-h-0">
                         <div className="flex items-center justify-between mb-3 sm:mb-4 px-2">
-                             <h3 className="text-[9px] sm:text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none">Suggestions (Low Stock First)</h3>
-                             {searchQuery && <span className="text-[8px] sm:text-[9px] font-black text-emerald-500 uppercase">Filtering Results</span>}
+                            <h3 className="text-[9px] sm:text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none">Suggestions (Low Stock First)</h3>
+                            {searchQuery && <span className="text-[8px] sm:text-[9px] font-black text-emerald-500 uppercase">Filtering Results</span>}
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 overflow-y-auto pr-1 custom-scrollbar">
                             {suggestions.map(p => (
@@ -220,8 +221,8 @@ const Scanner = () => {
                                         <div className={clsx(
                                             "flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[7px] sm:text-[8px] font-black uppercase",
                                             p.quantity === 0 ? "bg-red-50 text-red-600" :
-                                            p.quantity < 10 ? "bg-amber-50 text-amber-600" :
-                                            "bg-emerald-50 text-emerald-600"
+                                                p.quantity < 10 ? "bg-amber-50 text-amber-600" :
+                                                    "bg-emerald-50 text-emerald-600"
                                         )}>
                                             {p.quantity} {p.unit}
                                         </div>
@@ -239,8 +240,8 @@ const Scanner = () => {
                             <h3 className="font-black text-gray-900 dark:text-white tracking-tight leading-none uppercase text-xs">Intake Staging</h3>
                             <p className="text-[8px] sm:text-[9px] font-bold text-emerald-400 uppercase tracking-widest mt-1 sm:mt-1.5">{scannedItems.length} SKUs Ready</p>
                         </div>
-                        <button 
-                            onClick={() => setScannedItems([])} 
+                        <button
+                            onClick={() => setScannedItems([])}
                             className="p-2 sm:p-3 text-gray-400 hover:text-red-500 transition-colors bg-white dark:bg-[#0a0a0a] rounded-lg sm:rounded-xl border border-transparent hover:border-red-50 shadow-sm"
                         >
                             <Trash2 size={14} className="sm:size-5" />
@@ -261,25 +262,25 @@ const Scanner = () => {
                                 </div>
                                 <div className="flex items-center gap-2 sm:gap-3">
                                     <div className="flex-1">
-                                         <label className="block text-[7px] sm:text-[8px] font-black text-gray-400 uppercase tracking-tighter mb-1">Qty ({item.unit})</label>
-                                         <input
+                                        <label className="block text-[7px] sm:text-[8px] font-black text-gray-400 uppercase tracking-tighter mb-1">Qty ({item.unit})</label>
+                                        <input
                                             type="number"
                                             value={item.quantity}
                                             onChange={(e) => updateItem(item.productId, { quantity: Number(e.target.value) })}
                                             className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-lg sm:rounded-xl px-2 sm:px-3 py-1.5 text-xs font-black outline-none focus:ring-1 focus:ring-emerald-500 shadow-sm"
-                                         />
+                                        />
                                     </div>
                                     <div className="flex-1">
-                                         <label className="block text-[7px] sm:text-[8px] font-black text-gray-400 uppercase tracking-tighter mb-1">Cost (₹)</label>
-                                         <div className="relative">
-                                             <IndianRupee className="absolute left-1.5 sm:left-2 top-1/2 -translate-y-1/2 text-gray-300" size={8} />
-                                             <input
+                                        <label className="block text-[7px] sm:text-[8px] font-black text-gray-400 uppercase tracking-tighter mb-1">Cost (₹)</label>
+                                        <div className="relative">
+                                            <IndianRupee className="absolute left-1.5 sm:left-2 top-1/2 -translate-y-1/2 text-gray-300" size={8} />
+                                            <input
                                                 type="number"
                                                 value={item.costPrice}
                                                 onChange={(e) => updateItem(item.productId, { costPrice: Number(e.target.value) })}
                                                 className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-lg sm:rounded-xl pl-4 sm:pl-5 pr-2 sm:pr-3 py-1.5 text-xs font-black outline-none focus:ring-1 focus:ring-emerald-500 shadow-sm"
-                                             />
-                                         </div>
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -304,8 +305,8 @@ const Scanner = () => {
                                     <p className="text-lg sm:text-xl font-black text-gray-900 dark:text-white tracking-tighter">₹{scannedItems.reduce((a, b) => a + (b.costPrice * b.quantity), 0).toLocaleString('en-IN')}</p>
                                 </div>
                                 <div className="text-right">
-                                     <p className="text-[8px] sm:text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Items</p>
-                                     <p className="text-lg sm:text-xl font-black text-emerald-600 tracking-tighter">{scannedItems.reduce((a, b) => a + b.quantity, 0)}</p>
+                                    <p className="text-[8px] sm:text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Items</p>
+                                    <p className="text-lg sm:text-xl font-black text-emerald-600 tracking-tighter">{scannedItems.reduce((a, b) => a + b.quantity, 0)}</p>
                                 </div>
                             </div>
                         </div>
