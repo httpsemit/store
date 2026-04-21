@@ -43,12 +43,12 @@ const CategoryModal: React.FC<ModalProps> = ({ isOpen, onClose, category }) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-            <div className="bg-white w-full max-w-md rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden animate-slide-up">
-                <div className="p-4 sm:p-6 border-b border-gray-100 flex items-center justify-between">
-                    <h3 className="text-base sm:text-lg font-black text-gray-900 tracking-tight">
+            <div className="bg-white dark:bg-[#0a0a0a] w-full max-w-md rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden animate-slide-up">
+                <div className="p-4 sm:p-6 border-b border-gray-100 dark:border-white/10 dark:border-white/5 flex items-center justify-between">
+                    <h3 className="text-base sm:text-lg font-black text-gray-900 dark:text-white tracking-tight">
                         {category ? 'Edit Category' : 'New Category'}
                     </h3>
-                    <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 rounded-lg sm:rounded-xl transition-colors">
+                    <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-300 rounded-lg sm:rounded-xl transition-colors">
                         <X size={16} className="sm:size-5" />
                     </button>
                 </div>
@@ -60,7 +60,7 @@ const CategoryModal: React.FC<ModalProps> = ({ isOpen, onClose, category }) => {
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="w-full px-3 sm:px-4 py-3 bg-gray-50 border border-transparent rounded-lg sm:rounded-xl focus:bg-white focus:border-indigo-500 transition-all font-bold text-gray-900"
+                            className="w-full px-3 sm:px-4 py-3 bg-gray-50 dark:bg-[#121212] border border-transparent rounded-lg sm:rounded-xl focus:bg-white dark:bg-[#0a0a0a] focus:border-indigo-500 transition-all font-bold text-gray-900 dark:text-white"
                             placeholder="e.g., Beverages"
                             required
                         />
@@ -71,7 +71,7 @@ const CategoryModal: React.FC<ModalProps> = ({ isOpen, onClose, category }) => {
                         <textarea
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            className="w-full px-3 sm:px-4 py-3 bg-gray-50 border border-transparent rounded-lg sm:rounded-xl focus:bg-white focus:border-indigo-500 transition-all font-medium text-gray-700 h-20 resize-none"
+                            className="w-full px-3 sm:px-4 py-3 bg-gray-50 dark:bg-[#121212] border border-transparent rounded-lg sm:rounded-xl focus:bg-white dark:bg-[#0a0a0a] focus:border-indigo-500 transition-all font-medium text-gray-700 dark:text-gray-200 h-20 resize-none"
                             placeholder="Optional notes..."
                         />
                     </div>
@@ -135,7 +135,7 @@ const Categories = () => {
             {/* Alerts Header */}
             {lowStockAlerts.length > 0 && (
                 <div className="bg-amber-600 rounded-2xl sm:rounded-3xl p-4 sm:p-6 text-white shadow-xl shadow-amber-100 flex items-center gap-3 sm:gap-4 animate-fade-in">
-                    <div className="p-2 sm:p-3 bg-white/20 rounded-xl sm:rounded-2xl">
+                    <div className="p-2 sm:p-3 bg-white dark:bg-[#0a0a0a]/20 rounded-xl sm:rounded-2xl">
                         <AlertCircle size={18} className="sm:size-6" />
                     </div>
                     <div>
@@ -147,7 +147,7 @@ const Categories = () => {
 
             <div className="flex flex-col gap-4 sm:gap-6">
                 <div>
-                    <h2 className="text-lg sm:text-xl font-black text-gray-900 uppercase tracking-widest leading-none">Inventory Categories</h2>
+                    <h2 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white uppercase tracking-widest leading-none">Inventory Categories</h2>
                     <p className="text-gray-400 text-xs font-medium mt-2">Manage groups and visual identifiers</p>
                 </div>
                 <button 
@@ -166,22 +166,22 @@ const Categories = () => {
                     const outOfStockCount = catProducts.filter(p => p.quantity === 0).length;
 
                     return (
-                        <div key={cat.id} className="bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-sm overflow-hidden flex flex-col group hover:shadow-xl hover:border-indigo-100 transition-all">
+                        <div key={cat.id} className="bg-white dark:bg-[#0a0a0a] rounded-2xl sm:rounded-3xl border border-gray-100 dark:border-white/10 dark:border-white/5 shadow-sm overflow-hidden flex flex-col group hover:shadow-xl hover:border-indigo-100 transition-all">
                             <div className="h-1.5 w-full transition-all group-hover:h-2" style={{ backgroundColor: cat.color }}></div>
                             <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 flex-1 flex flex-col">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-3">
-                                        <div className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-gray-50 text-gray-400 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors">
+                                        <div className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-gray-50 dark:bg-[#121212] text-gray-400 group-hover:bg-indigo-50 dark:bg-indigo-950/30 group-hover:text-indigo-600 transition-colors">
                                             <Tags size={16} className="sm:size-5" />
                                         </div>
                                         <div>
-                                            <h4 className="text-sm sm:text-base font-black text-gray-900 leading-tight">{cat.name}</h4>
+                                            <h4 className="text-sm sm:text-base font-black text-gray-900 dark:text-white leading-tight">{cat.name}</h4>
                                         </div>
                                     </div>
                                     <div className="flex gap-1 opacity-0 sm:opacity-0 group-hover:opacity-100 transition-opacity">
                                         <button 
                                             onClick={() => handleEdit(cat)}
-                                            className="p-1.5 sm:p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+                                            className="p-1.5 sm:p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 dark:bg-indigo-950/30 rounded-lg transition-all"
                                         >
                                             <Edit2 size={14} className="sm:size-4" />
                                         </button>
@@ -195,20 +195,20 @@ const Categories = () => {
                                 </div>
 
                                 {cat.description && (
-                                    <p className="text-xs text-gray-500 leading-relaxed italic line-clamp-2">"{cat.description}"</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed italic line-clamp-2">"{cat.description}"</p>
                                 )}
 
                                 <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
-                                    <div className="bg-gray-50 p-2 sm:p-3 rounded-lg sm:rounded-2xl text-center">
-                                        <p className="text-xs font-black text-gray-900">{catProducts.length}</p>
+                                    <div className="bg-gray-50 dark:bg-[#121212] p-2 sm:p-3 rounded-lg sm:rounded-2xl text-center">
+                                        <p className="text-xs font-black text-gray-900 dark:text-white">{catProducts.length}</p>
                                         <p className="text-[7px] sm:text-[8px] font-bold text-gray-400 uppercase tracking-tighter">Total Items</p>
                                     </div>
-                                    <div className={clsx("p-2 sm:p-3 rounded-lg sm:rounded-2xl text-center transition-colors", lowStockCount > 0 ? "bg-amber-50 text-amber-900 shadow-inner" : "bg-gray-50")}>
-                                        <p className={clsx("text-xs font-black", lowStockCount > 0 ? "text-amber-600" : "text-gray-900")}>{lowStockCount}</p>
+                                    <div className={clsx("p-2 sm:p-3 rounded-lg sm:rounded-2xl text-center transition-colors", lowStockCount > 0 ? "bg-amber-50 text-amber-900 shadow-inner" : "bg-gray-50 dark:bg-[#121212]")}>
+                                        <p className={clsx("text-xs font-black", lowStockCount > 0 ? "text-amber-600" : "text-gray-900 dark:text-white")}>{lowStockCount}</p>
                                         <p className="text-[7px] sm:text-[8px] font-bold text-gray-400 uppercase tracking-tighter">Low Stock</p>
                                     </div>
-                                    <div className={clsx("p-2 sm:p-3 rounded-lg sm:rounded-2xl text-center transition-colors", outOfStockCount > 0 ? "bg-red-50 text-red-900 shadow-inner" : "bg-gray-50")}>
-                                        <p className={clsx("text-xs font-black", outOfStockCount > 0 ? "text-red-600" : "text-gray-900")}>{outOfStockCount}</p>
+                                    <div className={clsx("p-2 sm:p-3 rounded-lg sm:rounded-2xl text-center transition-colors", outOfStockCount > 0 ? "bg-red-50 text-red-900 shadow-inner" : "bg-gray-50 dark:bg-[#121212]")}>
+                                        <p className={clsx("text-xs font-black", outOfStockCount > 0 ? "text-red-600" : "text-gray-900 dark:text-white")}>{outOfStockCount}</p>
                                         <p className="text-[7px] sm:text-[8px] font-bold text-gray-400 uppercase tracking-tighter">Out of Stock</p>
                                     </div>
                                 </div>

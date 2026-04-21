@@ -83,7 +83,7 @@ const Customers = () => {
         <div className="space-y-6 sm:space-y-8 animate-fade-in">
             <div className="flex flex-col justify-between items-start gap-4 sm:gap-6">
                 <div>
-                    <h1 className="text-2xl sm:text-4xl font-black text-gray-900 tracking-tighter uppercase mb-2">Customer Base</h1>
+                    <h1 className="text-2xl sm:text-4xl font-black text-gray-900 dark:text-white tracking-tighter uppercase mb-2">Customer Base</h1>
                     <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">Manage your relationships and credit lines</p>
                 </div>
                 <button
@@ -99,7 +99,7 @@ const Customers = () => {
                 <input
                     type="text"
                     placeholder="Search by name or phone number..."
-                    className="w-full bg-white border border-gray-100 rounded-[20px] sm:rounded-[32px] pl-10 sm:pl-16 pr-4 sm:pr-8 py-3 sm:py-6 text-base sm:text-lg font-bold shadow-sm focus:outline-none focus:ring-4 focus:ring-indigo-50/50 transition-all placeholder:text-gray-300"
+                    className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-[20px] sm:rounded-[32px] pl-10 sm:pl-16 pr-4 sm:pr-8 py-3 sm:py-6 text-base sm:text-lg font-bold shadow-sm focus:outline-none focus:ring-4 focus:ring-indigo-50/50 transition-all placeholder:text-gray-300"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -107,9 +107,9 @@ const Customers = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {filteredCustomers.map(customer => (
-                    <div key={customer.id} className="bg-white border border-gray-100 rounded-[24px] sm:rounded-[40px] p-4 sm:p-8 shadow-sm hover:shadow-2xl transition-all group relative overflow-hidden">
+                    <div key={customer.id} className="bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-[24px] sm:rounded-[40px] p-4 sm:p-8 shadow-sm hover:shadow-2xl transition-all group relative overflow-hidden">
                         {/* Decorative background element */}
-                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-indigo-50/50 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-indigo-50 dark:bg-indigo-950/30/50 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
                         <div className="flex items-start justify-between mb-4 sm:mb-8 relative">
                             <div className="w-12 h-12 sm:w-16 sm:h-16 bg-indigo-600 rounded-[16px] sm:rounded-[24px] flex items-center justify-center text-white shadow-xl shadow-indigo-100 font-black text-lg sm:text-2xl group-hover:scale-110 transition-transform">
@@ -119,7 +119,7 @@ const Customers = () => {
                                 <span className={clsx(
                                     "px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest border",
                                     customer.customerType === 'wholesale'
-                                        ? "bg-indigo-50 text-indigo-600 border-indigo-100"
+                                        ? "bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 border-indigo-100"
                                         : "bg-emerald-50 text-emerald-600 border-emerald-100"
                                 )}>
                                     {customer.customerType}
@@ -127,7 +127,7 @@ const Customers = () => {
                                 <div className="flex gap-2">
                                     <button
                                         onClick={() => openModal(customer)}
-                                        className="p-2 sm:p-3 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl sm:rounded-2xl transition-all"
+                                        className="p-2 sm:p-3 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 dark:bg-indigo-950/30 rounded-xl sm:rounded-2xl transition-all"
                                     >
                                         <Edit2 size={14} className="sm:size-5" />
                                     </button>
@@ -137,13 +137,13 @@ const Customers = () => {
 
                         <div className="space-y-4 sm:space-y-6 relative">
                             <div>
-                                <h3 className="text-lg sm:text-xl font-black text-gray-900 tracking-tight leading-none mb-2">{customer.name}</h3>
+                                <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white tracking-tight leading-none mb-2">{customer.name}</h3>
                                 <div className="flex items-center gap-2 text-gray-400 font-bold text-xs uppercase tracking-widest">
                                     <Phone size={10} className="sm:size-3" /> {customer.phone || 'No phone'}
                                 </div>
                             </div>
 
-                            <div className="p-3 sm:p-5 bg-gray-50 rounded-[16px] sm:rounded-[24px] border border-gray-100">
+                            <div className="p-3 sm:p-5 bg-gray-50 dark:bg-[#121212] rounded-[16px] sm:rounded-[24px] border border-gray-100 dark:border-white/10 dark:border-white/5">
                                 <div className="flex justify-between items-center mb-1">
                                     <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Credit Balance</span>
                                     <CreditCard size={10} className="sm:size-3 text-gray-300" />
@@ -178,10 +178,10 @@ const Customers = () => {
             {/* Repayment Modal */}
             {showRepaymentModal && selectedCustomer && (
                 <div className="fixed inset-0 z-[110] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm animate-fade-in">
-                    <div className="bg-white w-full max-w-sm rounded-[24px] sm:rounded-[40px] shadow-2xl overflow-hidden p-6 sm:p-8 animate-pop">
+                    <div className="bg-white dark:bg-[#0a0a0a] w-full max-w-sm rounded-[24px] sm:rounded-[40px] shadow-2xl overflow-hidden p-6 sm:p-8 animate-pop">
                         <div className="flex items-center justify-between mb-6 sm:mb-8">
-                            <h3 className="text-lg sm:text-xl font-black text-gray-900 tracking-tight uppercase">Record Repayment</h3>
-                            <button onClick={closeModal} className="p-2 text-gray-400 hover:bg-gray-100 rounded-lg sm:rounded-xl transition-colors">
+                            <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white tracking-tight uppercase">Record Repayment</h3>
+                            <button onClick={closeModal} className="p-2 text-gray-400 hover:bg-gray-100 dark:bg-gray-900 dark:bg-[#1a1a1a] rounded-lg sm:rounded-xl transition-colors">
                                 <X size={20} />
                             </button>
                         </div>
@@ -196,7 +196,7 @@ const Customers = () => {
                                     autoFocus
                                     required
                                     type="number"
-                                    className="w-full bg-gray-50 border border-gray-100 rounded-lg sm:rounded-2xl px-4 sm:px-5 py-3 sm:py-3.5 font-bold outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                                    className="w-full bg-gray-50 dark:bg-[#121212] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-lg sm:rounded-2xl px-4 sm:px-5 py-3 sm:py-3.5 font-bold outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
                                     placeholder="Enter amount"
                                     value={repaymentAmount}
                                     onChange={(e) => setRepaymentAmount(e.target.value)}
@@ -208,7 +208,7 @@ const Customers = () => {
                                     onClick={() => setRepaymentMethod('Cash')}
                                     className={clsx(
                                         "py-3 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all border-2",
-                                        repaymentMethod === 'Cash' ? "bg-gray-900 text-white border-gray-900 shadow-xl" : "bg-white text-gray-400 border-gray-100"
+                                        repaymentMethod === 'Cash' ? "bg-gray-900 text-white border-gray-900 shadow-xl" : "bg-white dark:bg-[#0a0a0a] text-gray-400 border-gray-100 dark:border-white/10 dark:border-white/5"
                                     )}
                                 >
                                     Cash
@@ -218,7 +218,7 @@ const Customers = () => {
                                     onClick={() => setRepaymentMethod('UPI')}
                                     className={clsx(
                                         "py-3 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all border-2",
-                                        repaymentMethod === 'UPI' ? "bg-indigo-600 text-white border-indigo-600 shadow-xl" : "bg-white text-gray-400 border-gray-100"
+                                        repaymentMethod === 'UPI' ? "bg-indigo-600 text-white border-indigo-600 shadow-xl" : "bg-white dark:bg-[#0a0a0a] text-gray-400 border-gray-100 dark:border-white/10 dark:border-white/5"
                                     )}
                                 >
                                     UPI
@@ -238,13 +238,13 @@ const Customers = () => {
             {/* History Modal */}
             {showHistoryModal && selectedCustomer && (
                 <div className="fixed inset-0 z-[110] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm animate-fade-in">
-                    <div className="bg-white w-full max-w-2xl rounded-[32px] sm:rounded-[48px] shadow-2xl overflow-hidden animate-pop max-h-[90vh] flex flex-col">
-                        <div className="p-4 sm:p-8 border-b border-gray-100 flex items-center justify-between bg-white sticky top-0 z-10">
+                    <div className="bg-white dark:bg-[#0a0a0a] w-full max-w-2xl rounded-[32px] sm:rounded-[48px] shadow-2xl overflow-hidden animate-pop max-h-[90vh] flex flex-col">
+                        <div className="p-4 sm:p-8 border-b border-gray-100 dark:border-white/10 dark:border-white/5 flex items-center justify-between bg-white dark:bg-[#0a0a0a] sticky top-0 z-10">
                             <div>
-                                <h3 className="text-lg sm:text-2xl font-black text-gray-900 tracking-tight uppercase">{selectedCustomer.name}</h3>
+                                <h3 className="text-lg sm:text-2xl font-black text-gray-900 dark:text-white tracking-tight uppercase">{selectedCustomer.name}</h3>
                                 <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Transaction History & Ledger</p>
                             </div>
-                            <button onClick={closeModal} className="p-3 text-gray-400 hover:bg-gray-100 rounded-2xl transition-colors">
+                            <button onClick={closeModal} className="p-3 text-gray-400 hover:bg-gray-100 dark:bg-gray-900 dark:bg-[#1a1a1a] rounded-2xl transition-colors">
                                 <X size={18} className="sm:size-6" />
                             </button>
                         </div>
@@ -261,19 +261,19 @@ const Customers = () => {
                             </div>
 
                             <div className="space-y-6">
-                                <h4 className="text-xs font-black text-gray-900 uppercase tracking-widest flex items-center gap-2">
+                                <h4 className="text-xs font-black text-gray-900 dark:text-white uppercase tracking-widest flex items-center gap-2">
                                     <div className="w-1.5 h-6 bg-indigo-600 rounded-full"></div>
                                     Recent Bills
                                 </h4>
                                 <div className="space-y-3">
                                     {customerHistory.sales.map((sale) => (
-                                        <div key={sale.id} className="p-5 bg-gray-50 rounded-3xl flex items-center justify-between">
+                                        <div key={sale.id} className="p-5 bg-gray-50 dark:bg-[#121212] rounded-3xl flex items-center justify-between">
                                             <div>
-                                                <p className="text-xs font-black text-gray-900">Bill #{sale.billNo || sale.id.slice(0, 8).toUpperCase()}</p>
+                                                <p className="text-xs font-black text-gray-900 dark:text-white">Bill #{sale.billNo || sale.id.slice(0, 8).toUpperCase()}</p>
                                                 <p className="text-[10px] text-gray-400 font-bold">{new Date(sale.createdAt).toLocaleDateString()}</p>
                                             </div>
                                             <div className="text-right">
-                                                <p className="text-sm font-black text-gray-900">₹{sale.total.toLocaleString('en-IN')}</p>
+                                                <p className="text-sm font-black text-gray-900 dark:text-white">₹{sale.total.toLocaleString('en-IN')}</p>
                                                 <p className={clsx("text-[9px] font-black uppercase tracking-widest", sale.paymentMethod === 'Credit' ? "text-red-500" : "text-emerald-500")}>
                                                     {sale.paymentMethod}
                                                 </p>
@@ -283,7 +283,7 @@ const Customers = () => {
                                     {customerHistory.sales.length === 0 && <p className="text-center text-[10px] text-gray-400 font-bold py-10 uppercase">No sale history found</p>}
                                 </div>
 
-                                <h4 className="text-xs font-black text-gray-900 uppercase tracking-widest flex items-center gap-2 pt-4">
+                                <h4 className="text-xs font-black text-gray-900 dark:text-white uppercase tracking-widest flex items-center gap-2 pt-4">
                                     <div className="w-1.5 h-6 bg-emerald-600 rounded-full"></div>
                                     Payment Ledger
                                 </h4>
@@ -311,15 +311,15 @@ const Customers = () => {
             {/* Modal */}
             {showModal && (
                 <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm animate-fade-in">
-                    <div className="bg-white w-full max-w-md rounded-[48px] shadow-2xl overflow-hidden p-10 transform scale-100">
+                    <div className="bg-white dark:bg-[#0a0a0a] w-full max-w-md rounded-[48px] shadow-2xl overflow-hidden p-10 transform scale-100">
                         <div className="flex items-center justify-between mb-10">
                             <div>
-                                <h3 className="text-2xl font-black text-gray-900 tracking-tight uppercase">
+                                <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight uppercase">
                                     {editingCustomer ? 'Edit Customer' : 'Add New Customer'}
                                 </h3>
                                 <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Fill in the required information</p>
                             </div>
-                            <button onClick={closeModal} className="p-3 text-gray-400 hover:bg-gray-100 rounded-2xl transition-colors">
+                            <button onClick={closeModal} className="p-3 text-gray-400 hover:bg-gray-100 dark:bg-gray-900 dark:bg-[#1a1a1a] rounded-2xl transition-colors">
                                 <X size={20} />
                             </button>
                         </div>
@@ -332,7 +332,7 @@ const Customers = () => {
                                     <input
                                         required
                                         type="text"
-                                        className="w-full bg-gray-50 border border-gray-100 rounded-[24px] pl-14 pr-6 py-4 font-bold outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+                                        className="w-full bg-gray-50 dark:bg-[#121212] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-[24px] pl-14 pr-6 py-4 font-bold outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
                                         placeholder="Full Name"
                                         value={formData.name}
                                         onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
@@ -346,7 +346,7 @@ const Customers = () => {
                                     <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-indigo-600 transition-colors" size={18} />
                                     <input
                                         type="tel"
-                                        className="w-full bg-gray-50 border border-gray-100 rounded-[24px] pl-14 pr-6 py-4 font-bold outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+                                        className="w-full bg-gray-50 dark:bg-[#121212] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-[24px] pl-14 pr-6 py-4 font-bold outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
                                         placeholder="Mobile Number"
                                         value={formData.phone}
                                         onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
@@ -360,7 +360,7 @@ const Customers = () => {
                                     <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-indigo-600 transition-colors" size={18} />
                                     <input
                                         type="email"
-                                        className="w-full bg-gray-50 border border-gray-100 rounded-[24px] pl-14 pr-6 py-4 font-bold outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+                                        className="w-full bg-gray-50 dark:bg-[#121212] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-[24px] pl-14 pr-6 py-4 font-bold outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
                                         placeholder="Email (Optional)"
                                         value={formData.email}
                                         onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
@@ -375,7 +375,7 @@ const Customers = () => {
                                         onClick={() => setFormData(prev => ({ ...prev, customerType: 'retail' }))}
                                         className={clsx(
                                             "py-3 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all border-2",
-                                            formData.customerType === 'retail' ? "bg-emerald-600 text-white border-emerald-600 shadow-xl" : "bg-white text-gray-400 border-gray-100"
+                                            formData.customerType === 'retail' ? "bg-emerald-600 text-white border-emerald-600 shadow-xl" : "bg-white dark:bg-[#0a0a0a] text-gray-400 border-gray-100 dark:border-white/10 dark:border-white/5"
                                         )}
                                     >
                                         Retail
@@ -385,7 +385,7 @@ const Customers = () => {
                                         onClick={() => setFormData(prev => ({ ...prev, customerType: 'wholesale' }))}
                                         className={clsx(
                                             "py-3 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all border-2",
-                                            formData.customerType === 'wholesale' ? "bg-indigo-600 text-white border-indigo-600 shadow-xl" : "bg-white text-gray-400 border-gray-100"
+                                            formData.customerType === 'wholesale' ? "bg-indigo-600 text-white border-indigo-600 shadow-xl" : "bg-white dark:bg-[#0a0a0a] text-gray-400 border-gray-100 dark:border-white/10 dark:border-white/5"
                                         )}
                                     >
                                         Wholesale

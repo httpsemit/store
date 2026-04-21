@@ -44,7 +44,7 @@ const Login = () => {
             <div className="relative w-full max-w-md">
                 {/* Logo/Header */}
                 <div className="text-center mb-6 sm:mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-white/10 backdrop-blur-sm rounded-2xl sm:rounded-3xl mb-4 sm:mb-5 shadow-2xl border border-white/10">
+                    <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-white dark:bg-[#0a0a0a]/10 backdrop-blur-sm rounded-2xl sm:rounded-3xl mb-4 sm:mb-5 shadow-2xl border border-white/10">
                         <Store className="text-white" size={28} />
                     </div>
                     <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">Amit Store</h1>
@@ -52,7 +52,7 @@ const Login = () => {
                 </div>
 
                 {/* Login Card */}
-                <div className="bg-white/5 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-white/10 p-6 sm:p-8 shadow-2xl">
+                <div className="bg-white dark:bg-[#0a0a0a]/5 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-white/10 p-6 sm:p-8 shadow-2xl">
                     <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
                         <div>
                             <label className="block text-[10px] font-black text-indigo-300 uppercase tracking-widest mb-2">Email</label>
@@ -61,7 +61,7 @@ const Login = () => {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="admin@amitstore.com"
-                                className="w-full px-3 sm:px-4 py-3 bg-white/5 border border-white/10 rounded-lg sm:rounded-xl text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all font-medium"
+                                className="w-full px-3 sm:px-4 py-3 bg-white dark:bg-[#0a0a0a]/5 border border-white/10 rounded-lg sm:rounded-xl text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all font-medium"
                                 autoFocus
                             />
                         </div>
@@ -74,7 +74,7 @@ const Login = () => {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="••••••••"
-                                    className="w-full px-3 sm:px-4 py-3 bg-white/5 border border-white/10 rounded-lg sm:rounded-xl text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all font-medium pr-10 sm:pr-12"
+                                    className="w-full px-3 sm:px-4 py-3 bg-white dark:bg-[#0a0a0a]/5 border border-white/10 rounded-lg sm:rounded-xl text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all font-medium pr-10 sm:pr-12"
                                 />
                                 <button
                                     type="button"
@@ -107,12 +107,12 @@ const Login = () => {
                     </form>
 
                     {/* Credentials Hint */}
-                    <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-white/5 rounded-lg sm:rounded-xl border border-white/5">
+                    <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-white dark:bg-[#0a0a0a]/5 rounded-lg sm:rounded-xl border border-white/5">
                         <p className="text-[9px] sm:text-[10px] font-black text-indigo-300 uppercase tracking-widest mb-2 sm:mb-3">Default Credentials</p>
                         <div className="space-y-1 sm:space-y-1.5">
                             <div className="flex items-center justify-between">
                                 <span className="text-xs text-white/40">Admin</span>
-                                <code className="text-[10px] sm:text-xs text-indigo-300 font-mono bg-white/5 px-2 py-0.5 rounded">admin@amitstore.com / amit@123</code>
+                                <code className="text-[10px] sm:text-xs text-indigo-300 font-mono bg-white dark:bg-[#0a0a0a]/5 px-2 py-0.5 rounded">admin@amitstore.com / amit@123</code>
                             </div>
                         </div>
                     </div>

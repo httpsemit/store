@@ -70,7 +70,7 @@ const Reports = () => {
     const totalExpenses = reportExpenses.reduce((acc, e) => acc + e.amount, 0);
 
     const stats = [
-        { title: t('gross_revenue'), value: `₹${revenue.toLocaleString('en-IN')}`, icon: IndianRupee, color: 'text-indigo-600', bg: 'bg-indigo-50' },
+        { title: t('gross_revenue'), value: `₹${revenue.toLocaleString('en-IN')}`, icon: IndianRupee, color: 'text-indigo-600', bg: 'bg-indigo-50 dark:bg-indigo-950/30' },
         { title: t('net_profit'), value: `₹${(profit - totalExpenses).toLocaleString('en-IN')}`, icon: TrendingUp, color: 'text-emerald-600', bg: 'bg-emerald-50' },
         { title: 'Total Expenses', value: `₹${totalExpenses.toLocaleString('en-IN')}`, icon: TrendingDown, color: 'text-rose-600', bg: 'bg-rose-50' },
         { title: t('transactions'), value: filteredSales.length, icon: FileText, color: 'text-blue-600', bg: 'bg-blue-50' },
@@ -105,16 +105,16 @@ const Reports = () => {
             {/* Header */}
             <div className="flex flex-col gap-4 sm:gap-6 print:hidden">
                 <div className="flex flex-col gap-4">
-                    <h2 className="text-lg sm:text-xl font-black text-gray-900 uppercase tracking-widest leading-none">{t('reports')}</h2>
+                    <h2 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white uppercase tracking-widest leading-none">{t('reports')}</h2>
 
-                    <div className="flex bg-gray-100 p-1 rounded-lg sm:rounded-xl">
+                    <div className="flex bg-gray-100 dark:bg-gray-900 dark:bg-[#1a1a1a] p-1 rounded-lg sm:rounded-xl">
                         {(['daily', 'weekly', 'monthly'] as const).map((p) => (
                             <button
                                 key={p}
                                 onClick={() => setPeriod(p)}
                                 className={clsx(
                                     "px-3 sm:px-4 py-2 text-[9px] sm:text-[10px] font-black uppercase tracking-widest rounded-lg transition-all",
-                                    period === p ? "bg-white text-indigo-600 shadow-sm" : "text-gray-400 hover:text-gray-600"
+                                    period === p ? "bg-white dark:bg-[#0a0a0a] text-indigo-600 shadow-sm" : "text-gray-400 hover:text-gray-600 dark:text-gray-300"
                                 )}
                             >
                                 {p}
@@ -122,14 +122,14 @@ const Reports = () => {
                         ))}
                     </div>
 
-                    <div className="flex bg-gray-100 p-1 rounded-lg sm:rounded-xl">
+                    <div className="flex bg-gray-100 dark:bg-gray-900 dark:bg-[#1a1a1a] p-1 rounded-lg sm:rounded-xl">
                         {(['All', 'retail', 'wholesale'] as const).map((filterType) => (
                             <button
                                 key={filterType}
                                 onClick={() => setSaleTypeFilter(filterType)}
                                 className={clsx(
                                     "px-3 sm:px-4 py-2 text-[9px] sm:text-[10px] font-black uppercase tracking-widest rounded-lg transition-all",
-                                    saleTypeFilter === filterType ? "bg-white text-indigo-600 shadow-sm" : "text-gray-400 hover:text-gray-600"
+                                    saleTypeFilter === filterType ? "bg-white dark:bg-[#0a0a0a] text-indigo-600 shadow-sm" : "text-gray-400 hover:text-gray-600 dark:text-gray-300"
                                 )}
                             >
                                 {filterType === 'All' ? t('all_sales') : filterType}
@@ -138,19 +138,19 @@ const Reports = () => {
                     </div>
 
                     {period === 'daily' && (
-                        <div className="flex items-center gap-2 sm:gap-3 bg-white px-3 sm:px-4 py-2 rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm focus-within:border-indigo-500 transition-all">
+                        <div className="flex items-center gap-2 sm:gap-3 bg-white dark:bg-[#0a0a0a] px-3 sm:px-4 py-2 rounded-xl sm:rounded-2xl border border-gray-100 dark:border-white/10 dark:border-white/5 shadow-sm focus-within:border-indigo-500 transition-all">
                             <CalendarIcon className="text-gray-400" size={14} />
                             <input
                                 type="date"
                                 value={selectedDate}
                                 onChange={(e) => setSelectedDate(e.target.value)}
-                                className="text-xs sm:text-sm font-bold text-gray-700 bg-transparent focus:outline-none"
+                                className="text-xs sm:text-sm font-bold text-gray-700 dark:text-gray-200 bg-transparent focus:outline-none"
                             />
                         </div>
                     )}
                 </div>
                 <div className="flex items-center gap-3">
-                    <button className="flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-white border border-gray-100 rounded-xl sm:rounded-2xl text-xs font-black text-gray-500 uppercase tracking-widest hover:bg-gray-50 hover:text-indigo-600 transition-all shadow-sm no-print">
+                    <button className="flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-xl sm:rounded-2xl text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest hover:bg-gray-50 dark:bg-[#121212] hover:text-indigo-600 transition-all shadow-sm no-print">
                         <Download size={14} className="sm:size-4" /> Export CSV
                     </button>
                     <button
@@ -165,19 +165,19 @@ const Reports = () => {
             {/* Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 relative">
                 {isLoading && (
-                    <div className="absolute inset-0 z-10 bg-gray-50/50 backdrop-blur-[1px] flex items-center justify-center rounded-2xl">
+                    <div className="absolute inset-0 z-10 bg-gray-50 dark:bg-[#121212]/50 backdrop-blur-[1px] flex items-center justify-center rounded-2xl">
                         <Loader2 className="text-indigo-600 animate-spin" size={32} />
                     </div>
                 )}
                 {stats.map((stat, i) => (
-                    <div key={i} className="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div key={i} className="bg-white dark:bg-[#0a0a0a] p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-sm border border-gray-100 dark:border-white/10 dark:border-white/5 hover:shadow-md transition-shadow">
                         <div className="flex items-center justify-between mb-4">
                             <div className={`p-2 sm:p-2.5 rounded-lg sm:rounded-xl ${stat.bg} ${stat.color}`}>
                                 <stat.icon size={16} className="sm:size-5" />
                             </div>
                         </div>
                         <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{stat.title}</p>
-                        <h3 className="text-lg sm:text-2xl font-black text-gray-900 mt-1">{stat.value}</h3>
+                        <h3 className="text-lg sm:text-2xl font-black text-gray-900 dark:text-white mt-1">{stat.value}</h3>
                     </div>
                 ))}
             </div>
@@ -186,7 +186,7 @@ const Reports = () => {
                 {/* Side Content */}
                 <div className="space-y-8">
                     {/* Payment Summary */}
-                    <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
+                    <div className="bg-white dark:bg-[#0a0a0a] rounded-3xl border border-gray-100 dark:border-white/10 dark:border-white/5 shadow-sm p-6">
                         <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2">
                             <CreditCard size={12} className="sm:size-4" />
                             Payment Summary
@@ -196,30 +196,30 @@ const Reports = () => {
                                 <span className="text-[10px] font-black uppercase">Retail Revenue</span>
                                 <span className="font-black">₹{retailRevenue.toLocaleString('en-IN')}</span>
                             </div>
-                            <div className="flex items-center justify-between text-indigo-600 pb-4 border-b border-gray-50">
+                            <div className="flex items-center justify-between text-indigo-600 pb-4 border-b border-gray-50 dark:border-white/5">
                                 <span className="text-[10px] font-black uppercase">Wholesale Revenue</span>
                                 <span className="font-black">₹{wholesaleRevenue.toLocaleString('en-IN')}</span>
                             </div>
                             {paymentMethods.map((method) => (
                                 <div key={method.name} className="flex items-center justify-between group">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors">
+                                        <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-gray-50 dark:bg-[#121212] flex items-center justify-center text-gray-400 group-hover:bg-indigo-50 dark:bg-indigo-950/30 group-hover:text-indigo-600 transition-colors">
                                             <div className="w-1.5 h-1.5 rounded-full bg-current" />
                                         </div>
-                                        <span className="text-xs sm:text-sm font-bold text-gray-600">{method.name}</span>
+                                        <span className="text-xs sm:text-sm font-bold text-gray-600 dark:text-gray-300">{method.name}</span>
                                     </div>
-                                    <span className="text-xs sm:text-sm font-black text-gray-900 group-hover:text-indigo-600 transition-colors">₹{method.amount.toLocaleString('en-IN')}</span>
+                                    <span className="text-xs sm:text-sm font-black text-gray-900 dark:text-white group-hover:text-indigo-600 transition-colors">₹{method.amount.toLocaleString('en-IN')}</span>
                                 </div>
                             ))}
                         </div>
-                        <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-50 flex justify-between items-center text-indigo-600">
+                        <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-50 dark:border-white/5 flex justify-between items-center text-indigo-600">
                             <span className="text-xs sm:text-sm font-bold">Closing Total</span>
                             <span className="text-lg sm:text-xl font-black">₹{revenue.toLocaleString('en-IN')}</span>
                         </div>
                     </div>
 
                     {/* Expense Summary */}
-                    <div className="bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-sm p-4 sm:p-6 overflow-hidden relative group">
+                    <div className="bg-white dark:bg-[#0a0a0a] rounded-2xl sm:rounded-3xl border border-gray-100 dark:border-white/10 dark:border-white/5 shadow-sm p-4 sm:p-6 overflow-hidden relative group">
                         <div className="absolute -top-6 -right-6 p-4 text-rose-50/50 group-hover:text-rose-50 transition-colors">
                             <TrendingDown size={100} />
                         </div>
@@ -229,9 +229,9 @@ const Reports = () => {
                         </h3>
                         <div className="space-y-3 sm:space-y-4 relative">
                             {reportExpenses.length > 0 ? reportExpenses.map((exp) => (
-                                <div key={exp.id} className="flex flex-col gap-1 pb-3 border-b border-gray-50 last:border-0 last:pb-0">
+                                <div key={exp.id} className="flex flex-col gap-1 pb-3 border-b border-gray-50 dark:border-white/5 last:border-0 last:pb-0">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-[10px] font-black text-gray-900 uppercase tracking-tight">{exp.category}</span>
+                                        <span className="text-[10px] font-black text-gray-900 dark:text-white uppercase tracking-tight">{exp.category}</span>
                                         <span className="text-[10px] font-black text-rose-600">₹{exp.amount}</span>
                                     </div>
                                     <p className="text-[10px] text-gray-400 font-medium italic">{exp.description || 'No notes added'}</p>
@@ -240,14 +240,14 @@ const Reports = () => {
                                 <p className="text-[10px] text-gray-300 font-bold uppercase py-4 text-center italic tracking-widest">No expenses recorded</p>
                             )}
                         </div>
-                        <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-50 flex justify-between items-center text-rose-600 relative">
+                        <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-50 dark:border-white/5 flex justify-between items-center text-rose-600 relative">
                             <span className="text-xs sm:text-sm font-bold">Total Cost</span>
                             <span className="text-lg sm:text-xl font-black">₹{totalExpenses.toLocaleString('en-IN')}</span>
                         </div>
                     </div>
 
                     {/* Top Sellers */}
-                    <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
+                    <div className="bg-white dark:bg-[#0a0a0a] rounded-3xl border border-gray-100 dark:border-white/10 dark:border-white/5 shadow-sm p-6">
                         <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2">
                             <Trophy size={12} className="sm:size-4 text-amber-500" />
                             Top Selling Products
@@ -259,11 +259,11 @@ const Reports = () => {
                                         <div className="flex items-center gap-3">
                                             <span className="text-[9px] sm:text-[10px] font-black text-gray-300 w-4">#{idx + 1}</span>
                                             <div className="flex flex-col">
-                                                <span className="text-xs font-black text-gray-900 truncate max-w-[100px] sm:max-w-[120px]">{item.name}</span>
+                                                <span className="text-xs font-black text-gray-900 dark:text-white truncate max-w-[100px] sm:max-w-[120px]">{item.name}</span>
                                                 <span className="text-[9px] sm:text-[10px] text-gray-400 font-bold uppercase">{item.qty} sold</span>
                                             </div>
                                         </div>
-                                        <span className="text-xs font-black text-gray-700">₹{item.revenue.toLocaleString('en-IN')}</span>
+                                        <span className="text-xs font-black text-gray-700 dark:text-gray-200">₹{item.revenue.toLocaleString('en-IN')}</span>
                                     </div>
                                 ))}
                             </div>
@@ -274,16 +274,16 @@ const Reports = () => {
                 </div>
 
                 {/* Sales Log */}
-                <div className="lg:col-span-2 bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-sm overflow-hidden flex flex-col min-h-[400px] sm:min-h-[500px]">
-                    <div className="p-4 sm:p-6 border-b border-gray-50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div className="lg:col-span-2 bg-white dark:bg-[#0a0a0a] rounded-2xl sm:rounded-3xl border border-gray-100 dark:border-white/10 dark:border-white/5 shadow-sm overflow-hidden flex flex-col min-h-[400px] sm:min-h-[500px]">
+                    <div className="p-4 sm:p-6 border-b border-gray-50 dark:border-white/5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest">Daily Transaction Log</h3>
-                        <span className="text-[9px] sm:text-[10px] font-black bg-gray-100 text-gray-500 px-2 py-1 rounded-lg uppercase tracking-wider">
+                        <span className="text-[9px] sm:text-[10px] font-black bg-gray-100 dark:bg-gray-900 dark:bg-[#1a1a1a] text-gray-500 dark:text-gray-400 px-2 py-1 rounded-lg uppercase tracking-wider">
                             {filteredSales.length} Invoices
                         </span>
                     </div>
                     <div className="flex-1 overflow-x-auto">
                         <table className="w-full text-left min-w-[500px]">
-                            <thead className="bg-gray-50/50 text-[9px] sm:text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                            <thead className="bg-gray-50 dark:bg-[#121212]/50 text-[9px] sm:text-[10px] font-black text-gray-400 uppercase tracking-widest">
                                 <tr>
                                     <th className="px-3 sm:px-6 py-3 sm:py-4 text-left">Invoice ID</th>
                                     <th className="px-3 sm:px-6 py-3 sm:py-4 text-left hidden sm:table-cell">Type</th>
@@ -294,7 +294,7 @@ const Reports = () => {
                             </thead>
                             <tbody className="divide-y divide-gray-50">
                                 {filteredSales.map((sale) => (
-                                    <tr key={sale.id} className="hover:bg-indigo-50/30 transition-colors group">
+                                    <tr key={sale.id} className="hover:bg-indigo-50 dark:bg-indigo-950/30/30 transition-colors group">
                                         <td className="px-3 sm:px-6 py-3 sm:py-4">
                                             <span className="font-mono text-[9px] sm:text-[10px] text-indigo-400 font-black group-hover:text-indigo-600">
                                                 #{sale.id.slice(-8).toUpperCase()}
@@ -303,12 +303,12 @@ const Reports = () => {
                                         <td className="px-3 sm:px-6 py-3 sm:py-4 hidden sm:table-cell">
                                             <span className={clsx(
                                                 "px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-wider",
-                                                sale.saleType === 'wholesale' ? "bg-indigo-50 text-indigo-600" : "bg-emerald-50 text-emerald-600"
+                                                sale.saleType === 'wholesale' ? "bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600" : "bg-emerald-50 text-emerald-600"
                                             )}>
                                                 {sale.saleType}
                                             </span>
                                         </td>
-                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs font-black text-gray-900">
+                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs font-black text-gray-900 dark:text-white">
                                             <div className="flex flex-col">
                                                 <span className="truncate max-w-[120px] sm:max-w-none">{sale.customerName || 'Walk-in Customer'}</span>
                                                 <span className="text-[9px] text-gray-400 font-normal sm:hidden">{format(parseISO(sale.createdAt), 'hh:mm a')}</span>
@@ -324,7 +324,7 @@ const Reports = () => {
                                                 {sale.paymentMethod}
                                             </span>
                                         </td>
-                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm font-black text-gray-900">
+                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm font-black text-gray-900 dark:text-white">
                                             ₹{sale.total.toLocaleString('en-IN')}
                                         </td>
                                     </tr>
@@ -333,7 +333,7 @@ const Reports = () => {
                                     <tr>
                                         <td colSpan={5} className="px-6 py-16 sm:py-20 text-center">
                                             <div className="flex flex-col items-center gap-3">
-                                                <div className="p-4 bg-gray-50 rounded-full text-gray-300">
+                                                <div className="p-4 bg-gray-50 dark:bg-[#121212] rounded-full text-gray-300">
                                                     <FileText size={40} />
                                                 </div>
                                                 <p className="text-gray-400 text-sm font-medium italic">No sales found for this date.</p>

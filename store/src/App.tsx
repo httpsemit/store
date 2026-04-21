@@ -41,7 +41,15 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
-    const { initAuth, fetchInitialData, currentUser } = useStore();
+    const { initAuth, fetchInitialData, currentUser, theme } = useStore();
+
+    useEffect(() => {
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }, [theme]);
 
     useEffect(() => {
         initAuth();

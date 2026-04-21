@@ -99,16 +99,16 @@ const Inventory = () => {
                         <Package size={20} className="sm:size-7" />
                     </div>
                     <div>
-                        <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight leading-none uppercase">Central Inventory</h2>
+                        <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white tracking-tight leading-none uppercase">Central Inventory</h2>
                         <p className="text-gray-400 text-xs font-bold mt-2 uppercase tracking-widest">{products.length} Products Tracked</p>
                     </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-wrap sm:flex-row items-center gap-3">
-                    <div className="flex bg-white p-1 rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm w-full sm:w-auto">
+                    <div className="flex bg-white dark:bg-[#0a0a0a] p-1 rounded-xl sm:rounded-2xl border border-gray-100 dark:border-white/10 dark:border-white/5 shadow-sm w-full sm:w-auto">
                         <div className="relative">
                             <select
-                                className="bg-transparent pl-3 sm:pl-4 pr-8 sm:pr-10 py-2 sm:py-2.5 text-xs font-black text-gray-500 uppercase tracking-widest focus:outline-none appearance-none cursor-pointer border-r border-gray-50 hover:text-indigo-600 transition-colors"
+                                className="bg-transparent pl-3 sm:pl-4 pr-8 sm:pr-10 py-2 sm:py-2.5 text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest focus:outline-none appearance-none cursor-pointer border-r border-gray-50 dark:border-white/5 hover:text-indigo-600 transition-colors"
                                 value={selectedCategory}
                                 onChange={(e) => setSelectedCategory(e.target.value)}
                             >
@@ -121,7 +121,7 @@ const Inventory = () => {
                         </div>
                         <div className="relative">
                             <select
-                                className="bg-transparent pl-3 sm:pl-4 pr-8 sm:pr-10 py-2 sm:py-2.5 text-xs font-black text-gray-500 uppercase tracking-widest focus:outline-none appearance-none cursor-pointer hover:text-indigo-600 transition-colors"
+                                className="bg-transparent pl-3 sm:pl-4 pr-8 sm:pr-10 py-2 sm:py-2.5 text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest focus:outline-none appearance-none cursor-pointer hover:text-indigo-600 transition-colors"
                                 value={stockFilter}
                                 onChange={(e) => setStockFilter(e.target.value)}
                             >
@@ -152,13 +152,13 @@ const Inventory = () => {
                     <input
                         type="text"
                         placeholder="Quick search by product name, brand or barcode number..."
-                        className="w-full pl-10 sm:pl-14 pr-12 py-3 sm:py-5 bg-white border border-gray-100 rounded-[20px] sm:rounded-[32px] focus:outline-none focus:ring-4 focus:ring-indigo-50/50 shadow-sm transition-all text-sm font-bold text-gray-700"
+                        className="w-full pl-10 sm:pl-14 pr-12 py-3 sm:py-5 bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-[20px] sm:rounded-[32px] focus:outline-none focus:ring-4 focus:ring-indigo-50/50 shadow-sm transition-all text-sm font-bold text-gray-700 dark:text-gray-200"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                     <button
                         onClick={startScanner}
-                        className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 p-2 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-100 transition-all"
+                        className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 p-2 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 rounded-xl hover:bg-indigo-100 transition-all"
                         title="Scan to Search"
                     >
                         <Camera size={18} />
@@ -168,12 +168,12 @@ const Inventory = () => {
 
             {isScanning && (
                 <div className="fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center p-6 backdrop-blur-md">
-                    <div className="w-full max-w-md aspect-video bg-white rounded-[40px] overflow-hidden shadow-2xl relative border-8 border-indigo-600">
+                    <div className="w-full max-w-md aspect-video bg-white dark:bg-[#0a0a0a] rounded-[40px] overflow-hidden shadow-2xl relative border-8 border-indigo-600">
                         <div id="inventory-scanner" className="w-full h-full"></div>
                     </div>
                     <button
                         onClick={stopScanner}
-                        className="mt-12 px-10 py-4 bg-white/10 hover:bg-white/20 text-white rounded-full font-black uppercase tracking-widest flex items-center gap-3 border border-white/20 transition-all"
+                        className="mt-12 px-10 py-4 bg-white dark:bg-[#0a0a0a]/10 hover:bg-white dark:bg-[#0a0a0a]/20 text-white rounded-full font-black uppercase tracking-widest flex items-center gap-3 border border-white/20 transition-all"
                     >
                         <X size={20} /> Close Scanner
                     </button>
@@ -181,10 +181,10 @@ const Inventory = () => {
             )}
 
             {/* Table Section */}
-            <div className="bg-white rounded-[20px] sm:rounded-[32px] border border-gray-100 shadow-sm overflow-hidden animate-fade-in mb-12">
+            <div className="bg-white dark:bg-[#0a0a0a] rounded-[20px] sm:rounded-[32px] border border-gray-100 dark:border-white/10 dark:border-white/5 shadow-sm overflow-hidden animate-fade-in mb-12">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
-                        <thead className="bg-gray-50/50 border-b border-gray-50">
+                        <thead className="bg-gray-50 dark:bg-[#121212]/50 border-b border-gray-50 dark:border-white/5">
                             <tr className="text-[9px] sm:text-[10px] font-black text-gray-400 uppercase tracking-widest">
                                 <th className="px-4 sm:px-8 py-3 sm:py-6 text-left">Product</th>
                                 <th className="px-4 sm:px-8 py-3 sm:py-6 text-left hidden sm:table-cell">Category</th>
@@ -204,7 +204,7 @@ const Inventory = () => {
                                     <tr
                                         key={p.id}
                                         className={clsx(
-                                            "hover:bg-indigo-50/20 transition-all group",
+                                            "hover:bg-indigo-50 dark:bg-indigo-950/30/20 transition-all group",
                                             isOut ? "bg-red-50/20" : isLow ? "bg-amber-50/20" : ""
                                         )}
                                     >
@@ -217,7 +217,7 @@ const Inventory = () => {
                                                     {p.name.charAt(0)}
                                                 </div>
                                                 <div className="flex flex-col min-w-0">
-                                                    <span className="text-xs sm:text-sm font-black text-gray-900 group-hover:text-indigo-600 transition-colors uppercase tracking-tight line-clamp-2">{p.name}</span>
+                                                    <span className="text-xs sm:text-sm font-black text-gray-900 dark:text-white group-hover:text-indigo-600 transition-colors uppercase tracking-tight line-clamp-2">{p.name}</span>
                                                     <span className="text-[9px] sm:text-[10px] font-black text-gray-300 mt-1 uppercase tracking-widest flex items-center gap-1">
                                                         <Barcode size={8} className="sm:size-3" /> {p.barcode}
                                                     </span>
@@ -229,7 +229,7 @@ const Inventory = () => {
                                                     </span>
                                                     <div className="flex flex-col gap-1 mt-2 sm:hidden">
                                                         <div className="flex items-center gap-2">
-                                                            <span className="font-black text-gray-900 text-xs">R: ₹{p.price.toLocaleString('en-IN')}</span>
+                                                            <span className="font-black text-gray-900 dark:text-white text-xs">R: ₹{p.price.toLocaleString('en-IN')}</span>
                                                             <span className="font-black text-indigo-600 text-xs">W: ₹{(p.wholesalePrice ?? p.price).toLocaleString('en-IN')}</span>
                                                         </div>
                                                         <span className="text-[8px] text-gray-400">COST: ₹{p.costPrice.toLocaleString('en-IN')}</span>
@@ -249,7 +249,7 @@ const Inventory = () => {
                                             <div className="flex flex-col gap-1">
                                                 <div className="flex flex-col">
                                                     <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Retail</span>
-                                                    <span className="font-black text-gray-900 leading-none">₹{p.price.toLocaleString('en-IN')}</span>
+                                                    <span className="font-black text-gray-900 dark:text-white leading-none">₹{p.price.toLocaleString('en-IN')}</span>
                                                 </div>
                                                 <div className="flex flex-col">
                                                     <span className="text-[8px] font-bold text-indigo-400 uppercase tracking-widest">Wholesale</span>
@@ -273,20 +273,20 @@ const Inventory = () => {
                                                         {isOut ? 'Zero Stock' : isLow ? 'Low Priority' : 'In Stock'}
                                                     </span>
                                                 </div>
-                                                <span className="text-xs sm:text-sm font-black text-gray-900 ml-4">{p.quantity} {p.unit}</span>
+                                                <span className="text-xs sm:text-sm font-black text-gray-900 dark:text-white ml-4">{p.quantity} {p.unit}</span>
                                             </div>
                                         </td>
                                         <td className="px-4 sm:px-8 py-4 sm:py-6 text-right">
                                             <div className="flex items-center justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all">
                                                 <button
                                                     onClick={() => handleEdit(p)}
-                                                    className="p-2 sm:p-3 text-indigo-600 sm:text-gray-400 bg-indigo-50 sm:bg-transparent hover:text-indigo-600 hover:bg-white rounded-lg sm:rounded-xl shadow-sm hover:shadow-md transition-all border border-transparent hover:border-indigo-100"
+                                                    className="p-2 sm:p-3 text-indigo-600 sm:text-gray-400 bg-indigo-50 dark:bg-indigo-950/30 sm:bg-transparent hover:text-indigo-600 hover:bg-white dark:bg-[#0a0a0a] rounded-lg sm:rounded-xl shadow-sm hover:shadow-md transition-all border border-transparent hover:border-indigo-100"
                                                 >
                                                     <Edit2 size={16} className="sm:size-4" />
                                                 </button>
                                                 <button
                                                     onClick={() => handleDelete(p.id, p.name)}
-                                                    className="p-2 sm:p-3 text-red-600 sm:text-gray-400 bg-red-50 sm:bg-transparent hover:text-red-600 hover:bg-white rounded-lg sm:rounded-xl shadow-sm hover:shadow-md transition-all border border-transparent hover:border-red-100"
+                                                    className="p-2 sm:p-3 text-red-600 sm:text-gray-400 bg-red-50 sm:bg-transparent hover:text-red-600 hover:bg-white dark:bg-[#0a0a0a] rounded-lg sm:rounded-xl shadow-sm hover:shadow-md transition-all border border-transparent hover:border-red-100"
                                                 >
                                                     <Trash2 size={16} className="sm:size-4" />
                                                 </button>
@@ -301,7 +301,7 @@ const Inventory = () => {
 
                 {filteredProducts.length === 0 && (
                     <div className="py-16 sm:py-24 flex flex-col items-center justify-center text-center">
-                        <div className="h-20 w-20 bg-gray-50 text-gray-200 rounded-full flex items-center justify-center mb-6">
+                        <div className="h-20 w-20 bg-gray-50 dark:bg-[#121212] text-gray-200 rounded-full flex items-center justify-center mb-6">
                             <Archive size={40} />
                         </div>
                         <h4 className="text-gray-400 font-black uppercase tracking-widest text-sm">No Matching Items</h4>
@@ -320,12 +320,12 @@ const Inventory = () => {
 
             {isScanning && (
                 <div className="fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center p-6 backdrop-blur-md">
-                    <div className="w-full max-w-md aspect-video bg-white rounded-[40px] overflow-hidden shadow-2xl relative border-8 border-indigo-600">
+                    <div className="w-full max-w-md aspect-video bg-white dark:bg-[#0a0a0a] rounded-[40px] overflow-hidden shadow-2xl relative border-8 border-indigo-600">
                         <div id="inventory-scanner" className="w-full h-full"></div>
                     </div>
                     <button
                         onClick={stopScanner}
-                        className="mt-12 px-10 py-4 bg-white/10 hover:bg-white/20 text-white rounded-full font-black uppercase tracking-widest flex items-center gap-3 border border-white/20 transition-all"
+                        className="mt-12 px-10 py-4 bg-white dark:bg-[#0a0a0a]/10 hover:bg-white dark:bg-[#0a0a0a]/20 text-white rounded-full font-black uppercase tracking-widest flex items-center gap-3 border border-white/20 transition-all"
                     >
                         <X size={20} /> Close Scanner
                     </button>

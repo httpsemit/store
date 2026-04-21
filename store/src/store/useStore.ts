@@ -15,6 +15,7 @@ interface StoreState {
     error: string | null;
     language: 'english' | 'hindi' | 'hinglish';
     toastMessage: { type: 'success' | 'error'; text: string } | null;
+    theme: 'light' | 'dark';
 
     // Auth
     login: (email: string, password: string) => Promise<boolean>;
@@ -64,8 +65,10 @@ interface StoreState {
     };
     getTopSellingItems: (sales: Sale[]) => { productId: string; productName: string; totalQty: number; unitPrice: number; revenue: number; profit: number }[];
 
-    // Localization
     setLanguage: (lang: 'english' | 'hindi' | 'hinglish') => void;
+
+    // Theme
+    setTheme: (theme: 'light' | 'dark') => void;
 
     // Toast
     showToast: (type: 'success' | 'error', text: string) => void;
@@ -86,6 +89,7 @@ export const useStore = create<StoreState>()(
             error: null,
             language: 'english',
             toastMessage: null,
+            theme: 'light',
 
             showToast: (type, text) => {
                 set({ toastMessage: { type, text } });
@@ -103,6 +107,11 @@ export const useStore = create<StoreState>()(
                 });
                 set({ language: lang });
             },
+
+            // ========================================
+            // THEME
+            // ========================================
+            setTheme: (theme) => set({ theme }),
 
             // ========================================
             // AUTH

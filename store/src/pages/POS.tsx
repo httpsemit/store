@@ -248,25 +248,25 @@ const POS = () => {
                             <input
                                 type="text"
                                 placeholder="Search products..."
-                                className="w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 bg-white border border-gray-200 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm transition-all text-sm font-medium"
+                                className="w-full pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-white/20 dark:border-white/10 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm transition-all text-sm font-medium"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
                             <button
                                 onClick={startCameraScanner}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-all sm:hidden"
+                                className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-all sm:hidden"
                                 title="Open Camera Scanner"
                             >
                                 <Camera size={18} />
                             </button>
                         </div>
                         <div className="flex items-center gap-2 w-full sm:w-auto">
-                            <div className="flex bg-gray-100 p-1 rounded-xl sm:rounded-2xl border border-gray-200 shadow-inner">
+                            <div className="flex bg-gray-100 dark:bg-gray-900 dark:bg-[#1a1a1a] p-1 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-white/20 dark:border-white/10 shadow-inner">
                                 <button
                                     onClick={() => toggleSaleType('retail')}
                                     className={clsx(
                                         "px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[10px] font-black uppercase tracking-widest transition-all",
-                                        saleType === 'retail' ? "bg-white text-emerald-600 shadow-sm" : "text-gray-400 hover:text-gray-600"
+                                        saleType === 'retail' ? "bg-white dark:bg-[#0a0a0a] text-emerald-600 shadow-sm" : "text-gray-400 hover:text-gray-600 dark:text-gray-300"
                                     )}
                                 >
                                     Retail
@@ -275,7 +275,7 @@ const POS = () => {
                                     onClick={() => toggleSaleType('wholesale')}
                                     className={clsx(
                                         "px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[10px] font-black uppercase tracking-widest transition-all",
-                                        saleType === 'wholesale' ? "bg-white text-indigo-600 shadow-sm" : "text-gray-400 hover:text-gray-600"
+                                        saleType === 'wholesale' ? "bg-white dark:bg-[#0a0a0a] text-indigo-600 shadow-sm" : "text-gray-400 hover:text-gray-600 dark:text-gray-300"
                                     )}
                                 >
                                     Wholesale
@@ -283,14 +283,14 @@ const POS = () => {
                             </div>
                             <button
                                 onClick={startCameraScanner}
-                                className="flex items-center gap-2 px-4 py-2.5 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-100 transition-all font-black text-[10px] uppercase tracking-widest whitespace-nowrap"
+                                className="flex items-center gap-2 px-4 py-2.5 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 rounded-xl hover:bg-indigo-100 transition-all font-black text-[10px] uppercase tracking-widest whitespace-nowrap"
                             >
                                 <Camera size={16} /> Scan Barcode
                             </button>
                             <select
                                 value={selectedCategory}
                                 onChange={(e) => setSelectedCategory(e.target.value)}
-                                className="px-3 sm:px-4 py-2.5 sm:py-3 bg-white border border-gray-200 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm transition-all text-sm font-medium flex-1 sm:flex-none"
+                                className="px-3 sm:px-4 py-2.5 sm:py-3 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-white/20 dark:border-white/10 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm transition-all text-sm font-medium flex-1 sm:flex-none"
                             >
                                 <option value="All">All Items</option>
                                 {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
@@ -310,7 +310,7 @@ const POS = () => {
                                     disabled={isOutOfStock}
                                     onClick={() => addToCart(p)}
                                     className={clsx(
-                                        "relative text-left bg-white border border-gray-100 rounded-2xl sm:rounded-3xl p-3 sm:p-5 shadow-sm hover:shadow-xl hover:border-indigo-400 transition-all group flex flex-col items-start active:scale-95",
+                                        "relative text-left bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-2xl sm:rounded-3xl p-3 sm:p-5 shadow-sm hover:shadow-xl hover:border-indigo-400 transition-all group flex flex-col items-start active:scale-95",
                                         inCart && "ring-2 ring-indigo-600 border-transparent",
                                         isOutOfStock && "opacity-50 grayscale cursor-not-allowed"
                                     )}
@@ -323,17 +323,17 @@ const POS = () => {
                                             {p.name.charAt(0)}
                                         </div>
                                         <div className="min-w-0">
-                                            <p className="font-black text-gray-900 text-xs sm:text-sm truncate leading-tight group-hover:text-indigo-600 transition-colors">{p.name}</p>
+                                            <p className="font-black text-gray-900 dark:text-white text-xs sm:text-sm truncate leading-tight group-hover:text-indigo-600 transition-colors">{p.name}</p>
                                             <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">{cat?.name || 'Uncategorized'}</p>
                                         </div>
                                     </div>
 
-                                    <div className="w-full mt-auto pt-3 sm:pt-4 border-t border-gray-50 flex items-center justify-between">
+                                    <div className="w-full mt-auto pt-3 sm:pt-4 border-t border-gray-50 dark:border-white/5 flex items-center justify-between">
                                         <div className="flex flex-col">
                                             <p className="text-[10px] text-gray-400 font-black uppercase tracking-tighter mb-0.5">Price</p>
                                             <p className={clsx(
                                                 "font-black text-base sm:text-lg leading-none",
-                                                saleType === 'wholesale' ? "text-indigo-600" : "text-gray-900"
+                                                saleType === 'wholesale' ? "text-indigo-600" : "text-gray-900 dark:text-white"
                                             )}>
                                                 ₹{saleType === 'wholesale' ? (p.wholesalePrice ?? p.price) : p.price}
                                             </p>
@@ -342,7 +342,7 @@ const POS = () => {
                                             <p className="text-[10px] text-gray-400 font-black uppercase tracking-tighter mb-0.5">Stock</p>
                                             <p className={clsx(
                                                 "text-xs font-black",
-                                                p.quantity <= 5 ? "text-amber-600" : "text-gray-500"
+                                                p.quantity <= 5 ? "text-amber-600" : "text-gray-500 dark:text-gray-400"
                                             )}>
                                                 {p.quantity} {p.unit}
                                             </p>
@@ -368,14 +368,14 @@ const POS = () => {
                 </div>
 
                 {/* Right: Modern Checkout Panel */}
-                <div className="w-full lg:w-[380px] flex flex-col bg-white border border-gray-100 rounded-[24px] sm:rounded-[32px] shadow-2xl overflow-hidden shrink-0 mt-0 lg:mt-2 lg:order-2 lg:max-h-full">
-                    <div className="p-4 sm:p-6 border-b border-gray-50 flex items-center justify-between bg-indigo-50/20">
+                <div className="w-full lg:w-[380px] flex flex-col bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-[24px] sm:rounded-[32px] shadow-2xl overflow-hidden shrink-0 mt-0 lg:mt-2 lg:order-2 lg:max-h-full">
+                    <div className="p-4 sm:p-6 border-b border-gray-50 dark:border-white/5 flex items-center justify-between bg-indigo-50 dark:bg-indigo-950/30/20">
                         <div className="flex items-center gap-3">
                             <div className="p-1.5 sm:p-2 bg-indigo-600 rounded-lg sm:rounded-xl text-white">
                                 <ShoppingCart size={14} className="sm:size-5" />
                             </div>
                             <div>
-                                <h3 className="font-black text-gray-900 tracking-tight leading-none text-xs sm:text-sm uppercase">Order Cart</h3>
+                                <h3 className="font-black text-gray-900 dark:text-white tracking-tight leading-none text-xs sm:text-sm uppercase">Order Cart</h3>
                                 <p className="text-[8px] sm:text-[9px] font-bold text-indigo-400 uppercase tracking-widest mt-1">{cart.length} Items</p>
                             </div>
                         </div>
@@ -387,11 +387,11 @@ const POS = () => {
 
                     <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3 sm:space-y-4 custom-scrollbar">
                         {cart.map((item: SaleItem) => (
-                            <div key={item.productId} className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50/50 rounded-2xl sm:rounded-3xl border border-transparent hover:border-indigo-100 hover:bg-white transition-all group">
+                            <div key={item.productId} className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 dark:bg-[#121212]/50 rounded-2xl sm:rounded-3xl border border-transparent hover:border-indigo-100 hover:bg-white dark:bg-[#0a0a0a] transition-all group">
                                 <div className="flex-1 min-w-0">
-                                    <p className="font-black text-gray-900 text-xs sm:text-sm truncate">{item.productName}</p>
+                                    <p className="font-black text-gray-900 dark:text-white text-xs sm:text-sm truncate">{item.productName}</p>
                                     <div className="flex items-center gap-2 mt-1">
-                                        <span className="text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 bg-indigo-50 text-indigo-600 rounded-md">
+                                        <span className="text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 rounded-md">
                                             ₹{item.unitPrice}
                                         </span>
                                         <span className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase">
@@ -400,17 +400,17 @@ const POS = () => {
                                     </div>
                                 </div>
 
-                                <div className="flex items-center bg-white rounded-lg sm:rounded-xl border border-gray-100 shadow-sm p-1">
+                                <div className="flex items-center bg-white dark:bg-[#0a0a0a] rounded-lg sm:rounded-xl border border-gray-100 dark:border-white/10 dark:border-white/5 shadow-sm p-1">
                                     <button
                                         onClick={() => updateCartQty(item.productId, -1)}
-                                        className="p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+                                        className="p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 dark:bg-indigo-950/30 rounded-lg transition-all"
                                     >
                                         <Minus size={14} />
                                     </button>
-                                    <span className="w-6 sm:w-8 text-center text-xs sm:text-sm font-black text-gray-900">{item.quantity}</span>
+                                    <span className="w-6 sm:w-8 text-center text-xs sm:text-sm font-black text-gray-900 dark:text-white">{item.quantity}</span>
                                     <button
                                         onClick={() => updateCartQty(item.productId, 1)}
-                                        className="p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+                                        className="p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 dark:bg-indigo-950/30 rounded-lg transition-all"
                                     >
                                         <Plus size={14} />
                                     </button>
@@ -421,7 +421,7 @@ const POS = () => {
 
                         {cart.length === 0 && (
                             <div className="h-full flex flex-col items-center justify-center p-6 sm:p-10 text-center py-16 sm:py-20">
-                                <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center text-gray-200 mb-6">
+                                <div className="w-20 h-20 bg-gray-50 dark:bg-[#121212] rounded-full flex items-center justify-center text-gray-200 mb-6">
                                     <Barcode size={32} />
                                 </div>
                                 <h4 className="font-black text-gray-400 uppercase tracking-widest text-xs sm:text-sm">Cart is Empty</h4>
@@ -431,26 +431,26 @@ const POS = () => {
                     </div>
 
                     {/* Summary & Checkout */}
-                    <div className="p-4 sm:p-6 bg-gray-50 border-t border-gray-100 space-y-3 sm:space-y-4">
+                    <div className="p-4 sm:p-6 bg-gray-50 dark:bg-[#121212] border-t border-gray-100 dark:border-white/10 dark:border-white/5 space-y-3 sm:space-y-4">
                         <div className="space-y-2">
-                            <div className="flex justify-between items-center text-gray-500">
+                            <div className="flex justify-between items-center text-gray-500 dark:text-gray-400">
                                 <span className="text-[10px] font-bold uppercase tracking-widest">Subtotal</span>
-                                <span className="text-sm font-black text-gray-900">₹{subtotal.toLocaleString('en-IN')}</span>
+                                <span className="text-sm font-black text-gray-900 dark:text-white">₹{subtotal.toLocaleString('en-IN')}</span>
                             </div>
                             <div className="flex justify-between items-center">
-                                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Discount</span>
+                                <span className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Discount</span>
                                 <div className="flex items-center">
                                     <span className="mr-1 text-[10px] font-black text-green-600">-₹</span>
                                     <input
                                         type="number"
                                         value={discount}
                                         onChange={(e) => setDiscount(Number(e.target.value))}
-                                        className="w-16 bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs font-black text-right outline-none focus:ring-1 focus:ring-green-500 transition-all text-green-600"
+                                        className="w-16 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-white/20 dark:border-white/10 rounded-lg px-2 py-1 text-xs font-black text-right outline-none focus:ring-1 focus:ring-green-500 transition-all text-green-600"
                                     />
                                 </div>
                             </div>
-                            <div className="flex justify-between items-center pt-2 border-t border-gray-200">
-                                <span className="text-xs font-black text-gray-900 uppercase tracking-widest">Payable</span>
+                            <div className="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-white/20 dark:border-white/10">
+                                <span className="text-xs font-black text-gray-900 dark:text-white uppercase tracking-widest">Payable</span>
                                 <span className="text-lg sm:text-2xl font-black text-indigo-600 tracking-tighter">₹{total.toLocaleString('en-IN')}</span>
                             </div>
                         </div>
@@ -462,7 +462,7 @@ const POS = () => {
                                         <div className="relative flex-1">
                                             <input
                                                 type="text"
-                                                className="w-full bg-white border border-gray-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs outline-none focus:ring-2 focus:ring-indigo-500 transition-all font-bold shadow-inner"
+                                                className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-white/20 dark:border-white/10 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs outline-none focus:ring-2 focus:ring-indigo-500 transition-all font-bold shadow-inner"
                                                 placeholder="Select Customer"
                                                 value={customerSearch}
                                                 onFocus={() => setShowCustomerResults(true)}
@@ -476,7 +476,7 @@ const POS = () => {
                                             </div>
 
                                             {showCustomerResults && customerSearch.length > 0 && (
-                                                <div className="absolute bottom-full left-0 right-0 mb-2 bg-white border border-gray-100 rounded-xl sm:rounded-2xl shadow-2xl z-50 max-h-48 overflow-y-auto animate-pop">
+                                                <div className="absolute bottom-full left-0 right-0 mb-2 bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-xl sm:rounded-2xl shadow-2xl z-50 max-h-48 overflow-y-auto animate-pop">
                                                     {customers.filter((c: Customer) =>
                                                         c.name.toLowerCase().includes(customerSearch.toLowerCase()) ||
                                                         c.phone.includes(customerSearch)
@@ -488,9 +488,9 @@ const POS = () => {
                                                                 setCustomerSearch(c.name);
                                                                 setShowCustomerResults(false);
                                                             }}
-                                                            className="w-full text-left px-4 sm:px-5 py-2.5 sm:py-3 hover:bg-indigo-50 transition-colors border-b border-gray-50 last:border-0"
+                                                            className="w-full text-left px-4 sm:px-5 py-2.5 sm:py-3 hover:bg-indigo-50 dark:bg-indigo-950/30 transition-colors border-b border-gray-50 dark:border-white/5 last:border-0"
                                                         >
-                                                            <p className="text-xs font-black text-gray-900">{c.name}</p>
+                                                            <p className="text-xs font-black text-gray-900 dark:text-white">{c.name}</p>
                                                             <p className="text-[10px] text-gray-400 font-bold">{c.phone}</p>
                                                         </button>
                                                     ))}
@@ -499,7 +499,7 @@ const POS = () => {
                                         </div>
                                         <button
                                             onClick={() => setShowQuickAdd(true)}
-                                            className="p-2.5 sm:p-3 bg-indigo-50 text-indigo-600 rounded-lg sm:rounded-xl hover:bg-indigo-100 transition-colors"
+                                            className="p-2.5 sm:p-3 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 rounded-lg sm:rounded-xl hover:bg-indigo-100 transition-colors"
                                             title="Add New Customer"
                                         >
                                             <UserPlus size={16} className="sm:size-5" />
@@ -519,7 +519,7 @@ const POS = () => {
                                                     "flex flex-col items-center justify-center gap-1 sm:gap-1.5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl border-2 text-[7px] sm:text-[8px] font-black uppercase tracking-tight transition-all",
                                                     paymentMethod === method.id
                                                         ? "bg-indigo-600 border-indigo-600 text-white shadow-lg"
-                                                        : "bg-white border-transparent text-gray-400 hover:bg-gray-100"
+                                                        : "bg-white dark:bg-[#0a0a0a] border-transparent text-gray-400 hover:bg-gray-100 dark:bg-gray-900 dark:bg-[#1a1a1a]"
                                                 )}
                                             >
                                                 <method.icon size={12} className="sm:size-4" />
@@ -552,14 +552,14 @@ const POS = () => {
             {/* Camera Scanner Overlay */}
             {isScanning && (
                 <div className="fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center p-6 backdrop-blur-md">
-                    <div className="w-full max-w-md aspect-square bg-white rounded-[40px] overflow-hidden shadow-2xl relative border-8 border-indigo-600">
+                    <div className="w-full max-w-md aspect-square bg-white dark:bg-[#0a0a0a] rounded-[40px] overflow-hidden shadow-2xl relative border-8 border-indigo-600">
                         <div id="pos-scanner" className="w-full h-full"></div>
                         <div className="absolute inset-0 pointer-events-none border-[40px] border-black/20 rounded-[32px]"></div>
                         <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.8)] animate-scan-line"></div>
                     </div>
                     <button
                         onClick={stopCameraScanner}
-                        className="mt-12 px-10 py-4 bg-white/10 hover:bg-white/20 text-white rounded-full font-black uppercase tracking-widest flex items-center gap-3 border border-white/20 transition-all"
+                        className="mt-12 px-10 py-4 bg-white dark:bg-[#0a0a0a]/10 hover:bg-white dark:bg-[#0a0a0a]/20 text-white rounded-full font-black uppercase tracking-widest flex items-center gap-3 border border-white/20 transition-all"
                     >
                         <X size={20} /> Close Scanner
                     </button>
@@ -569,10 +569,10 @@ const POS = () => {
             {/* Quick Add Customer Modal */}
             {showQuickAdd && (
                 <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm animate-fade-in">
-                    <div className="bg-white w-full max-w-sm rounded-[40px] shadow-2xl overflow-hidden p-8">
+                    <div className="bg-white dark:bg-[#0a0a0a] w-full max-w-sm rounded-[40px] shadow-2xl overflow-hidden p-8">
                         <div className="flex items-center justify-between mb-8">
-                            <h3 className="text-xl font-black text-gray-900 tracking-tight">Quick Add Customer</h3>
-                            <button onClick={() => setShowQuickAdd(false)} className="p-2 text-gray-400 hover:bg-gray-100 rounded-xl transition-colors">
+                            <h3 className="text-xl font-black text-gray-900 dark:text-white tracking-tight">Quick Add Customer</h3>
+                            <button onClick={() => setShowQuickAdd(false)} className="p-2 text-gray-400 hover:bg-gray-100 dark:bg-gray-900 dark:bg-[#1a1a1a] rounded-xl transition-colors">
                                 <X size={20} />
                             </button>
                         </div>
@@ -583,7 +583,7 @@ const POS = () => {
                                     autoFocus
                                     required
                                     type="text"
-                                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3.5 font-bold outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                                    className="w-full bg-gray-50 dark:bg-[#121212] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-2xl px-5 py-3.5 font-bold outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                                     placeholder="Enter full name"
                                     value={newCustomerBody.name}
                                     onChange={(e) => setNewCustomerBody(prev => ({ ...prev, name: e.target.value }))}
@@ -593,7 +593,7 @@ const POS = () => {
                                 <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Phone Number</label>
                                 <input
                                     type="tel"
-                                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3.5 font-bold outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                                    className="w-full bg-gray-50 dark:bg-[#121212] border border-gray-100 dark:border-white/10 dark:border-white/5 rounded-2xl px-5 py-3.5 font-bold outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                                     placeholder="Enter mobile number"
                                     value={newCustomerBody.phone}
                                     onChange={(e) => setNewCustomerBody(prev => ({ ...prev, phone: e.target.value }))}
@@ -601,15 +601,15 @@ const POS = () => {
                             </div>
                             <div className="space-y-2">
                                 <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Customer Type</label>
-                                <div className="grid grid-cols-2 gap-3 bg-gray-50 p-1.5 rounded-2xl border border-gray-100">
+                                <div className="grid grid-cols-2 gap-3 bg-gray-50 dark:bg-[#121212] p-1.5 rounded-2xl border border-gray-100 dark:border-white/10 dark:border-white/5">
                                     <button
                                         type="button"
                                         onClick={() => setNewCustomerBody(prev => ({ ...prev, customerType: 'retail' }))}
                                         className={clsx(
                                             "py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all",
                                             newCustomerBody.customerType === 'retail'
-                                                ? "bg-white text-emerald-600 shadow-sm border border-emerald-100"
-                                                : "text-gray-400 hover:text-gray-600"
+                                                ? "bg-white dark:bg-[#0a0a0a] text-emerald-600 shadow-sm border border-emerald-100"
+                                                : "text-gray-400 hover:text-gray-600 dark:text-gray-300"
                                         )}
                                     >
                                         Retail
@@ -620,8 +620,8 @@ const POS = () => {
                                         className={clsx(
                                             "py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all",
                                             newCustomerBody.customerType === 'wholesale'
-                                                ? "bg-white text-indigo-600 shadow-sm border border-indigo-100"
-                                                : "text-gray-400 hover:text-gray-600"
+                                                ? "bg-white dark:bg-[#0a0a0a] text-indigo-600 shadow-sm border border-indigo-100"
+                                                : "text-gray-400 hover:text-gray-600 dark:text-gray-300"
                                         )}
                                     >
                                         Wholesale
@@ -642,44 +642,44 @@ const POS = () => {
             {/* Branded Invoice View Modal */}
             {showInvoice && lastSale && (
                 <div className="fixed inset-0 z-[110] bg-black/80 flex items-center justify-center p-6 backdrop-blur-md animate-fade-in">
-                    <div className="bg-white w-full max-w-sm rounded-[40px] shadow-2xl overflow-hidden shadow-emerald-900/20">
+                    <div className="bg-white dark:bg-[#0a0a0a] w-full max-w-sm rounded-[40px] shadow-2xl overflow-hidden shadow-emerald-900/20">
                         <div className="p-1.5 bg-emerald-500"></div>
                         <div className="p-8 flex flex-col items-center">
                             <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600 mb-6 border-4 border-emerald-100 animate-pop">
                                 <CheckCircle2 size={32} />
                             </div>
-                            <h2 className="text-2xl font-black text-gray-900 tracking-tighter mb-1 uppercase">Bill Generated!</h2>
+                            <h2 className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter mb-1 uppercase">Bill Generated!</h2>
                             <p className="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mb-8">Amit Store</p>
 
                             {/* Invoice Receipt Body */}
-                            <div className="w-full bg-gray-50 rounded-[32px] p-6 mb-8 border border-dashed border-gray-200">
-                                <div className="flex justify-between items-center mb-4 pb-4 border-b border-gray-200">
+                            <div className="w-full bg-gray-50 dark:bg-[#121212] rounded-[32px] p-6 mb-8 border border-dashed border-gray-200 dark:border-white/20 dark:border-white/10">
+                                <div className="flex justify-between items-center mb-4 pb-4 border-b border-gray-200 dark:border-white/20 dark:border-white/10">
                                     <div className="text-left">
                                         <p className="text-[10px] uppercase font-black text-gray-400">Bill No</p>
-                                        <p className="text-xs font-black text-gray-900">{lastSale.billNo}</p>
+                                        <p className="text-xs font-black text-gray-900 dark:text-white">{lastSale.billNo}</p>
                                     </div>
                                     <div className="text-right">
                                         <p className="text-[10px] uppercase font-black text-gray-400">Date</p>
-                                        <p className="text-xs font-black text-gray-900">{lastSale.date}</p>
+                                        <p className="text-xs font-black text-gray-900 dark:text-white">{lastSale.date}</p>
                                     </div>
                                 </div>
                                 <div className="mb-4">
                                     <p className="text-[10px] uppercase font-black text-gray-400 mb-1">Customer</p>
-                                    <p className="text-xs font-black text-gray-900">{lastSale.customerName}</p>
+                                    <p className="text-xs font-black text-gray-900 dark:text-white">{lastSale.customerName}</p>
                                     <p className="text-[10px] font-black text-emerald-600 tracking-tight mt-0.5">Payment: {lastSale.paymentMethod}</p>
                                 </div>
 
                                 <div className="space-y-3 mb-6">
                                     {lastSale.items.map((item: SaleItem, idx: number) => (
-                                        <div key={idx} className="flex justify-between text-xs font-bold text-gray-700">
+                                        <div key={idx} className="flex justify-between text-xs font-bold text-gray-700 dark:text-gray-200">
                                             <span>{item.productName.toLowerCase()} {item.quantity} × {item.unitPrice}</span>
-                                            <span className="font-black text-gray-900">₹{item.total}</span>
+                                            <span className="font-black text-gray-900 dark:text-white">₹{item.total}</span>
                                         </div>
                                     ))}
                                 </div>
 
-                                <div className="flex justify-between items-center pt-4 border-t-2 border-dashed border-gray-200">
-                                    <span className="text-lg font-black text-gray-900 uppercase">Total</span>
+                                <div className="flex justify-between items-center pt-4 border-t-2 border-dashed border-gray-200 dark:border-white/20 dark:border-white/10">
+                                    <span className="text-lg font-black text-gray-900 dark:text-white uppercase">Total</span>
                                     <span className="text-2xl font-black text-emerald-600 tracking-tighter">₹{lastSale.total.toLocaleString('en-IN')}</span>
                                 </div>
                             </div>

@@ -102,16 +102,16 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in">
             <div
                 ref={modalRef}
-                className="bg-white w-full max-w-xl rounded-[32px] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-slide-up"
+                className="bg-white dark:bg-[#0a0a0a] w-full max-w-xl rounded-[32px] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-slide-up"
             >
                 {/* Header */}
-                <div className="px-8 py-6 border-b border-gray-50 flex items-center justify-between bg-white">
+                <div className="px-8 py-6 border-b border-gray-50 dark:border-white/5 flex items-center justify-between bg-white dark:bg-[#0a0a0a]">
                     <div className="flex items-center gap-3">
-                        <div className="p-3 bg-indigo-50 text-indigo-600 rounded-2xl">
+                        <div className="p-3 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 rounded-2xl">
                             <Package size={22} />
                         </div>
                         <div>
-                            <h3 className="text-lg font-black text-gray-900 tracking-tight">
+                            <h3 className="text-lg font-black text-gray-900 dark:text-white tracking-tight">
                                 {product ? 'Edit Product Specification' : 'Register New Product'}
                             </h3>
                             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Inventory Management System</p>
@@ -119,7 +119,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                     </div>
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-gray-100 rounded-xl transition-all text-gray-400 hover:text-gray-600"
+                        className="p-2 hover:bg-gray-100 dark:bg-gray-900 dark:bg-[#1a1a1a] rounded-xl transition-all text-gray-400 hover:text-gray-600 dark:text-gray-300"
                     >
                         <X size={20} />
                     </button>
@@ -141,23 +141,23 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                         <label className="block text-[10px] font-black text-indigo-400 uppercase tracking-widest leading-none">Primary Details</label>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                             <div className="md:col-span-2">
-                                <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Full Product Name</label>
+                                <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 ml-1">Full Product Name</label>
                                 <input
                                     type="text"
                                     required
                                     placeholder="e.g. Amul Butter 500g"
-                                    className="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-sm font-bold shadow-inner"
+                                    className="w-full px-5 py-3.5 bg-gray-50 dark:bg-[#121212] border-2 border-transparent rounded-2xl focus:bg-white dark:bg-[#0a0a0a] focus:border-indigo-500 transition-all text-sm font-bold shadow-inner"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Category</label>
+                                <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 ml-1">Category</label>
                                 <div className="relative">
                                     <Layers className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
                                     <select
                                         required
-                                        className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-sm font-bold appearance-none shadow-inner"
+                                        className="w-full pl-11 pr-4 py-3.5 bg-gray-50 dark:bg-[#121212] border-2 border-transparent rounded-2xl focus:bg-white dark:bg-[#0a0a0a] focus:border-indigo-500 transition-all text-sm font-bold appearance-none shadow-inner"
                                         value={formData.categoryId}
                                         onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
                                     >
@@ -175,13 +175,13 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                         <label className="block text-[10px] font-black text-indigo-400 uppercase tracking-widest leading-none">Stock & Format</label>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                             <div className="relative">
-                                <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Barcode / SKU (Optional)</label>
+                                <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 ml-1">Barcode / SKU (Optional)</label>
                                 <div className="relative">
                                     <Barcode className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
                                     <input
                                         type="text"
                                         placeholder="Scan or Enter"
-                                        className="w-full pl-11 pr-12 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-sm font-mono font-bold shadow-inner"
+                                        className="w-full pl-11 pr-12 py-3.5 bg-gray-50 dark:bg-[#121212] border-2 border-transparent rounded-2xl focus:bg-white dark:bg-[#0a0a0a] focus:border-indigo-500 transition-all text-sm font-mono font-bold shadow-inner"
                                         value={formData.barcode}
                                         onChange={(e) => setFormData({ ...formData, barcode: e.target.value })}
                                     />
@@ -190,7 +190,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                                         onClick={() => setIsScanning(!isScanning)}
                                         className={clsx(
                                             "absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-xl transition-all",
-                                            isScanning ? "bg-amber-100 text-amber-600" : "bg-indigo-50 text-indigo-600 hover:bg-indigo-100"
+                                            isScanning ? "bg-amber-100 text-amber-600" : "bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 hover:bg-indigo-100"
                                         )}
                                     >
                                         <Camera size={16} />
@@ -198,24 +198,24 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Current Stock</label>
+                                <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 ml-1">Current Stock</label>
                                 <input
                                     type="number"
                                     required
-                                    className="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-sm font-bold shadow-inner"
+                                    className="w-full px-5 py-3.5 bg-gray-50 dark:bg-[#121212] border-2 border-transparent rounded-2xl focus:bg-white dark:bg-[#0a0a0a] focus:border-indigo-500 transition-all text-sm font-bold shadow-inner"
                                     value={formData.quantity}
                                     onChange={(e) => setFormData({ ...formData, quantity: Number(e.target.value) })}
                                     min="0"
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Low Stock Warning At</label>
+                                <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 ml-1">Low Stock Warning At</label>
                                 <div className="relative">
                                     <AlertCircle className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
                                     <input
                                         type="number"
                                         required
-                                        className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-sm font-bold shadow-inner"
+                                        className="w-full pl-11 pr-4 py-3.5 bg-gray-50 dark:bg-[#121212] border-2 border-transparent rounded-2xl focus:bg-white dark:bg-[#0a0a0a] focus:border-indigo-500 transition-all text-sm font-bold shadow-inner"
                                         value={formData.lowStockThreshold}
                                         onChange={(e) => setFormData({ ...formData, lowStockThreshold: Number(e.target.value) })}
                                         min="0"
@@ -223,9 +223,9 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Unit Type</label>
+                                <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 ml-1">Unit Type</label>
                                 <select
-                                    className="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-sm font-bold appearance-none shadow-inner"
+                                    className="w-full px-5 py-3.5 bg-gray-50 dark:bg-[#121212] border-2 border-transparent rounded-2xl focus:bg-white dark:bg-[#0a0a0a] focus:border-indigo-500 transition-all text-sm font-bold appearance-none shadow-inner"
                                     value={formData.unit}
                                     onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
                                 >
@@ -247,13 +247,13 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                         <label className="block text-[10px] font-black text-indigo-400 uppercase tracking-widest leading-none">Financials</label>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                             <div>
-                                <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Retail Price (₹)</label>
+                                <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 ml-1">Retail Price (₹)</label>
                                 <div className="relative">
                                     <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-600" size={16} />
                                     <input
                                         type="number"
                                         required
-                                        className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-lg font-black text-gray-900 shadow-inner"
+                                        className="w-full pl-11 pr-4 py-3.5 bg-gray-50 dark:bg-[#121212] border-2 border-transparent rounded-2xl focus:bg-white dark:bg-[#0a0a0a] focus:border-indigo-500 transition-all text-lg font-black text-gray-900 dark:text-white shadow-inner"
                                         value={formData.price}
                                         onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
                                         min="0"
@@ -261,13 +261,13 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Wholesale Price (₹)</label>
+                                <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 ml-1">Wholesale Price (₹)</label>
                                 <div className="relative">
                                     <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-indigo-600" size={16} />
                                     <input
                                         type="number"
                                         placeholder="Fallback: Retail"
-                                        className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-lg font-black text-indigo-900 shadow-inner"
+                                        className="w-full pl-11 pr-4 py-3.5 bg-gray-50 dark:bg-[#121212] border-2 border-transparent rounded-2xl focus:bg-white dark:bg-[#0a0a0a] focus:border-indigo-500 transition-all text-lg font-black text-indigo-900 dark:text-indigo-100 shadow-inner"
                                         value={formData.wholesalePrice || ''}
                                         onChange={(e) => setFormData({ ...formData, wholesalePrice: Number(e.target.value) || 0 })}
                                         min="0"
@@ -275,13 +275,13 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Purchase Cost (₹)</label>
+                                <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 ml-1">Purchase Cost (₹)</label>
                                 <div className="relative opacity-80">
                                     <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
                                     <input
                                         type="number"
                                         required
-                                        className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-lg font-bold text-gray-500 shadow-inner"
+                                        className="w-full pl-11 pr-4 py-3.5 bg-gray-50 dark:bg-[#121212] border-2 border-transparent rounded-2xl focus:bg-white dark:bg-[#0a0a0a] focus:border-indigo-500 transition-all text-lg font-bold text-gray-500 dark:text-gray-400 shadow-inner"
                                         value={formData.costPrice}
                                         onChange={(e) => setFormData({ ...formData, costPrice: Number(e.target.value) })}
                                         min="0"
@@ -298,7 +298,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                                     </span>
                                 </div>
                                 {(formData.wholesalePrice || 0) > 0 && (
-                                    <div className="px-5 py-3 bg-indigo-50 rounded-2xl flex items-center justify-between">
+                                    <div className="px-5 py-3 bg-indigo-50 dark:bg-indigo-950/30 rounded-2xl flex items-center justify-between">
                                         <span className="text-[10px] font-black text-indigo-700 uppercase tracking-widest">Wholesale Margin</span>
                                         <span className="text-sm font-black text-indigo-700 uppercase">
                                             ₹{((formData.wholesalePrice || 0) - formData.costPrice).toFixed(2)}
@@ -313,7 +313,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                     <div className="space-y-5">
                         <label className="block text-[10px] font-black text-indigo-400 uppercase tracking-widest leading-none">Additional Notes</label>
                         <textarea
-                            className="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-sm font-medium text-gray-600 min-h-[100px] resize-none shadow-inner"
+                            className="w-full px-5 py-4 bg-gray-50 dark:bg-[#121212] border-2 border-transparent rounded-2xl focus:bg-white dark:bg-[#0a0a0a] focus:border-indigo-500 transition-all text-sm font-medium text-gray-600 dark:text-gray-300 min-h-[100px] resize-none shadow-inner"
                             placeholder="Add product origin, storage instructions or supplier details..."
                             value={formData.description}
                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -321,11 +321,11 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="pt-6 border-t border-gray-50 flex gap-4">
+                    <div className="pt-6 border-t border-gray-50 dark:border-white/5 flex gap-4">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex-1 py-4 px-6 rounded-2xl border-2 border-gray-100 text-sm font-black text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-all active:scale-95"
+                            className="flex-1 py-4 px-6 rounded-2xl border-2 border-gray-100 dark:border-white/10 dark:border-white/5 text-sm font-black text-gray-400 hover:bg-gray-50 dark:bg-[#121212] hover:text-gray-600 dark:text-gray-300 transition-all active:scale-95"
                         >
                             Discard
                         </button>
