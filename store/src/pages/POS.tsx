@@ -91,7 +91,7 @@ const POS = () => {
                         : item
                 );
             }
-            const unitPrice = saleType === 'wholesale' ? (product.wholesalePrice || product.price) : product.price;
+            const unitPrice = saleType === 'wholesale' ? (product.wholesalePrice ?? product.price) : product.price;
             return [...prev, {
                 productId: product.id,
                 productName: product.name,
@@ -173,7 +173,7 @@ const POS = () => {
     const handleQuickAddCustomer = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!newCustomerBody.name) return;
-        const customer = await addCustomer({ ...newCustomerBody, customerType: saleType });
+        const customer = await addCustomer(newCustomerBody);
         if (customer) {
             setSelectedCustomer(customer);
             setShowQuickAdd(false);
@@ -337,7 +337,7 @@ const POS = () => {
                                                 "font-black text-base sm:text-lg leading-none",
                                                 saleType === 'wholesale' ? "text-indigo-600" : "text-gray-900"
                                             )}>
-                                                ₹{saleType === 'wholesale' ? (p.wholesalePrice || p.price) : p.price}
+                                                ₹{saleType === 'wholesale' ? (p.wholesalePrice ?? p.price) : p.price}
                                             </p>
                                         </div>
                                         <div className="flex flex-col items-end">
@@ -717,22 +717,7 @@ const POS = () => {
                 </div>
             )}
 
-            {isScanning && (
-                <div className="fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center p-6 backdrop-blur-md">
-                    <div className="w-full max-w-md aspect-video bg-white rounded-[40px] overflow-hidden shadow-2xl relative border-8 border-indigo-600">
-                        <div id="pos-scanner" className="w-full h-full"></div>
-                    </div>
-                    <button
-                        onClick={stopCameraScanner}
-                        className="mt-12 px-10 py-4 bg-white/10 hover:bg-white/20 text-white rounded-full font-black uppercase tracking-widest flex items-center gap-3 border border-white/20 transition-all font-black"
-                    >
-                        <X size={20} /> Close Scanner
-                    </button>
-                    <div className="mt-8 text-white/40 font-bold uppercase tracking-[0.3em] text-[10px] animate-pulse">
-                        Align Barcode within frame
-                    </div>
-                </div>
-            )}
+
         </div>
     );
 };

@@ -15,11 +15,12 @@ const Customers = () => {
     const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
     const [customerHistory, setCustomerHistory] = useState<{ sales: any[], payments: any[] }>({ sales: [], payments: [] });
     const [formData, setFormData] = useState({ name: '', phone: '', email: '', customerType: 'retail' as 'retail' | 'wholesale' });
+    const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
     const [repaymentAmount, setRepaymentAmount] = useState('');
     const [repaymentMethod, setRepaymentMethod] = useState<'Cash' | 'UPI'>('Cash');
 
-    const filteredCustomers = customers.filter(c => 
-        c.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    const filteredCustomers = customers.filter(c =>
+        c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         c.phone.includes(searchTerm)
     );
 
@@ -37,7 +38,7 @@ const Customers = () => {
     const openModal = (customer?: Customer) => {
         if (customer) {
             setEditingCustomer(customer);
-            setFormData({ name: customer.name, phone: customer.phone, email: customer.email || '', customerType: customer.customerType });
+            setFormData({ name: customer.name, phone: customer.phone, email: customer.email || '', customerType: customer.customerType || 'retail' });
         } else {
             setEditingCustomer(null);
             setFormData({ name: '', phone: '', email: '', customerType: 'retail' });
@@ -109,7 +110,7 @@ const Customers = () => {
                     <div key={customer.id} className="bg-white border border-gray-100 rounded-[24px] sm:rounded-[40px] p-4 sm:p-8 shadow-sm hover:shadow-2xl transition-all group relative overflow-hidden">
                         {/* Decorative background element */}
                         <div className="absolute -top-10 -right-10 w-32 h-32 bg-indigo-50/50 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        
+
                         <div className="flex items-start justify-between mb-4 sm:mb-8 relative">
                             <div className="w-12 h-12 sm:w-16 sm:h-16 bg-indigo-600 rounded-[16px] sm:rounded-[24px] flex items-center justify-center text-white shadow-xl shadow-indigo-100 font-black text-lg sm:text-2xl group-hover:scale-110 transition-transform">
                                 {customer.name.charAt(0).toUpperCase()}
@@ -117,14 +118,14 @@ const Customers = () => {
                             <div className="flex flex-col items-end gap-2">
                                 <span className={clsx(
                                     "px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest border",
-                                    customer.customerType === 'wholesale' 
-                                        ? "bg-indigo-50 text-indigo-600 border-indigo-100" 
+                                    customer.customerType === 'wholesale'
+                                        ? "bg-indigo-50 text-indigo-600 border-indigo-100"
                                         : "bg-emerald-50 text-emerald-600 border-emerald-100"
                                 )}>
                                     {customer.customerType}
                                 </span>
                                 <div className="flex gap-2">
-                                    <button 
+                                    <button
                                         onClick={() => openModal(customer)}
                                         className="p-2 sm:p-3 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl sm:rounded-2xl transition-all"
                                     >
@@ -155,14 +156,14 @@ const Customers = () => {
                                 </div>
                             </div>
 
-                             <div className="grid grid-cols-2 gap-2 pt-1">
-                                <button 
+                            <div className="grid grid-cols-2 gap-2 pt-1">
+                                <button
                                     onClick={() => openHistory(customer)}
                                     className="flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3 bg-gray-900 text-white rounded-lg sm:rounded-xl font-black text-[8px] sm:text-[9px] uppercase tracking-widest hover:bg-black transition-all"
                                 >
                                     <History size={12} className="sm:size-4" /> {t('history')}
                                 </button>
-                                <button 
+                                <button
                                     onClick={() => openRepayment(customer)}
                                     className="flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3 bg-emerald-600 text-white rounded-lg sm:rounded-xl font-black text-[8px] sm:text-[9px] uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-lg hover:shadow-emerald-200"
                                 >
@@ -202,7 +203,7 @@ const Customers = () => {
                                 />
                             </div>
                             <div className="grid grid-cols-2 gap-2">
-                                <button 
+                                <button
                                     type="button"
                                     onClick={() => setRepaymentMethod('Cash')}
                                     className={clsx(
@@ -212,7 +213,7 @@ const Customers = () => {
                                 >
                                     Cash
                                 </button>
-                                <button 
+                                <button
                                     type="button"
                                     onClick={() => setRepaymentMethod('UPI')}
                                     className={clsx(
@@ -223,7 +224,7 @@ const Customers = () => {
                                     UPI
                                 </button>
                             </div>
-                            <button 
+                            <button
                                 type="submit"
                                 className="w-full py-3 sm:py-4 bg-emerald-600 text-white rounded-xl sm:rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-emerald-100 hover:bg-emerald-700 transition-all"
                             >
@@ -369,7 +370,7 @@ const Customers = () => {
                             <div className="space-y-3">
                                 <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Customer Type</label>
                                 <div className="grid grid-cols-2 gap-2">
-                                    <button 
+                                    <button
                                         type="button"
                                         onClick={() => setFormData(prev => ({ ...prev, customerType: 'retail' }))}
                                         className={clsx(
@@ -379,7 +380,7 @@ const Customers = () => {
                                     >
                                         Retail
                                     </button>
-                                    <button 
+                                    <button
                                         type="button"
                                         onClick={() => setFormData(prev => ({ ...prev, customerType: 'wholesale' }))}
                                         className={clsx(
@@ -392,7 +393,7 @@ const Customers = () => {
                                 </div>
                             </div>
 
-                            <button 
+                            <button
                                 type="submit"
                                 className="w-full py-5 bg-indigo-600 text-white rounded-[24px] font-black uppercase tracking-widest shadow-xl shadow-indigo-100 hover:bg-indigo-700 transition-all active:scale-[0.98]"
                             >

@@ -44,7 +44,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                     setFormData(prev => ({ ...prev, barcode: decodedText }));
                     setIsScanning(false);
                 },
-                () => {}
+                () => { }
             );
 
             scannerRef.current = scanner;
@@ -100,7 +100,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
 
     return (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in">
-            <div 
+            <div
                 ref={modalRef}
                 className="bg-white w-full max-w-xl rounded-[32px] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-slide-up"
             >
@@ -108,7 +108,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                 <div className="px-8 py-6 border-b border-gray-50 flex items-center justify-between bg-white">
                     <div className="flex items-center gap-3">
                         <div className="p-3 bg-indigo-50 text-indigo-600 rounded-2xl">
-                             <Package size={22} />
+                            <Package size={22} />
                         </div>
                         <div>
                             <h3 className="text-lg font-black text-gray-900 tracking-tight">
@@ -117,8 +117,8 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Inventory Management System</p>
                         </div>
                     </div>
-                    <button 
-                        onClick={onClose} 
+                    <button
+                        onClick={onClose}
                         className="p-2 hover:bg-gray-100 rounded-xl transition-all text-gray-400 hover:text-gray-600"
                     >
                         <X size={20} />
@@ -172,8 +172,8 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
 
                     {/* Identifiers & Units */}
                     <div className="space-y-5">
-                         <label className="block text-[10px] font-black text-indigo-400 uppercase tracking-widest leading-none">Stock & Format</label>
-                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <label className="block text-[10px] font-black text-indigo-400 uppercase tracking-widest leading-none">Stock & Format</label>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                             <div className="relative">
                                 <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Barcode / SKU (Optional)</label>
                                 <div className="relative">
@@ -185,7 +185,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                                         value={formData.barcode}
                                         onChange={(e) => setFormData({ ...formData, barcode: e.target.value })}
                                     />
-                                    <button 
+                                    <button
                                         type="button"
                                         onClick={() => setIsScanning(!isScanning)}
                                         className={clsx(
@@ -239,58 +239,58 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                                     <option value="box">box</option>
                                 </select>
                             </div>
-                         </div>
+                        </div>
                     </div>
 
                     {/* Pricing */}
                     <div className="space-y-5">
-                         <label className="block text-[10px] font-black text-indigo-400 uppercase tracking-widest leading-none">Financials</label>
-                             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                                <div>
-                                    <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Retail Price (₹)</label>
-                                    <div className="relative">
-                                        <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-600" size={16} />
-                                        <input
-                                            type="number"
-                                            required
-                                            className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-lg font-black text-gray-900 shadow-inner"
-                                            value={formData.price}
-                                            onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
-                                            min="0"
-                                        />
-                                    </div>
+                        <label className="block text-[10px] font-black text-indigo-400 uppercase tracking-widest leading-none">Financials</label>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Retail Price (₹)</label>
+                                <div className="relative">
+                                    <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-600" size={16} />
+                                    <input
+                                        type="number"
+                                        required
+                                        className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-lg font-black text-gray-900 shadow-inner"
+                                        value={formData.price}
+                                        onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
+                                        min="0"
+                                    />
                                 </div>
-                                <div>
-                                    <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Wholesale Price (₹)</label>
-                                    <div className="relative">
-                                        <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-indigo-600" size={16} />
-                                        <input
-                                            type="number"
-                                            placeholder="Fallback: Retail"
-                                            className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-lg font-black text-indigo-900 shadow-inner"
-                                            value={formData.wholesalePrice || ''}
-                                            onChange={(e) => setFormData({ ...formData, wholesalePrice: e.target.value ? Number(e.target.value) : undefined as any })}
-                                            min="0"
-                                        />
-                                    </div>
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Wholesale Price (₹)</label>
+                                <div className="relative">
+                                    <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-indigo-600" size={16} />
+                                    <input
+                                        type="number"
+                                        placeholder="Fallback: Retail"
+                                        className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-lg font-black text-indigo-900 shadow-inner"
+                                        value={formData.wholesalePrice || ''}
+                                        onChange={(e) => setFormData({ ...formData, wholesalePrice: Number(e.target.value) || 0 })}
+                                        min="0"
+                                    />
                                 </div>
-                                <div>
-                                    <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Purchase Cost (₹)</label>
-                                    <div className="relative opacity-80">
-                                        <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                                        <input
-                                            type="number"
-                                            required
-                                            className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-lg font-bold text-gray-500 shadow-inner"
-                                            value={formData.costPrice}
-                                            onChange={(e) => setFormData({ ...formData, costPrice: Number(e.target.value) })}
-                                            min="0"
-                                        />
-                                    </div>
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Purchase Cost (₹)</label>
+                                <div className="relative opacity-80">
+                                    <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                                    <input
+                                        type="number"
+                                        required
+                                        className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-lg font-bold text-gray-500 shadow-inner"
+                                        value={formData.costPrice}
+                                        onChange={(e) => setFormData({ ...formData, costPrice: Number(e.target.value) })}
+                                        min="0"
+                                    />
                                 </div>
-                             </div>
-                          {formData.price > 0 && formData.costPrice > 0 && (
-                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            </div>
+                        </div>
+                        {formData.price > 0 && formData.costPrice > 0 && (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="px-5 py-3 bg-green-50 rounded-2xl flex items-center justify-between">
                                     <span className="text-[10px] font-black text-green-700 uppercase tracking-widest">Retail Margin</span>
                                     <span className="text-sm font-black text-green-700 uppercase">
@@ -305,8 +305,8 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                                         </span>
                                     </div>
                                 )}
-                             </div>
-                          )}
+                            </div>
+                        )}
                     </div>
 
                     {/* Description */}

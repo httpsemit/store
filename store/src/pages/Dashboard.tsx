@@ -47,7 +47,7 @@ const Dashboard = () => {
     const handleAddExpense = async (e: FormEvent) => {
         e.preventDefault();
         if (!expenseForm.amount) return;
-        
+
         setIsAddingExpense(true);
         try {
             await addExpense({
@@ -65,38 +65,38 @@ const Dashboard = () => {
     };
 
     const statCards = [
-        { 
-            title: t('gross_revenue'), 
-            value: `₹${stats.totalRevenue.toLocaleString('en-IN')}`, 
-            icon: IndianRupee, 
-            color: 'text-emerald-600', 
+        {
+            title: t('gross_revenue'),
+            value: `₹${stats.totalRevenue.toLocaleString('en-IN')}`,
+            icon: IndianRupee,
+            color: 'text-emerald-600',
             bg: 'bg-emerald-50',
             trend: '+Live',
             show: true
         },
-        { 
-            title: t('net_profit'), 
-            value: `₹${stats.totalProfit.toLocaleString('en-IN')}`, 
-            icon: TrendingUp, 
-            color: 'text-indigo-600', 
+        {
+            title: t('net_profit'),
+            value: `₹${stats.totalProfit.toLocaleString('en-IN')}`,
+            icon: TrendingUp,
+            color: 'text-indigo-600',
             bg: 'bg-indigo-50',
             trend: 'Direct',
-            show: isOwner 
+            show: isOwner
         },
-        { 
-            title: t('transactions'), 
-            value: stats.transactionsCount, 
-            icon: ShoppingCart, 
-            color: 'text-blue-600', 
+        {
+            title: t('transactions'),
+            value: stats.transactionsCount,
+            icon: ShoppingCart,
+            color: 'text-blue-600',
             bg: 'bg-blue-50',
             trend: 'Checkouts',
             show: true
         },
-        { 
-            title: "Credit Sales", 
-            value: `₹${stats.totalCredit.toLocaleString('en-IN')}`, 
-            icon: CreditCard, 
-            color: 'text-amber-600', 
+        {
+            title: "Credit Sales",
+            value: `₹${stats.totalCredit.toLocaleString('en-IN')}`,
+            icon: CreditCard,
+            color: 'text-amber-600',
             bg: 'bg-amber-50',
             trend: 'Pending',
             show: true
@@ -108,11 +108,11 @@ const Dashboard = () => {
             {/* Hero Section */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
                 <div>
-                     <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-tighter leading-none uppercase">Store Pulse</h1>
-                     <p className="text-gray-400 text-xs font-bold mt-3 uppercase tracking-widest flex items-center gap-2">
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-tighter leading-none uppercase">Store Pulse</h1>
+                    <p className="text-gray-400 text-xs font-bold mt-3 uppercase tracking-widest flex items-center gap-2">
                         <Zap size={14} className="text-amber-500" />
                         Live Performance Updates
-                     </p>
+                    </p>
                 </div>
                 <div className="flex items-center gap-3">
                     <div className="px-4 sm:px-6 py-2 sm:py-2.5 bg-white rounded-xl sm:rounded-2xl border border-indigo-100 text-xs font-black text-indigo-600 uppercase tracking-widest shadow-lg shadow-indigo-50/50 flex items-center gap-2">
@@ -169,19 +169,19 @@ const Dashboard = () => {
                 {/* Critical Alerts Dashboard */}
                 <div className="xl:col-span-2 space-y-8">
                     <div className="bg-white border border-gray-100 rounded-[32px] sm:rounded-[48px] p-6 sm:p-10 shadow-sm relative overflow-hidden group min-h-[300px] sm:min-h-[400px]">
-                         <div className="absolute top-0 right-0 p-8">
+                        <div className="absolute top-0 right-0 p-8">
                             <AlertTriangle className="text-red-50 text-opacity-30 group-hover:text-red-50 transition-colors" size={140} />
-                         </div>
+                        </div>
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-10 relative gap-4">
                             <div>
                                 <h3 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight leading-none uppercase">Stock Radar</h3>
-                                <p className="text-[10px] text-red-500 font-black uppercase tracking-widest mt-2 animate-pulse">Update soon as possible</p>
+                                <p className="text-[10px] text-red-500 font-black uppercase tracking-widest mt-2 animate-pulse">Update as soon as possible</p>
                             </div>
                             <span className="bg-red-500 text-white px-4 py-2 rounded-full font-black text-[10px] shadow-lg uppercase tracking-widest">
                                 {lowStockAlerts.length} ISSUES
                             </span>
                         </div>
-                        
+
                         <div className="grid grid-cols-1 gap-4 relative">
                             {lowStockAlerts.length > 0 ? (
                                 lowStockAlerts.map(alert => (
@@ -193,7 +193,7 @@ const Dashboard = () => {
                                             <p className="font-black text-gray-900 text-xs sm:text-sm truncate uppercase tracking-tight">{alert.productName}</p>
                                             <p className="text-[9px] text-red-400 font-bold uppercase tracking-widest mt-0.5">{alert.categoryName}</p>
                                         </div>
-                                        <button 
+                                        <button
                                             onClick={() => navigate('/scanner')}
                                             className="p-3 bg-red-500 text-white rounded-xl font-black transition-all opacity-0 group-hover/item:opacity-100"
                                         >
@@ -228,7 +228,7 @@ const Dashboard = () => {
                             <div className="space-y-3">
                                 <div className="relative">
                                     <IndianRupee size={14} className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 text-gray-300" />
-                                    <input 
+                                    <input
                                         type="number"
                                         required
                                         className="w-full bg-gray-50 border border-gray-100 rounded-[20px] sm:rounded-[28px] pl-12 sm:pl-16 pr-6 sm:pr-8 py-3 sm:py-5 text-lg sm:text-xl font-black outline-none focus:ring-4 focus:ring-gray-200 transition-all text-gray-900"
@@ -240,7 +240,7 @@ const Dashboard = () => {
                             </div>
 
                             <div className="space-y-3">
-                                <select 
+                                <select
                                     className="w-full bg-gray-50 border border-gray-100 rounded-[20px] sm:rounded-[28px] px-4 sm:px-8 py-3 sm:py-5 font-black uppercase text-[10px] tracking-widest outline-none focus:ring-4 focus:ring-gray-200 transition-all appearance-none"
                                     value={expenseForm.category}
                                     onChange={(e) => setExpenseForm(prev => ({ ...prev, category: e.target.value }))}
@@ -254,7 +254,7 @@ const Dashboard = () => {
                             </div>
 
                             <div className="space-y-3">
-                                <textarea 
+                                <textarea
                                     className="w-full bg-gray-50 border border-gray-100 rounded-[20px] sm:rounded-[28px] px-4 sm:px-8 py-3 sm:py-5 text-xs font-bold outline-none focus:ring-4 focus:ring-gray-200 transition-all text-gray-600 min-h-[80px] sm:min-h-[100px] resize-none"
                                     placeholder="Brief note (e.g. Milk delivery)"
                                     value={expenseForm.description}
@@ -262,7 +262,7 @@ const Dashboard = () => {
                                 />
                             </div>
 
-                            <button 
+                            <button
                                 disabled={isAddingExpense}
                                 type="submit"
                                 className="w-full py-3 sm:py-5 bg-gray-900 text-white rounded-[20px] sm:rounded-[28px] font-black uppercase tracking-widest shadow-xl hover:bg-black transition-all active:scale-[0.98] mt-2"
@@ -285,7 +285,7 @@ const Dashboard = () => {
                     </div>
                     <button onClick={() => navigate('/reports')} className="text-[10px] font-black text-indigo-600 hover:text-indigo-700 uppercase tracking-[0.2em] border-b-2 border-indigo-100 pb-1">Full Report</button>
                 </div>
-                
+
                 <div className="grid grid-cols-1 gap-4">
                     {recentSales.map((sale) => (
                         <div key={sale.id} className="flex items-center justify-between p-4 sm:p-6 bg-gray-50/50 border border-gray-100 rounded-[24px] sm:rounded-[32px] hover:bg-white hover:shadow-xl transition-all group">

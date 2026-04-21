@@ -206,7 +206,7 @@ export const useStore = create<StoreState>()(
                     costPrice: Number(p.cost_price),
                     quantity: p.quantity,
                     unit: p.unit,
-                    lowStockThreshold: p.low_stock_threshold || 10,
+                    lowStockThreshold: p.low_stock_threshold ?? 10,
                     createdAt: p.created_at,
                     updatedAt: p.updated_at,
                 }));
@@ -292,7 +292,7 @@ export const useStore = create<StoreState>()(
                 const startDate = new Date();
                 if (period === 'weekly') startDate.setDate(startDate.getDate() - 7);
                 if (period === 'monthly') startDate.setMonth(startDate.getMonth() - 1);
-                
+
                 const startStr = startDate.toISOString().split('T')[0] + 'T00:00:00';
 
                 const { data } = await supabase
@@ -331,7 +331,7 @@ export const useStore = create<StoreState>()(
                 const startDate = new Date();
                 if (period === 'weekly') startDate.setDate(startDate.getDate() - 7);
                 if (period === 'monthly') startDate.setMonth(startDate.getMonth() - 1);
-                
+
                 const startStr = startDate.toISOString().split('T')[0];
 
                 const { data } = await supabase
@@ -383,7 +383,7 @@ export const useStore = create<StoreState>()(
                     costPrice: Number(data.cost_price),
                     quantity: data.quantity,
                     unit: data.unit,
-                    lowStockThreshold: data.low_stock_threshold,
+                    lowStockThreshold: data.low_stock_threshold ?? 10,
                     createdAt: data.created_at,
                     updatedAt: data.updated_at,
                 };
@@ -517,57 +517,57 @@ export const useStore = create<StoreState>()(
                     }
 
                     // Re-fetch products and customers for updated stock/balances
-                const [{ data: freshProducts }, { data: freshCustomers }] = await Promise.all([
-                    supabase.from('products').select('*').order('name'),
-                    supabase.from('customers').select('*').order('name')
-                ]);
+                    const [{ data: freshProducts }, { data: freshCustomers }] = await Promise.all([
+                        supabase.from('products').select('*').order('name'),
+                        supabase.from('customers').select('*').order('name')
+                    ]);
 
-                const products: Product[] = (freshProducts || []).map(p => ({
-                    id: p.id,
-                    barcode: p.barcode,
-                    name: p.name,
-                    description: p.description || '',
-                    categoryId: p.category_id,
-                    price: Number(p.price),
-                    wholesalePrice: p.wholesale_price ? Number(p.wholesale_price) : undefined,
-                    costPrice: Number(p.cost_price),
-                    quantity: p.quantity,
-                    unit: p.unit,
-                    lowStockThreshold: p.low_stock_threshold,
-                    createdAt: p.created_at,
-                    updatedAt: p.updated_at,
-                }));
+                    const products: Product[] = (freshProducts || []).map(p => ({
+                        id: p.id,
+                        barcode: p.barcode,
+                        name: p.name,
+                        description: p.description || '',
+                        categoryId: p.category_id,
+                        price: Number(p.price),
+                        wholesalePrice: p.wholesale_price ? Number(p.wholesale_price) : undefined,
+                        costPrice: Number(p.cost_price),
+                        quantity: p.quantity,
+                        unit: p.unit,
+                        lowStockThreshold: p.low_stock_threshold ?? 10,
+                        createdAt: p.created_at,
+                        updatedAt: p.updated_at,
+                    }));
 
-                const customers: Customer[] = (freshCustomers || []).map(c => ({
-                    id: c.id,
-                    name: c.name,
-                    phone: c.phone || '',
-                    email: c.email || '',
-                    customerType: (c.customer_type || 'retail') as Customer['customerType'],
-                    creditBalance: Number(c.credit_balance),
-                    createdAt: c.created_at,
-                }));
+                    const customers: Customer[] = (freshCustomers || []).map(c => ({
+                        id: c.id,
+                        name: c.name,
+                        phone: c.phone || '',
+                        email: c.email || '',
+                        customerType: (c.customer_type || 'retail') as Customer['customerType'],
+                        creditBalance: Number(c.credit_balance),
+                        createdAt: c.created_at,
+                    }));
 
-                const newSale: Sale = {
-                    id: data as string,
-                    items: saleData.items,
-                    subtotal: saleData.subtotal,
-                    discount: saleData.discount,
-                    total: saleData.total,
-                    paymentMethod: saleData.paymentMethod as Sale['paymentMethod'],
-                    customerName: saleData.customerName,
-                    customerId: saleData.customerId,
-                    saleType: saleData.saleType,
-                    createdAt: new Date().toISOString(),
-                };
+                    const newSale: Sale = {
+                        id: data as string,
+                        items: saleData.items,
+                        subtotal: saleData.subtotal,
+                        discount: saleData.discount,
+                        total: saleData.total,
+                        paymentMethod: saleData.paymentMethod as Sale['paymentMethod'],
+                        customerName: saleData.customerName,
+                        customerId: saleData.customerId,
+                        saleType: saleData.saleType,
+                        createdAt: new Date().toISOString(),
+                    };
 
-                set(state => ({
-                    products,
-                    customers,
-                    sales: [newSale, ...state.sales],
-                }));
+                    set(state => ({
+                        products,
+                        customers,
+                        sales: [newSale, ...state.sales],
+                    }));
 
-                get().showToast('success', `Sale completed — ₹${saleData.total.toLocaleString('en-IN')}`);
+                    get().showToast('success', `Sale completed — ₹${saleData.total.toLocaleString('en-IN')}`);
                 } catch (err: unknown) {
                     console.error('Sale completion error in store:', err);
                     const message = err instanceof Error ? err.message : 'Unknown error';
@@ -669,8 +669,8 @@ export const useStore = create<StoreState>()(
 
                 // Update customer balance locally
                 set(state => ({
-                    customers: state.customers.map(c => 
-                        c.id === paymentData.customerId 
+                    customers: state.customers.map(c =>
+                        c.id === paymentData.customerId
                             ? { ...c, creditBalance: c.creditBalance - paymentData.amount }
                             : c
                     )

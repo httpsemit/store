@@ -36,7 +36,7 @@ const Inventory = () => {
                 setSearchTerm(decodedText);
                 setIsScanning(false);
                 scanner.clear();
-            }, () => {});
+            }, () => { });
             scannerRef.current = scanner;
         }, 100);
     };
@@ -156,7 +156,7 @@ const Inventory = () => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
-                    <button 
+                    <button
                         onClick={startScanner}
                         className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 p-2 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-100 transition-all"
                         title="Scan to Search"
@@ -171,7 +171,7 @@ const Inventory = () => {
                     <div className="w-full max-w-md aspect-video bg-white rounded-[40px] overflow-hidden shadow-2xl relative border-8 border-indigo-600">
                         <div id="inventory-scanner" className="w-full h-full"></div>
                     </div>
-                    <button 
+                    <button
                         onClick={stopScanner}
                         className="mt-12 px-10 py-4 bg-white/10 hover:bg-white/20 text-white rounded-full font-black uppercase tracking-widest flex items-center gap-3 border border-white/20 transition-all"
                     >
@@ -210,7 +210,7 @@ const Inventory = () => {
                                     >
                                         <td className="px-4 sm:px-8 py-4 sm:py-6">
                                             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-                                                <div 
+                                                <div
                                                     className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center text-white font-black text-xs sm:text-sm shadow-inner flex-shrink-0"
                                                     style={{ backgroundColor: cat?.color || '#cbd5e1' }}
                                                 >
@@ -221,7 +221,7 @@ const Inventory = () => {
                                                     <span className="text-[9px] sm:text-[10px] font-black text-gray-300 mt-1 uppercase tracking-widest flex items-center gap-1">
                                                         <Barcode size={8} className="sm:size-3" /> {p.barcode}
                                                     </span>
-                                                    <span 
+                                                    <span
                                                         className="inline-flex items-center px-2 py-1 rounded-lg text-[8px] sm:px-3 sm:py-1.5 sm:rounded-xl sm:text-[9px] font-black uppercase tracking-widest mt-2 sm:hidden"
                                                         style={{ backgroundColor: `${cat?.color}15`, color: cat?.color }}
                                                     >
@@ -230,7 +230,7 @@ const Inventory = () => {
                                                     <div className="flex flex-col gap-1 mt-2 sm:hidden">
                                                         <div className="flex items-center gap-2">
                                                             <span className="font-black text-gray-900 text-xs">R: ₹{p.price.toLocaleString('en-IN')}</span>
-                                                            <span className="font-black text-indigo-600 text-xs">W: ₹{(p.wholesalePrice || p.price).toLocaleString('en-IN')}</span>
+                                                            <span className="font-black text-indigo-600 text-xs">W: ₹{(p.wholesalePrice ?? p.price).toLocaleString('en-IN')}</span>
                                                         </div>
                                                         <span className="text-[8px] text-gray-400">COST: ₹{p.costPrice.toLocaleString('en-IN')}</span>
                                                     </div>
@@ -238,7 +238,7 @@ const Inventory = () => {
                                             </div>
                                         </td>
                                         <td className="px-4 sm:px-8 py-4 sm:py-6 hidden sm:table-cell">
-                                            <span 
+                                            <span
                                                 className="inline-flex items-center px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest"
                                                 style={{ backgroundColor: `${cat?.color}15`, color: cat?.color }}
                                             >
@@ -253,7 +253,7 @@ const Inventory = () => {
                                                 </div>
                                                 <div className="flex flex-col">
                                                     <span className="text-[8px] font-bold text-indigo-400 uppercase tracking-widest">Wholesale</span>
-                                                    <span className="font-black text-indigo-600 leading-none">₹{(p.wholesalePrice || p.price).toLocaleString('en-IN')}</span>
+                                                    <span className="font-black text-indigo-600 leading-none">₹{(p.wholesalePrice ?? p.price).toLocaleString('en-IN')}</span>
                                                 </div>
                                                 <span className="text-[9px] text-gray-400 font-bold mt-1 uppercase tracking-tight">Cost: ₹{p.costPrice.toLocaleString('en-IN')}</span>
                                             </div>
@@ -263,8 +263,8 @@ const Inventory = () => {
                                                 <div className="flex items-center gap-2">
                                                     <span className={clsx(
                                                         "w-2 h-2 rounded-full",
-                                                        isOut ? "bg-red-500 animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.5)]" : 
-                                                        isLow ? "bg-amber-500" : "bg-emerald-500"
+                                                        isOut ? "bg-red-500 animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.5)]" :
+                                                            isLow ? "bg-amber-500" : "bg-emerald-500"
                                                     )} />
                                                     <span className={clsx(
                                                         "text-[9px] sm:text-[10px] font-black uppercase tracking-widest",
@@ -309,7 +309,7 @@ const Inventory = () => {
                     </div>
                 )}
             </div>
-            
+
             <ProductModal
                 isOpen={isModalOpen}
                 onClose={() => { setIsModalOpen(false); setEditingProduct(null); }}
@@ -323,7 +323,7 @@ const Inventory = () => {
                     <div className="w-full max-w-md aspect-video bg-white rounded-[40px] overflow-hidden shadow-2xl relative border-8 border-indigo-600">
                         <div id="inventory-scanner" className="w-full h-full"></div>
                     </div>
-                    <button 
+                    <button
                         onClick={stopScanner}
                         className="mt-12 px-10 py-4 bg-white/10 hover:bg-white/20 text-white rounded-full font-black uppercase tracking-widest flex items-center gap-3 border border-white/20 transition-all"
                     >

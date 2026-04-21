@@ -56,7 +56,7 @@ const Reports = () => {
     const revenue = filteredSales.reduce((acc, s) => acc + s.total, 0);
     const retailRevenue = filteredSales.filter(s => s.saleType === 'retail').reduce((acc, s) => acc + s.total, 0);
     const wholesaleRevenue = filteredSales.filter(s => s.saleType === 'wholesale').reduce((acc, s) => acc + s.total, 0);
-    
+
     // Real Profit Calculation
     let profit = 0;
     filteredSales.forEach(sale => {
@@ -106,7 +106,7 @@ const Reports = () => {
             <div className="flex flex-col gap-4 sm:gap-6 print:hidden">
                 <div className="flex flex-col gap-4">
                     <h2 className="text-lg sm:text-xl font-black text-gray-900 uppercase tracking-widest leading-none">{t('reports')}</h2>
-                    
+
                     <div className="flex bg-gray-100 p-1 rounded-lg sm:rounded-xl">
                         {(['daily', 'weekly', 'monthly'] as const).map((p) => (
                             <button
@@ -123,16 +123,16 @@ const Reports = () => {
                     </div>
 
                     <div className="flex bg-gray-100 p-1 rounded-lg sm:rounded-xl">
-                        {(['All', 'retail', 'wholesale'] as const).map((t) => (
+                        {(['All', 'retail', 'wholesale'] as const).map((filterType) => (
                             <button
-                                key={t}
-                                onClick={() => setSaleTypeFilter(t)}
+                                key={filterType}
+                                onClick={() => setSaleTypeFilter(filterType)}
                                 className={clsx(
                                     "px-3 sm:px-4 py-2 text-[9px] sm:text-[10px] font-black uppercase tracking-widest rounded-lg transition-all",
-                                    saleTypeFilter === t ? "bg-white text-indigo-600 shadow-sm" : "text-gray-400 hover:text-gray-600"
+                                    saleTypeFilter === filterType ? "bg-white text-indigo-600 shadow-sm" : "text-gray-400 hover:text-gray-600"
                                 )}
                             >
-                                {t === 'All' ? 'All Sales' : t}
+                                {filterType === 'All' ? t('all_sales') : filterType}
                             </button>
                         ))}
                     </div>
@@ -140,8 +140,8 @@ const Reports = () => {
                     {period === 'daily' && (
                         <div className="flex items-center gap-2 sm:gap-3 bg-white px-3 sm:px-4 py-2 rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm focus-within:border-indigo-500 transition-all">
                             <CalendarIcon className="text-gray-400" size={14} />
-                            <input 
-                                type="date" 
+                            <input
+                                type="date"
                                 value={selectedDate}
                                 onChange={(e) => setSelectedDate(e.target.value)}
                                 className="text-xs sm:text-sm font-bold text-gray-700 bg-transparent focus:outline-none"
@@ -153,7 +153,7 @@ const Reports = () => {
                     <button className="flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-white border border-gray-100 rounded-xl sm:rounded-2xl text-xs font-black text-gray-500 uppercase tracking-widest hover:bg-gray-50 hover:text-indigo-600 transition-all shadow-sm no-print">
                         <Download size={14} className="sm:size-4" /> Export CSV
                     </button>
-                    <button 
+                    <button
                         onClick={() => window.print()}
                         className="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-indigo-600 text-white rounded-xl sm:rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-100 no-print"
                     >
@@ -188,8 +188,8 @@ const Reports = () => {
                     {/* Payment Summary */}
                     <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
                         <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-                             <CreditCard size={12} className="sm:size-4" />
-                             Payment Summary
+                            <CreditCard size={12} className="sm:size-4" />
+                            Payment Summary
                         </h3>
                         <div className="space-y-4">
                             <div className="flex items-center justify-between text-emerald-600">
@@ -224,8 +224,8 @@ const Reports = () => {
                             <TrendingDown size={100} />
                         </div>
                         <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 sm:mb-6 flex items-center gap-2 relative">
-                             <TrendingDown size={12} className="sm:size-4 text-rose-500" />
-                             Expense Breakdown
+                            <TrendingDown size={12} className="sm:size-4 text-rose-500" />
+                            Expense Breakdown
                         </h3>
                         <div className="space-y-3 sm:space-y-4 relative">
                             {reportExpenses.length > 0 ? reportExpenses.map((exp) => (
@@ -249,8 +249,8 @@ const Reports = () => {
                     {/* Top Sellers */}
                     <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
                         <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-                             <Trophy size={12} className="sm:size-4 text-amber-500" />
-                             Top Selling Products
+                            <Trophy size={12} className="sm:size-4 text-amber-500" />
+                            Top Selling Products
                         </h3>
                         {topSellers.length > 0 ? (
                             <div className="space-y-3 sm:space-y-4">
@@ -318,8 +318,8 @@ const Reports = () => {
                                             <span className={clsx(
                                                 "inline-flex items-center px-2 py-1 rounded-lg text-[8px] sm:text-[9px] font-black uppercase tracking-wider",
                                                 sale.paymentMethod === 'Cash' ? "bg-emerald-50 text-emerald-700" :
-                                                sale.paymentMethod === 'UPI' ? "bg-blue-50 text-blue-700" :
-                                                "bg-rose-50 text-rose-700"
+                                                    sale.paymentMethod === 'UPI' ? "bg-blue-50 text-blue-700" :
+                                                        "bg-rose-50 text-rose-700"
                                             )}>
                                                 {sale.paymentMethod}
                                             </span>
