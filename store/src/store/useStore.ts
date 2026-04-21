@@ -172,6 +172,11 @@ export const useStore = create<StoreState>()(
             fetchInitialData: async () => {
                 set({ isLoading: true });
 
+                interface RawCategory { id: string; name: string; description: string | null; color: string; }
+                interface RawProduct { id: string; barcode: string; name: string; description: string | null; category_id: string; price: number; wholesale_price: number | null; cost_price: number; quantity: number; unit: string; low_stock_threshold: number; created_at: string; updated_at: string; }
+                interface RawSaleItem { product_id: string; product_name: string; barcode: string; quantity: number; unit_price: number; total: number; }
+                interface RawSale { id: string; subtotal: number; discount: number; total: number; payment_method: string; sale_type: string | null; customer_name: string | null; created_at: string; sale_items: RawSaleItem[]; }
+
                 const [categoriesRes, productsRes, salesRes, customersRes, expensesRes] = await Promise.all([
                     supabase.from('categories').select('*').order('name'),
                     supabase.from('products').select('*').order('name'),
@@ -183,37 +188,39 @@ export const useStore = create<StoreState>()(
                     supabase.from('expenses').select('*').gte('date', new Date().toISOString().split('T')[0]).order('created_at', { ascending: false }),
                 ]);
 
-                const categories: Category[] = (categoriesRes.data || []).map(c => ({
+                const categories: Category[] = (categoriesRes.data as RawCategory[] || []).map(c => ({
                     id: c.id,
                     name: c.name,
                     description: c.description || '',
-                    lowStockThreshold: c.low_stock_threshold,
                     color: c.color,
                 }));
 
-                const products: Product[] = (productsRes.data || []).map(p => ({
+                const products: Product[] = (productsRes.data as RawProduct[] || []).map(p => ({
                     id: p.id,
                     barcode: p.barcode,
                     name: p.name,
                     description: p.description || '',
                     categoryId: p.category_id,
                     price: Number(p.price),
+                    wholesalePrice: p.wholesale_price ? Number(p.wholesale_price) : undefined,
                     costPrice: Number(p.cost_price),
                     quantity: p.quantity,
                     unit: p.unit,
+                    lowStockThreshold: p.low_stock_threshold || 10,
                     createdAt: p.created_at,
                     updatedAt: p.updated_at,
                 }));
 
-                const sales: Sale[] = (salesRes.data || []).map(s => ({
+                const sales: Sale[] = (salesRes.data as RawSale[] || []).map(s => ({
                     id: s.id,
                     subtotal: Number(s.subtotal),
                     discount: Number(s.discount),
                     total: Number(s.total),
                     paymentMethod: s.payment_method as Sale['paymentMethod'],
+                    saleType: (s.sale_type || 'retail') as Sale['saleType'],
                     customerName: s.customer_name || undefined,
                     createdAt: s.created_at,
-                    items: (s.sale_items || []).map((si: any) => ({
+                    items: (s.sale_items || []).map(si => ({
                         productId: si.product_id,
                         productName: si.product_name,
                         barcode: si.barcode,
@@ -228,6 +235,7 @@ export const useStore = create<StoreState>()(
                     name: c.name,
                     phone: c.phone || '',
                     email: c.email || '',
+                    customerType: (c.customer_type || 'retail') as Customer['customerType'],
                     creditBalance: Number(c.credit_balance),
                     createdAt: c.created_at,
                 }));
@@ -255,15 +263,19 @@ export const useStore = create<StoreState>()(
                     .lte('created_at', endOfDay)
                     .order('created_at', { ascending: false });
 
-                const sales: Sale[] = (data || []).map(s => ({
+                interface RawSaleItem { product_id: string; product_name: string; barcode: string; quantity: number; unit_price: number; total: number; }
+                interface RawSale { id: string; subtotal: number; discount: number; total: number; payment_method: string; sale_type: string | null; customer_name: string | null; created_at: string; sale_items: RawSaleItem[]; }
+
+                const sales: Sale[] = (data as RawSale[] || []).map(s => ({
                     id: s.id,
                     subtotal: Number(s.subtotal),
                     discount: Number(s.discount),
                     total: Number(s.total),
                     paymentMethod: s.payment_method as Sale['paymentMethod'],
+                    saleType: (s.sale_type || 'retail') as Sale['saleType'],
                     customerName: s.customer_name || undefined,
                     createdAt: s.created_at,
-                    items: (s.sale_items || []).map((si: any) => ({
+                    items: (s.sale_items || []).map(si => ({
                         productId: si.product_id,
                         productName: si.product_name,
                         barcode: si.barcode,
@@ -277,7 +289,7 @@ export const useStore = create<StoreState>()(
             },
 
             fetchSalesForPeriod: async (period) => {
-                let startDate = new Date();
+                const startDate = new Date();
                 if (period === 'weekly') startDate.setDate(startDate.getDate() - 7);
                 if (period === 'monthly') startDate.setMonth(startDate.getMonth() - 1);
                 
@@ -289,17 +301,23 @@ export const useStore = create<StoreState>()(
                     .gte('created_at', startStr)
                     .order('created_at', { ascending: false });
 
-                const sales: Sale[] = (data || []).map(s => ({
+                interface RawSaleItem { product_id?: string; product_name: string; barcode?: string; quantity: number; unit_price: number; total: number; }
+                interface RawSale { id: string; bill_no: string; subtotal: number; discount: number; total: number; payment_method: string; sale_type: string | null; customer_name: string | null; created_at: string; sale_items: RawSaleItem[]; }
+
+                const sales: Sale[] = ((data as RawSale[]) || []).map(s => ({
                     id: s.id,
                     billNo: s.bill_no,
                     subtotal: Number(s.subtotal),
                     discount: Number(s.discount),
                     total: Number(s.total),
-                    paymentMethod: s.payment_method as any,
+                    paymentMethod: s.payment_method as Sale['paymentMethod'],
+                    saleType: (s.sale_type || 'retail') as Sale['saleType'],
                     customerName: s.customer_name || undefined,
                     createdAt: s.created_at,
-                    items: (s.sale_items || []).map((si: any) => ({
+                    items: (s.sale_items || []).map(si => ({
+                        productId: si.product_id || '',
                         productName: si.product_name,
+                        barcode: si.barcode || '',
                         quantity: si.quantity,
                         unitPrice: Number(si.unit_price),
                         total: Number(si.total),
@@ -310,7 +328,7 @@ export const useStore = create<StoreState>()(
             },
 
             fetchExpensesForPeriod: async (period) => {
-                let startDate = new Date();
+                const startDate = new Date();
                 if (period === 'weekly') startDate.setDate(startDate.getDate() - 7);
                 if (period === 'monthly') startDate.setMonth(startDate.getMonth() - 1);
                 
@@ -342,9 +360,11 @@ export const useStore = create<StoreState>()(
                     description: product.description,
                     category_id: product.categoryId,
                     price: product.price,
+                    wholesale_price: product.wholesalePrice,
                     cost_price: product.costPrice,
                     quantity: product.quantity,
                     unit: product.unit,
+                    low_stock_threshold: product.lowStockThreshold,
                 }).select().single();
 
                 if (error) {
@@ -359,9 +379,11 @@ export const useStore = create<StoreState>()(
                     description: data.description || '',
                     categoryId: data.category_id,
                     price: Number(data.price),
+                    wholesalePrice: data.wholesale_price ? Number(data.wholesale_price) : undefined,
                     costPrice: Number(data.cost_price),
                     quantity: data.quantity,
                     unit: data.unit,
+                    lowStockThreshold: data.low_stock_threshold,
                     createdAt: data.created_at,
                     updatedAt: data.updated_at,
                 };
@@ -371,15 +393,17 @@ export const useStore = create<StoreState>()(
             },
 
             updateProduct: async (id, updates) => {
-                const dbUpdates: any = {};
+                const dbUpdates: Record<string, unknown> = {};
                 if (updates.barcode !== undefined) dbUpdates.barcode = updates.barcode;
                 if (updates.name !== undefined) dbUpdates.name = updates.name;
                 if (updates.description !== undefined) dbUpdates.description = updates.description;
                 if (updates.categoryId !== undefined) dbUpdates.category_id = updates.categoryId;
                 if (updates.price !== undefined) dbUpdates.price = updates.price;
+                if (updates.wholesalePrice !== undefined) dbUpdates.wholesale_price = updates.wholesalePrice;
                 if (updates.costPrice !== undefined) dbUpdates.cost_price = updates.costPrice;
                 if (updates.quantity !== undefined) dbUpdates.quantity = updates.quantity;
                 if (updates.unit !== undefined) dbUpdates.unit = updates.unit;
+                if (updates.lowStockThreshold !== undefined) dbUpdates.low_stock_threshold = updates.lowStockThreshold;
 
                 const { error } = await supabase.from('products').update(dbUpdates).eq('id', id);
                 if (error) {
@@ -412,7 +436,6 @@ export const useStore = create<StoreState>()(
                 const { data, error } = await supabase.from('categories').insert({
                     name: category.name,
                     description: category.description,
-                    low_stock_threshold: category.lowStockThreshold,
                     color: category.color,
                 }).select().single();
 
@@ -425,7 +448,6 @@ export const useStore = create<StoreState>()(
                     id: data.id,
                     name: data.name,
                     description: data.description || '',
-                    lowStockThreshold: data.low_stock_threshold,
                     color: data.color,
                 };
 
@@ -434,10 +456,9 @@ export const useStore = create<StoreState>()(
             },
 
             updateCategory: async (id, updates) => {
-                const dbUpdates: any = {};
+                const dbUpdates: Record<string, unknown> = {};
                 if (updates.name !== undefined) dbUpdates.name = updates.name;
                 if (updates.description !== undefined) dbUpdates.description = updates.description;
-                if (updates.lowStockThreshold !== undefined) dbUpdates.low_stock_threshold = updates.lowStockThreshold;
                 if (updates.color !== undefined) dbUpdates.color = updates.color;
 
                 const { error } = await supabase.from('categories').update(dbUpdates).eq('id', id);
@@ -484,6 +505,7 @@ export const useStore = create<StoreState>()(
                         p_discount: saleData.discount,
                         p_total: saleData.total,
                         p_payment_method: saleData.paymentMethod,
+                        p_sale_type: saleData.saleType,
                         p_customer_name: saleData.customerName || null,
                         p_customer_id: saleData.customerId || null,
                     });
@@ -507,9 +529,11 @@ export const useStore = create<StoreState>()(
                     description: p.description || '',
                     categoryId: p.category_id,
                     price: Number(p.price),
+                    wholesalePrice: p.wholesale_price ? Number(p.wholesale_price) : undefined,
                     costPrice: Number(p.cost_price),
                     quantity: p.quantity,
                     unit: p.unit,
+                    lowStockThreshold: p.low_stock_threshold,
                     createdAt: p.created_at,
                     updatedAt: p.updated_at,
                 }));
@@ -519,6 +543,7 @@ export const useStore = create<StoreState>()(
                     name: c.name,
                     phone: c.phone || '',
                     email: c.email || '',
+                    customerType: (c.customer_type || 'retail') as Customer['customerType'],
                     creditBalance: Number(c.credit_balance),
                     createdAt: c.created_at,
                 }));
@@ -529,9 +554,10 @@ export const useStore = create<StoreState>()(
                     subtotal: saleData.subtotal,
                     discount: saleData.discount,
                     total: saleData.total,
-                    paymentMethod: saleData.paymentMethod as any,
+                    paymentMethod: saleData.paymentMethod as Sale['paymentMethod'],
                     customerName: saleData.customerName,
                     customerId: saleData.customerId,
+                    saleType: saleData.saleType,
                     createdAt: new Date().toISOString(),
                 };
 
@@ -542,9 +568,11 @@ export const useStore = create<StoreState>()(
                 }));
 
                 get().showToast('success', `Sale completed — ₹${saleData.total.toLocaleString('en-IN')}`);
-                } catch (error) {
-                    console.error('Sale completion error:', error);
-                    get().showToast('error', 'Failed to complete sale. Please check your connection and try again.');
+                } catch (err: unknown) {
+                    console.error('Sale completion error in store:', err);
+                    const message = err instanceof Error ? err.message : 'Unknown error';
+                    get().showToast('error', `Failed to complete sale: ${message}`);
+                    throw err; // Re-throw so POS can handle UI state
                 }
             },
 
@@ -584,6 +612,7 @@ export const useStore = create<StoreState>()(
                     name: customerData.name,
                     phone: customerData.phone,
                     email: customerData.email,
+                    customer_type: customerData.customerType,
                 }).select().single();
 
                 if (error) {
@@ -596,6 +625,7 @@ export const useStore = create<StoreState>()(
                     name: data.name,
                     phone: data.phone || '',
                     email: data.email || '',
+                    customerType: (data.customer_type || 'retail') as Customer['customerType'],
                     creditBalance: Number(data.credit_balance),
                     createdAt: data.created_at,
                 };
@@ -610,6 +640,7 @@ export const useStore = create<StoreState>()(
                     name: updates.name,
                     phone: updates.phone,
                     email: updates.email,
+                    customer_type: updates.customerType,
                 }).eq('id', id);
 
                 if (error) {
@@ -659,11 +690,15 @@ export const useStore = create<StoreState>()(
                     subtotal: Number(s.subtotal),
                     discount: Number(s.discount),
                     total: Number(s.total),
-                    paymentMethod: s.payment_method as any,
                     customerName: s.customer_name,
+                    customerId: s.customer_id,
+                    paymentMethod: s.payment_method as Sale['paymentMethod'],
+                    saleType: (s.sale_type || 'retail') as Sale['saleType'],
                     createdAt: s.created_at,
                     items: (s.sale_items || []).map((si: any) => ({
+                        productId: si.product_id || '',
                         productName: si.product_name,
+                        barcode: si.barcode || '',
                         quantity: si.quantity,
                         unitPrice: Number(si.unit_price),
                         total: Number(si.total),
@@ -674,7 +709,7 @@ export const useStore = create<StoreState>()(
                     id: p.id,
                     customerId: p.customer_id,
                     amount: Number(p.amount),
-                    paymentMethod: p.payment_method as any,
+                    paymentMethod: p.payment_method as Payment['paymentMethod'],
                     date: p.date,
                     createdAt: p.created_at
                 }));
@@ -740,15 +775,14 @@ export const useStore = create<StoreState>()(
                 const { products, categories } = get();
                 return products
                     .map(p => {
-                        const cat = categories.find(c => c.id === p.categoryId);
-                        const threshold = cat?.lowStockThreshold ?? 10;
+                        const threshold = p.lowStockThreshold ?? 10;
                         if (p.quantity <= threshold) {
                             return {
                                 id: p.id,
                                 productId: p.id,
                                 productName: p.name,
                                 categoryId: p.categoryId,
-                                categoryName: cat?.name ?? 'Unknown',
+                                categoryName: categories.find(c => c.id === p.categoryId)?.name ?? 'Unknown',
                                 currentStock: p.quantity,
                                 threshold,
                                 severity: (p.quantity <= threshold / 2 || p.quantity === 0) ? 'critical' : 'warning',

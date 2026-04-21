@@ -25,6 +25,7 @@ const Reports = () => {
     const [reportSales, setReportSales] = useState<Sale[]>([]);
     const [reportExpenses, setReportExpenses] = useState<Expense[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [saleTypeFilter, setSaleTypeFilter] = useState<'All' | 'retail' | 'wholesale'>('All');
 
     useEffect(() => {
         const loadData = async () => {
@@ -48,12 +49,17 @@ const Reports = () => {
         loadData();
     }, [selectedDate, period, fetchSalesForDate, fetchSalesForPeriod, fetchExpensesForPeriod]);
 
+    // Filter sales based on type
+    const filteredSales = reportSales.filter(s => saleTypeFilter === 'All' || s.saleType === saleTypeFilter);
+
     // Calculate Stats
-    const revenue = reportSales.reduce((acc, s) => acc + s.total, 0);
+    const revenue = filteredSales.reduce((acc, s) => acc + s.total, 0);
+    const retailRevenue = filteredSales.filter(s => s.saleType === 'retail').reduce((acc, s) => acc + s.total, 0);
+    const wholesaleRevenue = filteredSales.filter(s => s.saleType === 'wholesale').reduce((acc, s) => acc + s.total, 0);
     
     // Real Profit Calculation
     let profit = 0;
-    reportSales.forEach(sale => {
+    filteredSales.forEach(sale => {
         sale.items.forEach(item => {
             const product = products.find(p => p.id === item.productId);
             const costPrice = product?.costPrice ?? 0;
@@ -67,18 +73,18 @@ const Reports = () => {
         { title: t('gross_revenue'), value: `₹${revenue.toLocaleString('en-IN')}`, icon: IndianRupee, color: 'text-indigo-600', bg: 'bg-indigo-50' },
         { title: t('net_profit'), value: `₹${(profit - totalExpenses).toLocaleString('en-IN')}`, icon: TrendingUp, color: 'text-emerald-600', bg: 'bg-emerald-50' },
         { title: 'Total Expenses', value: `₹${totalExpenses.toLocaleString('en-IN')}`, icon: TrendingDown, color: 'text-rose-600', bg: 'bg-rose-50' },
-        { title: t('transactions'), value: reportSales.length, icon: FileText, color: 'text-blue-600', bg: 'bg-blue-50' },
+        { title: t('transactions'), value: filteredSales.length, icon: FileText, color: 'text-blue-600', bg: 'bg-blue-50' },
     ];
 
     const paymentMethods = [
-        { name: 'Cash', amount: reportSales.filter(s => s.paymentMethod === 'Cash').reduce((acc, s) => acc + s.total, 0) },
-        { name: 'UPI', amount: reportSales.filter(s => s.paymentMethod === 'UPI').reduce((acc, s) => acc + s.total, 0) },
-        { name: 'Credit', amount: reportSales.filter(s => s.paymentMethod === 'Credit').reduce((acc, s) => acc + s.total, 0) },
+        { name: 'Cash', amount: filteredSales.filter(s => s.paymentMethod === 'Cash').reduce((acc, s) => acc + s.total, 0) },
+        { name: 'UPI', amount: filteredSales.filter(s => s.paymentMethod === 'UPI').reduce((acc, s) => acc + s.total, 0) },
+        { name: 'Credit', amount: filteredSales.filter(s => s.paymentMethod === 'Credit').reduce((acc, s) => acc + s.total, 0) },
     ];
 
     // Calculate Top Sellers
     const topSellersMap = new Map<string, { name: string; qty: number; revenue: number }>();
-    reportSales.forEach(sale => {
+    filteredSales.forEach(sale => {
         sale.items.forEach(item => {
             const existing = topSellersMap.get(item.productId);
             if (existing) {
@@ -112,6 +118,21 @@ const Reports = () => {
                                 )}
                             >
                                 {p}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div className="flex bg-gray-100 p-1 rounded-lg sm:rounded-xl">
+                        {(['All', 'retail', 'wholesale'] as const).map((t) => (
+                            <button
+                                key={t}
+                                onClick={() => setSaleTypeFilter(t)}
+                                className={clsx(
+                                    "px-3 sm:px-4 py-2 text-[9px] sm:text-[10px] font-black uppercase tracking-widest rounded-lg transition-all",
+                                    saleTypeFilter === t ? "bg-white text-indigo-600 shadow-sm" : "text-gray-400 hover:text-gray-600"
+                                )}
+                            >
+                                {t === 'All' ? 'All Sales' : t}
                             </button>
                         ))}
                     </div>
@@ -171,6 +192,14 @@ const Reports = () => {
                              Payment Summary
                         </h3>
                         <div className="space-y-4">
+                            <div className="flex items-center justify-between text-emerald-600">
+                                <span className="text-[10px] font-black uppercase">Retail Revenue</span>
+                                <span className="font-black">₹{retailRevenue.toLocaleString('en-IN')}</span>
+                            </div>
+                            <div className="flex items-center justify-between text-indigo-600 pb-4 border-b border-gray-50">
+                                <span className="text-[10px] font-black uppercase">Wholesale Revenue</span>
+                                <span className="font-black">₹{wholesaleRevenue.toLocaleString('en-IN')}</span>
+                            </div>
                             {paymentMethods.map((method) => (
                                 <div key={method.name} className="flex items-center justify-between group">
                                     <div className="flex items-center gap-3">
@@ -249,7 +278,7 @@ const Reports = () => {
                     <div className="p-4 sm:p-6 border-b border-gray-50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest">Daily Transaction Log</h3>
                         <span className="text-[9px] sm:text-[10px] font-black bg-gray-100 text-gray-500 px-2 py-1 rounded-lg uppercase tracking-wider">
-                            {reportSales.length} Invoices
+                            {filteredSales.length} Invoices
                         </span>
                     </div>
                     <div className="flex-1 overflow-x-auto">
@@ -257,22 +286,27 @@ const Reports = () => {
                             <thead className="bg-gray-50/50 text-[9px] sm:text-[10px] font-black text-gray-400 uppercase tracking-widest">
                                 <tr>
                                     <th className="px-3 sm:px-6 py-3 sm:py-4 text-left">Invoice ID</th>
-                                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-left hidden sm:table-cell">Time</th>
+                                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-left hidden sm:table-cell">Type</th>
                                     <th className="px-3 sm:px-6 py-3 sm:py-4 text-left">Customer</th>
                                     <th className="px-3 sm:px-6 py-3 sm:py-4 text-left hidden md:table-cell">Payment</th>
                                     <th className="px-3 sm:px-6 py-3 sm:py-4 text-right">Amount</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-50">
-                                {reportSales.map((sale) => (
+                                {filteredSales.map((sale) => (
                                     <tr key={sale.id} className="hover:bg-indigo-50/30 transition-colors group">
                                         <td className="px-3 sm:px-6 py-3 sm:py-4">
                                             <span className="font-mono text-[9px] sm:text-[10px] text-indigo-400 font-black group-hover:text-indigo-600">
                                                 #{sale.id.slice(-8).toUpperCase()}
                                             </span>
                                         </td>
-                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs font-bold text-gray-500 hidden sm:table-cell">
-                                            {format(parseISO(sale.createdAt), 'hh:mm a')}
+                                        <td className="px-3 sm:px-6 py-3 sm:py-4 hidden sm:table-cell">
+                                            <span className={clsx(
+                                                "px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-wider",
+                                                sale.saleType === 'wholesale' ? "bg-indigo-50 text-indigo-600" : "bg-emerald-50 text-emerald-600"
+                                            )}>
+                                                {sale.saleType}
+                                            </span>
                                         </td>
                                         <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs font-black text-gray-900">
                                             <div className="flex flex-col">
@@ -295,7 +329,7 @@ const Reports = () => {
                                         </td>
                                     </tr>
                                 ))}
-                                {reportSales.length === 0 && (
+                                {filteredSales.length === 0 && (
                                     <tr>
                                         <td colSpan={5} className="px-6 py-16 sm:py-20 text-center">
                                             <div className="flex flex-col items-center gap-3">

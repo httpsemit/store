@@ -14,8 +14,7 @@ const Customers = () => {
     const [showRepaymentModal, setShowRepaymentModal] = useState(false);
     const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
     const [customerHistory, setCustomerHistory] = useState<{ sales: any[], payments: any[] }>({ sales: [], payments: [] });
-    const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
-    const [formData, setFormData] = useState({ name: '', phone: '', email: '' });
+    const [formData, setFormData] = useState({ name: '', phone: '', email: '', customerType: 'retail' as 'retail' | 'wholesale' });
     const [repaymentAmount, setRepaymentAmount] = useState('');
     const [repaymentMethod, setRepaymentMethod] = useState<'Cash' | 'UPI'>('Cash');
 
@@ -38,10 +37,10 @@ const Customers = () => {
     const openModal = (customer?: Customer) => {
         if (customer) {
             setEditingCustomer(customer);
-            setFormData({ name: customer.name, phone: customer.phone, email: customer.email || '' });
+            setFormData({ name: customer.name, phone: customer.phone, email: customer.email || '', customerType: customer.customerType });
         } else {
             setEditingCustomer(null);
-            setFormData({ name: '', phone: '', email: '' });
+            setFormData({ name: '', phone: '', email: '', customerType: 'retail' });
         }
         setShowModal(true);
     };
@@ -76,7 +75,7 @@ const Customers = () => {
         setShowHistoryModal(false);
         setShowRepaymentModal(false);
         setEditingCustomer(null);
-        setFormData({ name: '', phone: '', email: '' });
+        setFormData({ name: '', phone: '', email: '', customerType: 'retail' });
     };
 
     return (
@@ -115,13 +114,23 @@ const Customers = () => {
                             <div className="w-12 h-12 sm:w-16 sm:h-16 bg-indigo-600 rounded-[16px] sm:rounded-[24px] flex items-center justify-center text-white shadow-xl shadow-indigo-100 font-black text-lg sm:text-2xl group-hover:scale-110 transition-transform">
                                 {customer.name.charAt(0).toUpperCase()}
                             </div>
-                            <div className="flex gap-2">
-                                <button 
-                                    onClick={() => openModal(customer)}
-                                    className="p-2 sm:p-3 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl sm:rounded-2xl transition-all"
-                                >
-                                    <Edit2 size={14} className="sm:size-5" />
-                                </button>
+                            <div className="flex flex-col items-end gap-2">
+                                <span className={clsx(
+                                    "px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest border",
+                                    customer.customerType === 'wholesale' 
+                                        ? "bg-indigo-50 text-indigo-600 border-indigo-100" 
+                                        : "bg-emerald-50 text-emerald-600 border-emerald-100"
+                                )}>
+                                    {customer.customerType}
+                                </span>
+                                <div className="flex gap-2">
+                                    <button 
+                                        onClick={() => openModal(customer)}
+                                        className="p-2 sm:p-3 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl sm:rounded-2xl transition-all"
+                                    >
+                                        <Edit2 size={14} className="sm:size-5" />
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -355,6 +364,31 @@ const Customers = () => {
                                         value={formData.email}
                                         onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                                     />
+                                </div>
+                            </div>
+                            <div className="space-y-3">
+                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Customer Type</label>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <button 
+                                        type="button"
+                                        onClick={() => setFormData(prev => ({ ...prev, customerType: 'retail' }))}
+                                        className={clsx(
+                                            "py-3 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all border-2",
+                                            formData.customerType === 'retail' ? "bg-emerald-600 text-white border-emerald-600 shadow-xl" : "bg-white text-gray-400 border-gray-100"
+                                        )}
+                                    >
+                                        Retail
+                                    </button>
+                                    <button 
+                                        type="button"
+                                        onClick={() => setFormData(prev => ({ ...prev, customerType: 'wholesale' }))}
+                                        className={clsx(
+                                            "py-3 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all border-2",
+                                            formData.customerType === 'wholesale' ? "bg-indigo-600 text-white border-indigo-600 shadow-xl" : "bg-white text-gray-400 border-gray-100"
+                                        )}
+                                    >
+                                        Wholesale
+                                    </button>
                                 </div>
                             </div>
 

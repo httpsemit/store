@@ -2,7 +2,6 @@ export type Category = {
     id: string;
     name: string;
     description: string;
-    lowStockThreshold: number;
     color: string;
 };
 
@@ -13,9 +12,11 @@ export type Product = {
     description: string;
     categoryId: string;
     price: number;
+    wholesalePrice?: number;
     costPrice: number;
     quantity: number;
     unit: string;
+    lowStockThreshold: number;
     createdAt: string;
     updatedAt: string;
 };
@@ -37,6 +38,7 @@ export type Sale = {
     discount: number;
     total: number;
     paymentMethod: 'Cash' | 'UPI' | 'Credit';
+    saleType: 'retail' | 'wholesale';
     customerName?: string;
     customerId?: string;
     createdAt: string;
@@ -47,6 +49,7 @@ export type Customer = {
     name: string;
     phone: string;
     email?: string;
+    customerType: 'retail' | 'wholesale';
     creditBalance: number;
     createdAt: string;
 };

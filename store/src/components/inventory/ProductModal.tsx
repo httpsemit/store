@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Check, Package, Barcode, IndianRupee, Layers, Camera } from 'lucide-react';
+import { X, Check, Package, Barcode, IndianRupee, Layers, Camera, AlertCircle } from 'lucide-react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import { clsx } from 'clsx';
 import type { Product, Category } from '../../types';
@@ -18,9 +18,11 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
         barcode: '',
         categoryId: '',
         price: 0,
+        wholesalePrice: 0,
         costPrice: 0,
         quantity: 0,
         unit: 'pcs',
+        lowStockThreshold: 10,
         description: '',
     });
 
@@ -66,9 +68,11 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                 barcode: product.barcode,
                 categoryId: product.categoryId,
                 price: product.price,
+                wholesalePrice: product.wholesalePrice || 0,
                 costPrice: product.costPrice,
                 quantity: product.quantity,
                 unit: product.unit,
+                lowStockThreshold: product.lowStockThreshold || 10,
                 description: product.description || '',
             });
         } else {
@@ -77,9 +81,11 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                 barcode: '',
                 categoryId: categories[0]?.id || '',
                 price: 0,
+                wholesalePrice: 0,
                 costPrice: 0,
                 quantity: 0,
                 unit: 'pcs',
+                lowStockThreshold: 10,
                 description: '',
             });
         }
@@ -192,7 +198,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Initial Quantity</label>
+                                <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Current Stock</label>
                                 <input
                                     type="number"
                                     required
@@ -201,6 +207,20 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                                     onChange={(e) => setFormData({ ...formData, quantity: Number(e.target.value) })}
                                     min="0"
                                 />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Low Stock Warning At</label>
+                                <div className="relative">
+                                    <AlertCircle className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                                    <input
+                                        type="number"
+                                        required
+                                        className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-sm font-bold shadow-inner"
+                                        value={formData.lowStockThreshold}
+                                        onChange={(e) => setFormData({ ...formData, lowStockThreshold: Number(e.target.value) })}
+                                        min="0"
+                                    />
+                                </div>
                             </div>
                             <div>
                                 <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Unit Type</label>
@@ -225,44 +245,68 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
                     {/* Pricing */}
                     <div className="space-y-5">
                          <label className="block text-[10px] font-black text-indigo-400 uppercase tracking-widest leading-none">Financials</label>
-                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div>
-                                <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Selling Price (₹)</label>
-                                <div className="relative">
-                                    <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-green-600" size={16} />
-                                    <input
-                                        type="number"
-                                        required
-                                        className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-lg font-black text-gray-900 shadow-inner"
-                                        value={formData.price}
-                                        onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
-                                        min="0"
-                                    />
+                             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Retail Price (₹)</label>
+                                    <div className="relative">
+                                        <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-600" size={16} />
+                                        <input
+                                            type="number"
+                                            required
+                                            className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-lg font-black text-gray-900 shadow-inner"
+                                            value={formData.price}
+                                            onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
+                                            min="0"
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
-                                <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Purchase Cost (₹)</label>
-                                <div className="relative opacity-80">
-                                    <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                                    <input
-                                        type="number"
-                                        required
-                                        className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-lg font-bold text-gray-500 shadow-inner"
-                                        value={formData.costPrice}
-                                        onChange={(e) => setFormData({ ...formData, costPrice: Number(e.target.value) })}
-                                        min="0"
-                                    />
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Wholesale Price (₹)</label>
+                                    <div className="relative">
+                                        <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-indigo-600" size={16} />
+                                        <input
+                                            type="number"
+                                            placeholder="Fallback: Retail"
+                                            className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-lg font-black text-indigo-900 shadow-inner"
+                                            value={formData.wholesalePrice || ''}
+                                            onChange={(e) => setFormData({ ...formData, wholesalePrice: e.target.value ? Number(e.target.value) : undefined as any })}
+                                            min="0"
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                         </div>
-                         {formData.price > 0 && formData.costPrice > 0 && (
-                            <div className="px-5 py-3 bg-green-50 rounded-2xl flex items-center justify-between">
-                                <span className="text-[10px] font-black text-green-700 uppercase tracking-widest">Estimated Margin</span>
-                                <span className="text-sm font-black text-green-700 uppercase">
-                                    ₹{(formData.price - formData.costPrice).toFixed(2)} ({((formData.price - formData.costPrice) / formData.price * 100).toFixed(1)}%)
-                                </span>
-                            </div>
-                         )}
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-500 mb-2 ml-1">Purchase Cost (₹)</label>
+                                    <div className="relative opacity-80">
+                                        <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                                        <input
+                                            type="number"
+                                            required
+                                            className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-indigo-500 transition-all text-lg font-bold text-gray-500 shadow-inner"
+                                            value={formData.costPrice}
+                                            onChange={(e) => setFormData({ ...formData, costPrice: Number(e.target.value) })}
+                                            min="0"
+                                        />
+                                    </div>
+                                </div>
+                             </div>
+                          {formData.price > 0 && formData.costPrice > 0 && (
+                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="px-5 py-3 bg-green-50 rounded-2xl flex items-center justify-between">
+                                    <span className="text-[10px] font-black text-green-700 uppercase tracking-widest">Retail Margin</span>
+                                    <span className="text-sm font-black text-green-700 uppercase">
+                                        ₹{(formData.price - formData.costPrice).toFixed(2)}
+                                    </span>
+                                </div>
+                                {(formData.wholesalePrice || 0) > 0 && (
+                                    <div className="px-5 py-3 bg-indigo-50 rounded-2xl flex items-center justify-between">
+                                        <span className="text-[10px] font-black text-indigo-700 uppercase tracking-widest">Wholesale Margin</span>
+                                        <span className="text-sm font-black text-indigo-700 uppercase">
+                                            ₹{((formData.wholesalePrice || 0) - formData.costPrice).toFixed(2)}
+                                        </span>
+                                    </div>
+                                )}
+                             </div>
+                          )}
                     </div>
 
                     {/* Description */}

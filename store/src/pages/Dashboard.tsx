@@ -154,12 +154,12 @@ const Dashboard = () => {
                         className={`group relative flex flex-col items-start p-4 sm:p-6 bg-white text-gray-900 rounded-[24px] sm:rounded-[32px] shadow-sm border border-gray-100 hover:shadow-2xl hover:border-${item.color}-100 transition-all overflow-hidden`}
                     >
                         <div className="flex items-start justify-between w-full mb-4">
-                            <div className={`p-3 bg-${item.color}-50 text-${item.color}-600 rounded-xl group-hover:bg-${item.color}-600 group-hover:text-white transition-colors`}>
-                                <item.icon size={22} />
+                            <div className={`p-3 sm:p-3.5 bg-${item.color}-50 text-${item.color}-600 rounded-xl sm:rounded-2xl group-hover:bg-${item.color}-600 group-hover:text-white transition-colors`}>
+                                <item.icon size={22} className="sm:size-6" />
                             </div>
-                            <ArrowRight size={14} className="text-gray-300 group-hover:text-indigo-600 transition-colors" />
+                            <ArrowRight size={16} className="text-gray-300 group-hover:text-indigo-600 transition-colors mt-1" />
                         </div>
-                        <p className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">{item.label}</p>
+                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">{item.label}</p>
                         <h3 className="text-lg sm:text-xl font-black text-gray-900 tracking-tight uppercase leading-none">{item.action}</h3>
                     </button>
                 ))}
@@ -175,9 +175,9 @@ const Dashboard = () => {
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-10 relative gap-4">
                             <div>
                                 <h3 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight leading-none uppercase">Stock Radar</h3>
-                                <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest mt-2">Critical inventory shortages</p>
+                                <p className="text-[10px] text-red-500 font-black uppercase tracking-widest mt-2 animate-pulse">Update soon as possible</p>
                             </div>
-                            <span className="bg-red-500 text-white px-4 py-2 rounded-full font-black text-[10px] shadow-lg animate-pulse uppercase tracking-widest">
+                            <span className="bg-red-500 text-white px-4 py-2 rounded-full font-black text-[10px] shadow-lg uppercase tracking-widest">
                                 {lowStockAlerts.length} ISSUES
                             </span>
                         </div>

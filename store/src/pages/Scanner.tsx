@@ -165,7 +165,7 @@ const Scanner = () => {
                             mode === 'manual' ? "bg-white text-emerald-600 shadow-sm" : "text-gray-400 hover:text-gray-600"
                         )}
                     >
-                        <Keyboard size={14} className="sm:size-18" /> Manual
+                        <Keyboard size={14} className="sm:size-5" /> Manual
                     </button>
                     <button
                         onClick={() => setMode('camera')}
@@ -174,7 +174,7 @@ const Scanner = () => {
                             mode === 'camera' ? "bg-white text-emerald-600 shadow-sm" : "text-gray-400 hover:text-gray-600"
                         )}
                     >
-                        <CameraIcon size={14} className="sm:size-18" /> Camera
+                        <CameraIcon size={14} className="sm:size-5" /> Camera
                     </button>
                 </div>
             </div>

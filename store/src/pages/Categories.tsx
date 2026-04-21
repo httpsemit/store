@@ -19,7 +19,6 @@ const CategoryModal: React.FC<ModalProps> = ({ isOpen, onClose, category }) => {
     const { addCategory, updateCategory } = useStore();
     const [name, setName] = useState(category?.name || '');
     const [description, setDescription] = useState(category?.description || '');
-    const [threshold, setThreshold] = useState(category?.lowStockThreshold || 10);
     const [color, setColor] = useState(category?.color || PRESET_COLORS[0]);
 
     if (!isOpen) return null;
@@ -30,14 +29,12 @@ const CategoryModal: React.FC<ModalProps> = ({ isOpen, onClose, category }) => {
             await updateCategory(category.id, {
                 name,
                 description,
-                lowStockThreshold: threshold,
                 color
             });
         } else {
             await addCategory({
                 name,
                 description,
-                lowStockThreshold: threshold,
                 color
             });
         }
@@ -79,33 +76,21 @@ const CategoryModal: React.FC<ModalProps> = ({ isOpen, onClose, category }) => {
                         />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Low Stock Threshold</label>
-                            <input
-                                type="number"
-                                value={threshold}
-                                onChange={(e) => setThreshold(Number(e.target.value))}
-                                className="w-full px-3 sm:px-4 py-3 bg-gray-50 border border-transparent rounded-lg sm:rounded-xl focus:bg-white focus:border-indigo-500 transition-all font-bold"
-                                min="0"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Label Color</label>
-                            <div className="flex flex-wrap gap-2">
-                                {PRESET_COLORS.slice(0, 6).map(c => (
-                                    <button
-                                        key={c}
-                                        type="button"
-                                        onClick={() => setColor(c)}
-                                        className={clsx(
-                                            "w-6 h-6 rounded-full border-2 transition-all transform hover:scale-110",
-                                            color === c ? "border-gray-900 ring-2 ring-gray-100" : "border-transparent"
-                                        )}
-                                        style={{ backgroundColor: c }}
-                                    />
-                                ))}
-                            </div>
+                    <div className="flex flex-col gap-2">
+                        <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Label Color</label>
+                        <div className="flex flex-wrap gap-2">
+                            {PRESET_COLORS.slice(0, 12).map(c => (
+                                <button
+                                    key={c}
+                                    type="button"
+                                    onClick={() => setColor(c)}
+                                    className={clsx(
+                                        "w-10 h-10 rounded-full border-2 transition-all transform hover:scale-110",
+                                        color === c ? "border-gray-900 ring-2 ring-gray-100" : "border-transparent"
+                                    )}
+                                    style={{ backgroundColor: c }}
+                                />
+                            ))}
                         </div>
                     </div>
 
@@ -163,7 +148,7 @@ const Categories = () => {
             <div className="flex flex-col gap-4 sm:gap-6">
                 <div>
                     <h2 className="text-lg sm:text-xl font-black text-gray-900 uppercase tracking-widest leading-none">Inventory Categories</h2>
-                    <p className="text-gray-400 text-xs font-medium mt-2">Manage groups and stock warning thresholds</p>
+                    <p className="text-gray-400 text-xs font-medium mt-2">Manage groups and visual identifiers</p>
                 </div>
                 <button 
                     onClick={handleAdd}
@@ -177,7 +162,7 @@ const Categories = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {categories.map((cat) => {
                     const catProducts = products.filter(p => p.categoryId === cat.id);
-                    const lowStockCount = catProducts.filter(p => p.quantity > 0 && p.quantity <= cat.lowStockThreshold).length;
+                    const lowStockCount = catProducts.filter(p => p.quantity > 0 && p.quantity <= p.lowStockThreshold).length;
                     const outOfStockCount = catProducts.filter(p => p.quantity === 0).length;
 
                     return (
@@ -191,7 +176,6 @@ const Categories = () => {
                                         </div>
                                         <div>
                                             <h4 className="text-sm sm:text-base font-black text-gray-900 leading-tight">{cat.name}</h4>
-                                            <p className="text-[9px] sm:text-[10px] text-gray-400 font-bold uppercase tracking-wider">THRESHOLD: {cat.lowStockThreshold}</p>
                                         </div>
                                     </div>
                                     <div className="flex gap-1 opacity-0 sm:opacity-0 group-hover:opacity-100 transition-opacity">

@@ -40,9 +40,10 @@ const POS = () => {
     const [isScanning, setIsScanning] = useState(false);
     const [showInvoice, setShowInvoice] = useState(false);
     const [lastSale, setLastSale] = useState<any>(null);
+    const [saleType, setSaleType] = useState<'retail' | 'wholesale'>('retail');
     const [showQuickAdd, setShowQuickAdd] = useState(false);
-    const [newCustomerBody, setNewCustomerBody] = useState({ name: '', phone: '' });
-    
+    const [newCustomerBody, setNewCustomerBody] = useState({ name: '', phone: '', customerType: 'retail' as 'retail' | 'wholesale' });
+
     // Barcode scanner focus
     const barcodeInputRef = useRef<HTMLInputElement>(null);
     const scannerRef = useRef<Html5QrcodeScanner | null>(null);
@@ -59,6 +60,17 @@ const POS = () => {
         const matchesCategory = selectedCategory === 'All' || cat?.name === selectedCategory;
         return matchesSearch && matchesCategory;
     });
+
+    const toggleSaleType = (type: 'retail' | 'wholesale') => {
+        if (cart.length > 0) {
+            if (window.confirm('Changing sale type will clear your current cart. Proceed?')) {
+                setCart([]);
+                setSaleType(type);
+            }
+        } else {
+            setSaleType(type);
+        }
+    };
 
     const addToCart = (product: Product) => {
         if (product.quantity <= 0) {
@@ -79,16 +91,17 @@ const POS = () => {
                         : item
                 );
             }
+            const unitPrice = saleType === 'wholesale' ? (product.wholesalePrice || product.price) : product.price;
             return [...prev, {
                 productId: product.id,
                 productName: product.name,
                 barcode: product.barcode,
                 quantity: 1,
-                unitPrice: product.price,
-                total: product.price
+                unitPrice: unitPrice,
+                total: unitPrice
             }];
         });
-        
+
         // Refocus barcode input after manual click
         barcodeInputRef.current?.focus();
     };
@@ -97,7 +110,7 @@ const POS = () => {
         if (e.key === 'Enter') {
             const barcode = e.currentTarget.value;
             const product = products.find(p => p.barcode === barcode);
-            
+
             if (product) {
                 addToCart(product);
                 e.currentTarget.value = ''; // Clear for next scan
@@ -113,7 +126,7 @@ const POS = () => {
             if (item.productId === productId) {
                 const newQty = Math.max(0, item.quantity + delta);
                 const product = products.find(p => p.id === productId);
-                
+
                 if (product && newQty > product.quantity) {
                     showToast('error', 'Limit reached: Maximum available stock.');
                     return item;
@@ -145,7 +158,7 @@ const POS = () => {
                 } else {
                     showToast('error', `Product not found: ${decodedText}`);
                 }
-            }, () => {});
+            }, () => { });
         }, 100);
     };
 
@@ -160,11 +173,11 @@ const POS = () => {
     const handleQuickAddCustomer = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!newCustomerBody.name) return;
-        const customer = await addCustomer(newCustomerBody);
+        const customer = await addCustomer({ ...newCustomerBody, customerType: saleType });
         if (customer) {
             setSelectedCustomer(customer);
             setShowQuickAdd(false);
-            setNewCustomerBody({ name: '', phone: '' });
+            setNewCustomerBody({ name: '', phone: '', customerType: 'retail' });
         }
     };
 
@@ -177,18 +190,11 @@ const POS = () => {
             showToast('error', 'Customer selection is mandatory for Credit sales!');
             return;
         }
-        
+
         setIsProcessing(true);
         try {
-            console.log('Starting sale completion with data:', {
-                items: cart.length,
-                subtotal,
-                discount,
-                total,
-                paymentMethod,
-                customerId: selectedCustomer?.id,
-                customerName: selectedCustomer?.name || 'Walk-in Customer'
-            });
+            const billNo = `BILL-${Date.now()}`;
+            const dateStr = new Date().toLocaleDateString('en-GB');
 
             const saleData = {
                 items: cart,
@@ -196,6 +202,7 @@ const POS = () => {
                 discount,
                 total,
                 paymentMethod,
+                saleType,
                 customerId: selectedCustomer?.id,
                 customerName: selectedCustomer?.name || 'Walk-in Customer'
             };
@@ -205,8 +212,8 @@ const POS = () => {
             // Set last sale for invoice view
             setLastSale({
                 ...saleData,
-                billNo: `BILL-${Date.now()}`,
-                date: new Date().toLocaleDateString('en-GB')
+                billNo,
+                date: dateStr
             });
 
             // Cleanup
@@ -215,17 +222,18 @@ const POS = () => {
             setSelectedCustomer(null);
             setIsProcessing(false);
             setShowInvoice(true);
-        } catch (error) {
+        } catch (error: unknown) {
             console.error('Sale completion error in POS:', error);
             setIsProcessing(false);
-            showToast('error', 'Failed to complete sale. Please check your connection and try again.');
+            const message = error instanceof Error ? error.message : 'Failed to complete sale. Please try again.';
+            showToast('error', message);
         }
     };
 
     return (
         <div className="flex flex-col min-h-full lg:h-[calc(100vh-140px)] gap-4 sm:gap-6 pb-2">
             {/* Hidden Input for Barcode Scanning */}
-            <input 
+            <input
                 ref={barcodeInputRef}
                 type="text"
                 className="absolute -top-10 opacity-0 pointer-events-none"
@@ -246,7 +254,7 @@ const POS = () => {
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
-                            <button 
+                            <button
                                 onClick={startCameraScanner}
                                 className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-all sm:hidden"
                                 title="Open Camera Scanner"
@@ -254,14 +262,34 @@ const POS = () => {
                                 <Camera size={18} />
                             </button>
                         </div>
-                        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
-                            <button 
+                        <div className="flex items-center gap-2 w-full sm:w-auto">
+                            <div className="flex bg-gray-100 p-1 rounded-xl sm:rounded-2xl border border-gray-200 shadow-inner">
+                                <button
+                                    onClick={() => toggleSaleType('retail')}
+                                    className={clsx(
+                                        "px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[10px] font-black uppercase tracking-widest transition-all",
+                                        saleType === 'retail' ? "bg-white text-emerald-600 shadow-sm" : "text-gray-400 hover:text-gray-600"
+                                    )}
+                                >
+                                    Retail
+                                </button>
+                                <button
+                                    onClick={() => toggleSaleType('wholesale')}
+                                    className={clsx(
+                                        "px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[10px] font-black uppercase tracking-widest transition-all",
+                                        saleType === 'wholesale' ? "bg-white text-indigo-600 shadow-sm" : "text-gray-400 hover:text-gray-600"
+                                    )}
+                                >
+                                    Wholesale
+                                </button>
+                            </div>
+                            <button
                                 onClick={startCameraScanner}
                                 className="flex items-center gap-2 px-4 py-2.5 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-100 transition-all font-black text-[10px] uppercase tracking-widest whitespace-nowrap"
                             >
                                 <Camera size={16} /> Scan Barcode
                             </button>
-                            <select 
+                            <select
                                 value={selectedCategory}
                                 onChange={(e) => setSelectedCategory(e.target.value)}
                                 className="px-3 sm:px-4 py-2.5 sm:py-3 bg-white border border-gray-200 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm transition-all text-sm font-medium flex-1 sm:flex-none"
@@ -305,7 +333,12 @@ const POS = () => {
                                     <div className="w-full mt-auto pt-3 sm:pt-4 border-t border-gray-50 flex items-center justify-between">
                                         <div className="flex flex-col">
                                             <p className="text-[10px] text-gray-400 font-black uppercase tracking-tighter mb-0.5">Price</p>
-                                            <p className="font-black text-base sm:text-lg text-gray-900 leading-none">₹{p.price}</p>
+                                            <p className={clsx(
+                                                "font-black text-base sm:text-lg leading-none",
+                                                saleType === 'wholesale' ? "text-indigo-600" : "text-gray-900"
+                                            )}>
+                                                ₹{saleType === 'wholesale' ? (p.wholesalePrice || p.price) : p.price}
+                                            </p>
                                         </div>
                                         <div className="flex flex-col items-end">
                                             <p className="text-[10px] text-gray-400 font-black uppercase tracking-tighter mb-0.5">Stock</p>
@@ -326,7 +359,7 @@ const POS = () => {
                                 </button>
                             );
                         })}
-                        
+
                         {filteredProducts.length === 0 && (
                             <div className="col-span-full py-20 flex flex-col items-center opacity-30">
                                 <Package size={64} className="mb-4" />
@@ -349,13 +382,13 @@ const POS = () => {
                             </div>
                         </div>
                         <div className="text-right">
-                             <p className="text-[8px] sm:text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none">ID</p>
-                             <p className="text-[10px] sm:text-xs font-black text-indigo-600 mt-1">#DRAFT</p>
+                            <p className="text-[8px] sm:text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none">ID</p>
+                            <p className="text-[10px] sm:text-xs font-black text-indigo-600 mt-1">#DRAFT</p>
                         </div>
                     </div>
 
                     <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3 sm:space-y-4 custom-scrollbar">
-                        {cart.map(item => (
+                        {cart.map((item: SaleItem) => (
                             <div key={item.productId} className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50/50 rounded-2xl sm:rounded-3xl border border-transparent hover:border-indigo-100 hover:bg-white transition-all group">
                                 <div className="flex-1 min-w-0">
                                     <p className="font-black text-gray-900 text-xs sm:text-sm truncate">{item.productName}</p>
@@ -385,9 +418,9 @@ const POS = () => {
                                     </button>
                                 </div>
 
-                                </div>
+                            </div>
                         ))}
-                        
+
                         {cart.length === 0 && (
                             <div className="h-full flex flex-col items-center justify-center p-6 sm:p-10 text-center py-16 sm:py-20">
                                 <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center text-gray-200 mb-6">
@@ -432,7 +465,7 @@ const POS = () => {
                                             <input
                                                 type="text"
                                                 className="w-full bg-white border border-gray-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs outline-none focus:ring-2 focus:ring-indigo-500 transition-all font-bold shadow-inner"
-                                                placeholder={t('Select Customer')}
+                                                placeholder="Select Customer"
                                                 value={customerSearch}
                                                 onFocus={() => setShowCustomerResults(true)}
                                                 onChange={(e) => {
@@ -446,10 +479,10 @@ const POS = () => {
 
                                             {showCustomerResults && customerSearch.length > 0 && (
                                                 <div className="absolute bottom-full left-0 right-0 mb-2 bg-white border border-gray-100 rounded-xl sm:rounded-2xl shadow-2xl z-50 max-h-48 overflow-y-auto animate-pop">
-                                                    {customers.filter(c => 
-                                                        c.name.toLowerCase().includes(customerSearch.toLowerCase()) || 
+                                                    {customers.filter((c: Customer) =>
+                                                        c.name.toLowerCase().includes(customerSearch.toLowerCase()) ||
                                                         c.phone.includes(customerSearch)
-                                                    ).map(c => (
+                                                    ).map((c: Customer) => (
                                                         <button
                                                             key={c.id}
                                                             onClick={() => {
@@ -466,7 +499,7 @@ const POS = () => {
                                                 </div>
                                             )}
                                         </div>
-                                        <button 
+                                        <button
                                             onClick={() => setShowQuickAdd(true)}
                                             className="p-2.5 sm:p-3 bg-indigo-50 text-indigo-600 rounded-lg sm:rounded-xl hover:bg-indigo-100 transition-colors"
                                             title="Add New Customer"
@@ -526,7 +559,7 @@ const POS = () => {
                         <div className="absolute inset-0 pointer-events-none border-[40px] border-black/20 rounded-[32px]"></div>
                         <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.8)] animate-scan-line"></div>
                     </div>
-                    <button 
+                    <button
                         onClick={stopCameraScanner}
                         className="mt-12 px-10 py-4 bg-white/10 hover:bg-white/20 text-white rounded-full font-black uppercase tracking-widest flex items-center gap-3 border border-white/20 transition-all"
                     >
@@ -568,7 +601,36 @@ const POS = () => {
                                     onChange={(e) => setNewCustomerBody(prev => ({ ...prev, phone: e.target.value }))}
                                 />
                             </div>
-                            <button 
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Customer Type</label>
+                                <div className="grid grid-cols-2 gap-3 bg-gray-50 p-1.5 rounded-2xl border border-gray-100">
+                                    <button
+                                        type="button"
+                                        onClick={() => setNewCustomerBody(prev => ({ ...prev, customerType: 'retail' }))}
+                                        className={clsx(
+                                            "py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all",
+                                            newCustomerBody.customerType === 'retail'
+                                                ? "bg-white text-emerald-600 shadow-sm border border-emerald-100"
+                                                : "text-gray-400 hover:text-gray-600"
+                                        )}
+                                    >
+                                        Retail
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setNewCustomerBody(prev => ({ ...prev, customerType: 'wholesale' }))}
+                                        className={clsx(
+                                            "py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all",
+                                            newCustomerBody.customerType === 'wholesale'
+                                                ? "bg-white text-indigo-600 shadow-sm border border-indigo-100"
+                                                : "text-gray-400 hover:text-gray-600"
+                                        )}
+                                    >
+                                        Wholesale
+                                    </button>
+                                </div>
+                            </div>
+                            <button
                                 type="submit"
                                 className="w-full py-4 bg-indigo-600 text-white rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-indigo-100 hover:bg-indigo-700 transition-all"
                             >
@@ -590,7 +652,7 @@ const POS = () => {
                             </div>
                             <h2 className="text-2xl font-black text-gray-900 tracking-tighter mb-1 uppercase">Bill Generated!</h2>
                             <p className="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mb-8">Amit Store</p>
-                            
+
                             {/* Invoice Receipt Body */}
                             <div className="w-full bg-gray-50 rounded-[32px] p-6 mb-8 border border-dashed border-gray-200">
                                 <div className="flex justify-between items-center mb-4 pb-4 border-b border-gray-200">
@@ -604,13 +666,13 @@ const POS = () => {
                                     </div>
                                 </div>
                                 <div className="mb-4">
-                                     <p className="text-[10px] uppercase font-black text-gray-400 mb-1">Customer</p>
-                                     <p className="text-xs font-black text-gray-900">{lastSale.customerName}</p>
-                                     <p className="text-[10px] font-black text-emerald-600 tracking-tight mt-0.5">Payment: {lastSale.paymentMethod}</p>
+                                    <p className="text-[10px] uppercase font-black text-gray-400 mb-1">Customer</p>
+                                    <p className="text-xs font-black text-gray-900">{lastSale.customerName}</p>
+                                    <p className="text-[10px] font-black text-emerald-600 tracking-tight mt-0.5">Payment: {lastSale.paymentMethod}</p>
                                 </div>
-                                
+
                                 <div className="space-y-3 mb-6">
-                                    {lastSale.items.map((item: any, idx: number) => (
+                                    {lastSale.items.map((item: SaleItem, idx: number) => (
                                         <div key={idx} className="flex justify-between text-xs font-bold text-gray-700">
                                             <span>{item.productName.toLowerCase()} {item.quantity} × {item.unitPrice}</span>
                                             <span className="font-black text-gray-900">₹{item.total}</span>
@@ -623,14 +685,14 @@ const POS = () => {
                                     <span className="text-2xl font-black text-emerald-600 tracking-tighter">₹{lastSale.total.toLocaleString('en-IN')}</span>
                                 </div>
                             </div>
-                            
+
                             <p className="text-[10px] font-bold text-gray-400 uppercase text-center mb-8">Thank you! Visit again.</p>
-                            
+
                             <div className="grid grid-cols-2 gap-3 w-full">
-                                                <button className="flex items-center justify-center gap-2 py-3.5 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg hover:shadow-indigo-200">
+                                <button className="flex items-center justify-center gap-2 py-3.5 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg hover:shadow-indigo-200">
                                     <Printer size={16} /> Print
                                 </button>
-                                <button 
+                                <button
                                     onClick={() => {
                                         const itemsText = lastSale.items.map((i: any) => `${i.productName} x ${i.quantity} : ₹${i.total}`).join('\n');
                                         const structuredText = `*AMIT STORE - INVOICE*\nBill: #${lastSale.billNo}\nDate: ${lastSale.date}\n-----------------------\n${itemsText}\n-----------------------\n*TOTAL: ₹${lastSale.total}*\nPayment: ${lastSale.paymentMethod}\n-----------------------\nThank you! Visit again.`;
@@ -640,7 +702,7 @@ const POS = () => {
                                 >
                                     <MessageCircle size={16} /> WhatsApp
                                 </button>
-                                <button 
+                                <button
                                     onClick={() => setShowInvoice(false)}
                                     className="col-span-2 flex items-center justify-center gap-2 py-4 bg-gray-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-black transition-all mt-2"
                                 >
@@ -651,6 +713,23 @@ const POS = () => {
                                 {window.location.hostname}
                             </p>
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {isScanning && (
+                <div className="fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center p-6 backdrop-blur-md">
+                    <div className="w-full max-w-md aspect-video bg-white rounded-[40px] overflow-hidden shadow-2xl relative border-8 border-indigo-600">
+                        <div id="pos-scanner" className="w-full h-full"></div>
+                    </div>
+                    <button
+                        onClick={stopCameraScanner}
+                        className="mt-12 px-10 py-4 bg-white/10 hover:bg-white/20 text-white rounded-full font-black uppercase tracking-widest flex items-center gap-3 border border-white/20 transition-all font-black"
+                    >
+                        <X size={20} /> Close Scanner
+                    </button>
+                    <div className="mt-8 text-white/40 font-bold uppercase tracking-[0.3em] text-[10px] animate-pulse">
+                        Align Barcode within frame
                     </div>
                 </div>
             )}

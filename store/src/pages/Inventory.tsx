@@ -57,7 +57,7 @@ const Inventory = () => {
         const matchesCategory = selectedCategory === 'All' || cat?.name === selectedCategory;
 
         let matchesStock = true;
-        const threshold = cat?.lowStockThreshold ?? 10;
+        const threshold = p.lowStockThreshold ?? 10;
         if (stockFilter === 'Low Stock') matchesStock = p.quantity > 0 && p.quantity <= threshold;
         if (stockFilter === 'Out of Stock') matchesStock = p.quantity === 0;
 
@@ -195,10 +195,10 @@ const Inventory = () => {
                         </thead>
                         <tbody className="divide-y divide-gray-50">
                             {filteredProducts.map((p) => {
-                                const cat = categories.find(c => c.id === p.categoryId);
-                                const threshold = cat?.lowStockThreshold ?? 10;
+                                const threshold = p.lowStockThreshold ?? 10;
                                 const isOut = p.quantity === 0;
                                 const isLow = !isOut && p.quantity <= threshold;
+                                const cat = categories.find(c => c.id === p.categoryId);
 
                                 return (
                                     <tr
@@ -227,8 +227,11 @@ const Inventory = () => {
                                                     >
                                                         {cat?.name || 'GENERIC'}
                                                     </span>
-                                                    <div className="flex items-center gap-2 mt-2 sm:hidden">
-                                                        <span className="font-black text-gray-900 text-xs">₹{p.price.toLocaleString('en-IN')}</span>
+                                                    <div className="flex flex-col gap-1 mt-2 sm:hidden">
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="font-black text-gray-900 text-xs">R: ₹{p.price.toLocaleString('en-IN')}</span>
+                                                            <span className="font-black text-indigo-600 text-xs">W: ₹{(p.wholesalePrice || p.price).toLocaleString('en-IN')}</span>
+                                                        </div>
                                                         <span className="text-[8px] text-gray-400">COST: ₹{p.costPrice.toLocaleString('en-IN')}</span>
                                                     </div>
                                                 </div>
@@ -243,9 +246,16 @@ const Inventory = () => {
                                             </span>
                                         </td>
                                         <td className="px-4 sm:px-8 py-4 sm:py-6 text-sm hidden md:table-cell">
-                                            <div className="flex flex-col">
-                                                <span className="font-black text-gray-900 leading-none">₹{p.price.toLocaleString('en-IN')}</span>
-                                                <span className="text-[10px] text-gray-400 font-bold mt-1.5">COST: ₹{p.costPrice.toLocaleString('en-IN')}</span>
+                                            <div className="flex flex-col gap-1">
+                                                <div className="flex flex-col">
+                                                    <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Retail</span>
+                                                    <span className="font-black text-gray-900 leading-none">₹{p.price.toLocaleString('en-IN')}</span>
+                                                </div>
+                                                <div className="flex flex-col">
+                                                    <span className="text-[8px] font-bold text-indigo-400 uppercase tracking-widest">Wholesale</span>
+                                                    <span className="font-black text-indigo-600 leading-none">₹{(p.wholesalePrice || p.price).toLocaleString('en-IN')}</span>
+                                                </div>
+                                                <span className="text-[9px] text-gray-400 font-bold mt-1 uppercase tracking-tight">Cost: ₹{p.costPrice.toLocaleString('en-IN')}</span>
                                             </div>
                                         </td>
                                         <td className="px-4 sm:px-8 py-4 sm:py-6">
@@ -307,6 +317,23 @@ const Inventory = () => {
                 product={editingProduct}
                 categories={categories}
             />
+
+            {isScanning && (
+                <div className="fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center p-6 backdrop-blur-md">
+                    <div className="w-full max-w-md aspect-video bg-white rounded-[40px] overflow-hidden shadow-2xl relative border-8 border-indigo-600">
+                        <div id="inventory-scanner" className="w-full h-full"></div>
+                    </div>
+                    <button 
+                        onClick={stopScanner}
+                        className="mt-12 px-10 py-4 bg-white/10 hover:bg-white/20 text-white rounded-full font-black uppercase tracking-widest flex items-center gap-3 border border-white/20 transition-all"
+                    >
+                        <X size={20} /> Close Scanner
+                    </button>
+                    <div className="mt-8 text-white/40 font-bold uppercase tracking-[0.3em] text-[10px] animate-pulse">
+                        Align Barcode within frame
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
