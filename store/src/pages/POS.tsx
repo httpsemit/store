@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
     Search,
     ShoppingCart,
@@ -27,7 +26,6 @@ import { clsx } from 'clsx';
 
 const POS = () => {
     const { products, categories, customers, addSale, addCustomer, showToast } = useStore();
-    const { t } = useTranslation();
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [cart, setCart] = React.useState<SaleItem[]>([]);

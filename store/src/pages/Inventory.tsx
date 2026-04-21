@@ -277,18 +277,18 @@ const Inventory = () => {
                                             </div>
                                         </td>
                                         <td className="px-4 sm:px-8 py-4 sm:py-6 text-right">
-                                            <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                                            <div className="flex items-center justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all">
                                                 <button
                                                     onClick={() => handleEdit(p)}
-                                                    className="p-2 sm:p-3 text-gray-400 hover:text-indigo-600 hover:bg-white rounded-lg sm:rounded-xl shadow-sm hover:shadow-md transition-all border border-transparent hover:border-indigo-100"
+                                                    className="p-2 sm:p-3 text-indigo-600 sm:text-gray-400 bg-indigo-50 sm:bg-transparent hover:text-indigo-600 hover:bg-white rounded-lg sm:rounded-xl shadow-sm hover:shadow-md transition-all border border-transparent hover:border-indigo-100"
                                                 >
-                                                    <Edit2 size={14} className="sm:size-4" />
+                                                    <Edit2 size={16} className="sm:size-4" />
                                                 </button>
                                                 <button
                                                     onClick={() => handleDelete(p.id, p.name)}
-                                                    className="p-2 sm:p-3 text-gray-400 hover:text-red-600 hover:bg-white rounded-lg sm:rounded-xl shadow-sm hover:shadow-md transition-all border border-transparent hover:border-red-100"
+                                                    className="p-2 sm:p-3 text-red-600 sm:text-gray-400 bg-red-50 sm:bg-transparent hover:text-red-600 hover:bg-white rounded-lg sm:rounded-xl shadow-sm hover:shadow-md transition-all border border-transparent hover:border-red-100"
                                                 >
-                                                    <Trash2 size={14} className="sm:size-4" />
+                                                    <Trash2 size={16} className="sm:size-4" />
                                                 </button>
                                             </div>
                                         </td>
