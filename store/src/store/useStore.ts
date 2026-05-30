@@ -431,7 +431,12 @@ export const useStore = create<StoreState>()(
             deleteProduct: async (id) => {
                 const { error } = await supabase.from('products').delete().eq('id', id);
                 if (error) {
-                    get().showToast('error', error.message);
+                    const msg = error.message.toLowerCase();
+                    if (msg.includes('violates foreign key') || msg.includes('violates not-null') || msg.includes('violates not null')) {
+                        get().showToast('error', 'Cannot delete product: database constraints need update. Please run the SQL migration from the walkthrough.');
+                    } else {
+                        get().showToast('error', error.message);
+                    }
                     return;
                 }
                 set(state => ({ products: state.products.filter(p => p.id !== id) }));
