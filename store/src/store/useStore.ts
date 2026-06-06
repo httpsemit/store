@@ -3,6 +3,8 @@ import { persist } from 'zustand/middleware';
 import { supabase } from '../lib/supabase';
 import type { Category, Product, Sale, StockIntake, User, Alert, Customer, Expense, Payment } from '../types';
 
+const generateFallbackBarcode = () => `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
+
 interface StoreState {
     currentUser: User | null;
     categories: Category[];
@@ -364,7 +366,7 @@ export const useStore = create<StoreState>()(
             // ========================================
             addProduct: async (product) => {
                 const { data, error } = await supabase.from('products').insert({
-                    barcode: product.barcode?.trim() || null,
+                    barcode: product.barcode?.trim() || generateFallbackBarcode(),
                     name: product.name,
                     description: product.description,
                     category_id: product.categoryId,
@@ -407,7 +409,11 @@ export const useStore = create<StoreState>()(
 
             updateProduct: async (id, updates) => {
                 const dbUpdates: Record<string, unknown> = {};
-                if (updates.barcode !== undefined) dbUpdates.barcode = updates.barcode?.trim() || null;
+                let finalBarcode = updates.barcode;
+                if (updates.barcode !== undefined) {
+                    finalBarcode = updates.barcode?.trim() || generateFallbackBarcode();
+                    dbUpdates.barcode = finalBarcode;
+                }
                 if (updates.name !== undefined) dbUpdates.name = updates.name;
                 if (updates.description !== undefined) dbUpdates.description = updates.description;
                 if (updates.categoryId !== undefined) dbUpdates.category_id = updates.categoryId;
@@ -431,7 +437,7 @@ export const useStore = create<StoreState>()(
                 set(state => ({
                     products: state.products.map(p => {
                         if (p.id === id) {
-                            const updatedBarcode = updates.barcode !== undefined ? (updates.barcode?.trim() || '') : p.barcode;
+                            const updatedBarcode = finalBarcode !== undefined ? finalBarcode : p.barcode;
                             return { ...p, ...updates, barcode: updatedBarcode, updatedAt: new Date().toISOString() };
                         }
                         return p;
