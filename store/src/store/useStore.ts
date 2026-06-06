@@ -182,7 +182,7 @@ export const useStore = create<StoreState>()(
                 set({ isLoading: true });
 
                 interface RawCategory { id: string; name: string; description: string | null; color: string; }
-                interface RawProduct { id: string; barcode: string; name: string; description: string | null; category_id: string; price: number; wholesale_price: number | null; cost_price: number; quantity: number; unit: string; low_stock_threshold: number; created_at: string; updated_at: string; }
+                interface RawProduct { id: string; barcode: string | null; name: string; description: string | null; category_id: string; price: number; wholesale_price: number | null; cost_price: number; quantity: number; unit: string; low_stock_threshold: number; created_at: string; updated_at: string; }
                 interface RawSaleItem { product_id: string; product_name: string; barcode: string; quantity: number; unit_price: number; total: number; }
                 interface RawSale { id: string; subtotal: number; discount: number; total: number; payment_method: string; sale_type: string | null; customer_name: string | null; created_at: string; sale_items: RawSaleItem[]; }
 
@@ -206,7 +206,7 @@ export const useStore = create<StoreState>()(
 
                 const products: Product[] = (productsRes.data as RawProduct[] || []).map(p => ({
                     id: p.id,
-                    barcode: p.barcode,
+                    barcode: p.barcode || '',
                     name: p.name,
                     description: p.description || '',
                     categoryId: p.category_id,
@@ -364,7 +364,7 @@ export const useStore = create<StoreState>()(
             // ========================================
             addProduct: async (product) => {
                 const { data, error } = await supabase.from('products').insert({
-                    barcode: product.barcode,
+                    barcode: product.barcode?.trim() || null,
                     name: product.name,
                     description: product.description,
                     category_id: product.categoryId,
@@ -377,13 +377,17 @@ export const useStore = create<StoreState>()(
                 }).select().single();
 
                 if (error) {
-                    get().showToast('error', error.message);
+                    let msg = error.message;
+                    if (msg.includes('products_barcode_key') || msg.toLowerCase().includes('duplicate key')) {
+                        msg = 'A product with this barcode already exists.';
+                    }
+                    get().showToast('error', msg);
                     return;
                 }
 
                 const newProduct: Product = {
                     id: data.id,
-                    barcode: data.barcode,
+                    barcode: data.barcode || '',
                     name: data.name,
                     description: data.description || '',
                     categoryId: data.category_id,
@@ -403,7 +407,7 @@ export const useStore = create<StoreState>()(
 
             updateProduct: async (id, updates) => {
                 const dbUpdates: Record<string, unknown> = {};
-                if (updates.barcode !== undefined) dbUpdates.barcode = updates.barcode;
+                if (updates.barcode !== undefined) dbUpdates.barcode = updates.barcode?.trim() || null;
                 if (updates.name !== undefined) dbUpdates.name = updates.name;
                 if (updates.description !== undefined) dbUpdates.description = updates.description;
                 if (updates.categoryId !== undefined) dbUpdates.category_id = updates.categoryId;
@@ -416,14 +420,22 @@ export const useStore = create<StoreState>()(
 
                 const { error } = await supabase.from('products').update(dbUpdates).eq('id', id);
                 if (error) {
-                    get().showToast('error', error.message);
+                    let msg = error.message;
+                    if (msg.includes('products_barcode_key') || msg.toLowerCase().includes('duplicate key')) {
+                        msg = 'A product with this barcode already exists.';
+                    }
+                    get().showToast('error', msg);
                     return;
                 }
 
                 set(state => ({
-                    products: state.products.map(p =>
-                        p.id === id ? { ...p, ...updates, updatedAt: new Date().toISOString() } : p
-                    )
+                    products: state.products.map(p => {
+                        if (p.id === id) {
+                            const updatedBarcode = updates.barcode !== undefined ? (updates.barcode?.trim() || '') : p.barcode;
+                            return { ...p, ...updates, barcode: updatedBarcode, updatedAt: new Date().toISOString() };
+                        }
+                        return p;
+                    })
                 }));
                 get().showToast('success', 'Product updated');
             },
@@ -538,7 +550,7 @@ export const useStore = create<StoreState>()(
 
                     const products: Product[] = (freshProducts || []).map(p => ({
                         id: p.id,
-                        barcode: p.barcode,
+                        barcode: p.barcode || '',
                         name: p.name,
                         description: p.description || '',
                         categoryId: p.category_id,

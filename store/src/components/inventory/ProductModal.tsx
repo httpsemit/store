@@ -88,7 +88,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, onSave, pr
         if (product) {
             setFormData({
                 name: product.name,
-                barcode: product.barcode,
+                barcode: product.barcode || '',
                 categoryId: product.categoryId,
                 price: product.price,
                 wholesalePrice: product.wholesalePrice || 0,
