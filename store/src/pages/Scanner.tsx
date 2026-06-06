@@ -72,6 +72,7 @@ const Scanner = () => {
         const existing = scannedItems.find(i => i.productId === product.id);
         if (existing) {
             setScannedItems(prev => prev.map(i => i.productId === product.id ? { ...i, quantity: i.quantity + 1 } : i));
+            showToast('success', `Added another ${product.name} to staging`);
         } else {
             const item = {
                 productId: product.id,
@@ -82,6 +83,7 @@ const Scanner = () => {
                 unit: product.unit
             };
             setScannedItems(prev => [item, ...prev]);
+            showToast('success', `Added ${product.name} to staging`);
         }
         setSearchQuery('');
     };
@@ -131,7 +133,7 @@ const Scanner = () => {
     };
 
     return (
-        <div className="flex flex-col h-[calc(100dvh-120px)] lg:h-[calc(100vh-140px)] gap-4 sm:gap-6 pb-2">
+        <div className="flex flex-col h-auto lg:h-[calc(100vh-140px)] gap-4 sm:gap-6 pb-2">
             {/* Unified Toolbar Line */}
             <div className="flex flex-col gap-4 bg-white dark:bg-[#0a0a0a] p-4 rounded-[20px] sm:rounded-[32px] border border-gray-100 dark:border-white/10 dark:border-white/5 shadow-xl no-print">
                 {/* Search / Manual Barcode Input */}
@@ -181,7 +183,7 @@ const Scanner = () => {
                 </div>
             </div>
 
-            <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 h-full overflow-hidden">
+            <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 h-full lg:overflow-hidden">
                 {/* Left: Interactive Input Area */}
                 <div className="flex-1 flex flex-col gap-6 min-w-0">
                     {mode === 'camera' && (
@@ -206,7 +208,7 @@ const Scanner = () => {
                             <h3 className="text-[9px] sm:text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none">Suggestions (Low Stock First)</h3>
                             {searchQuery && <span className="text-[8px] sm:text-[9px] font-black text-emerald-500 uppercase">Filtering Results</span>}
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 overflow-y-auto pr-1 custom-scrollbar">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 max-h-[250px] lg:max-h-none overflow-y-auto pr-1 custom-scrollbar">
                             {suggestions.map(p => (
                                 <button
                                     key={p.id}
